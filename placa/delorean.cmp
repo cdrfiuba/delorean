@@ -1,16 +1,44 @@
-Cmp-Mod V01 Genere par PcbNew le jue 21 oct 2010 21:00:00 ART
+Cmp-Mod V01 Created by CvPCB (20100406 SVN-R2509)-final date = Sat 23 Oct 2010 17:05:56 ART
 
 BeginCmp
-TimeStamp = /4CB8E224;
+TimeStamp = /4CC22213;
 Reference = C1;
 ValeurCmp = 47u;
-IdModule  = R4;
+IdModule  = C1V5;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC22230;
+Reference = C2;
+ValeurCmp = 22u;
+IdModule  = C1V5;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC22564;
+Reference = C3;
+ValeurCmp = 100n;
+IdModule  = C1;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8E227;
-Reference = C2;
-ValeurCmp = 22u;
+Reference = C4;
+ValeurCmp = 100n;
+IdModule  = C1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC22286;
+Reference = C5;
+ValeurCmp = 100n;
+IdModule  = C1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC22312;
+Reference = C6;
+ValeurCmp = 100n;
 IdModule  = C1;
 EndCmp
 
@@ -39,63 +67,77 @@ BeginCmp
 TimeStamp = /4CB8F3E9;
 Reference = D4;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F3E8;
 Reference = D5;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4C785E67;
 Reference = D6;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4C785E65;
 Reference = D7;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F3EB;
 Reference = D8;
 ValeurCmp = DIODE;
-IdModule  = C1;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F3EA;
 Reference = D9;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4C785E6A;
 Reference = D10;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4C785E68;
 Reference = D11;
 ValeurCmp = DIODE;
-IdModule  = R4;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4C785E4E;
 Reference = IC1;
 ValeurCmp = ATMEGA8-P;
-IdModule  = DIP-28__600;
+IdModule  = DIP-28__300_ELL;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC219E8;
+Reference = JP1;
+ValeurCmp = JUMPER;
+IdModule  = SIL-2;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC219E1;
+Reference = JP2;
+ValeurCmp = JUMPER;
+IdModule  = SIL-2;
 EndCmp
 
 BeginCmp
@@ -136,42 +178,42 @@ EndCmp
 BeginCmp
 TimeStamp = /4CB8E335;
 Reference = R1;
-ValeurCmp = 1k;
-IdModule  = R4;
+ValeurCmp = 10k;
+IdModule  = R1;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC06678;
 Reference = R2;
 ValeurCmp = R;
-IdModule  = R1;
+IdModule  = R3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC0667C;
 Reference = R3;
 ValeurCmp = R;
-IdModule  = R1;
+IdModule  = R3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC06680;
 Reference = R4;
 ValeurCmp = R;
-IdModule  = R1;
+IdModule  = R3;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F4F5;
 Reference = R5;
-ValeurCmp = R;
+ValeurCmp = .1;
 IdModule  = R4;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F4FA;
 Reference = R6;
-ValeurCmp = R;
+ValeurCmp = .1;
 IdModule  = R4;
 EndCmp
 
@@ -179,25 +221,25 @@ BeginCmp
 TimeStamp = /4CC0BBD7;
 Reference = R7;
 ValeurCmp = 100;
-IdModule  = R4;
+IdModule  = R1;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC0BDD0;
 Reference = R8;
 ValeurCmp = 100;
-IdModule  = R4;
+IdModule  = R1;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC0BDDB;
 Reference = R9;
 ValeurCmp = 100;
-IdModule  = R4;
+IdModule  = R1;
 EndCmp
 
 BeginCmp
-TimeStamp = /4CC0BBE1;
+TimeStamp = /4CC0BBE5;
 Reference = RV1;
 ValeurCmp = 10k;
 IdModule  = SIL-3;
@@ -211,7 +253,7 @@ IdModule  = SIL-3;
 EndCmp
 
 BeginCmp
-TimeStamp = /4CC0BBE5;
+TimeStamp = /4CC0BBE1;
 Reference = RV3;
 ValeurCmp = 10k;
 IdModule  = SIL-3;
@@ -220,14 +262,14 @@ EndCmp
 BeginCmp
 TimeStamp = /4CB8E2F3;
 Reference = SW1;
-ValeurCmp = SW_PUSH;
+ValeurCmp = Reset;
 IdModule  = SW_PUSH_SMALL;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC0C538;
 Reference = SW2;
-ValeurCmp = SW_PUSH;
+ValeurCmp = Arranque;
 IdModule  = SW_PUSH_SMALL;
 EndCmp
 
@@ -235,14 +277,14 @@ BeginCmp
 TimeStamp = /4CB8E1E3;
 Reference = U1;
 ValeurCmp = LM2940;
-IdModule  = LM2931;
+IdModule  = LM78XX;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F2FE;
 Reference = U2;
 ValeurCmp = L298D;
-IdModule  = U3;
+IdModule  = L298D;
 EndCmp
 
 EndListe

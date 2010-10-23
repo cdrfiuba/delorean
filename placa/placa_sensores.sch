@@ -1,6 +1,5 @@
-EESchema Schematic File Version 2  date Fri 22 Oct 2010 21:14:59 ART
+EESchema Schematic File Version 2  date Sat 23 Oct 2010 17:44:20 ART
 LIBS:power
-LIBS:cny70
 LIBS:device
 LIBS:transistors
 LIBS:conn
@@ -30,33 +29,36 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-EELAYER 23  0
+LIBS:cny70
+LIBS:L298
+LIBS:placa_sensores-cache
+EELAYER 24  0
 EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
-Title "noname.sch"
+Title "Delorean - sensores"
 Date "23 oct 2010"
-Rev ""
-Comp ""
+Rev "0.8"
+Comp "Club de Robótica"
 Comment1 ""
 Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
 Text Label 4650 4800 2    60   ~ 0
-ADC0
+sensor
 Text Label 4250 3250 0    60   ~ 0
 GND
-Text Label 3700 2900 0    60   ~ 0
-GND
 Text Label 3700 2800 0    60   ~ 0
-sensores0
+GND
+Text Label 3700 2700 0    60   ~ 0
+emisor
 Wire Wire Line
 	3700 2700 4150 2700
 Wire Wire Line
 	4150 2900 3700 2900
 Wire Wire Line
-	4150 3250 3700 3250
+	4000 3250 3700 3250
 Wire Wire Line
 	4650 4800 4250 4800
 Wire Wire Line
@@ -74,32 +76,32 @@ Wire Wire Line
 Wire Wire Line
 	3700 2800 4150 2800
 $Comp
-L CONN_3 K?
+L CONN_3 K1
 U 1 1 4CC2278C
 P 4500 2800
-F 0 "K?" V 4450 2800 50  0000 C CNN
+F 0 "K1" V 4450 2800 50  0000 C CNN
 F 1 "CONN_3" V 4550 2800 40  0000 C CNN
 	1    4500 2800
 	1    0    0    -1  
 $EndComp
-Text Label 3700 2700 0    60   ~ 0
-ADC0
+Text Label 3700 2900 0    60   ~ 0
+sensor
 $Comp
-L GND #PWR010
+L GND #PWR01
 U 1 1 4B6B7292
 P 4500 3350
-F 0 "#PWR010" H 4500 3350 30  0001 C CNN
+F 0 "#PWR01" H 4500 3350 30  0001 C CNN
 F 1 "GND" H 4500 3280 30  0001 C CNN
 	1    4500 3350
 	1    0    0    -1  
 $EndComp
-Text Label 4150 3250 2    60   ~ 0
-sensores0
+Text Label 4000 3250 2    60   ~ 0
+emisor
 $Comp
-L GND #PWR012
+L GND #PWR02
 U 1 1 4B6B70B8
 P 3700 4950
-F 0 "#PWR012" H 3700 4950 30  0001 C CNN
+F 0 "#PWR02" H 3700 4950 30  0001 C CNN
 F 1 "GND" H 3700 4880 30  0001 C CNN
 	1    3700 4950
 	1    0    0    -1  
