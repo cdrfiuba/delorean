@@ -1,0 +1,99 @@
+# EESchema Netlist Version 1.1 created  Thu 04 Feb 2010 22:53:09 ART
+(
+ ( /4B6B6D66 CONN_5x2 P1 CONN_5X2
+  ( 1 VCC )
+  ( 2 GND )
+  ( 3 /sens_led4 )
+  ( 4 /sens_tr4 )
+  ( 5 /sens_led3 )
+  ( 6 /sens_tr3 )
+  ( 7 /sens_led2 )
+  ( 8 /sens_tr2 )
+  ( 9 /sens_led1 )
+  ( 10 /sens_tr1 )
+ )
+ ( /4B6B708D R4 R1 100
+  ( 1 /sens_led1 )
+  ( 2 N-000008 )
+ )
+ ( /4B6B7092 R4 R2 100
+  ( 1 /sens_led2 )
+  ( 2 N-000009 )
+ )
+ ( /4B6B71FE R4 R3 100
+  ( 1 /sens_led3 )
+  ( 2 N-000011 )
+ )
+ ( /4B6B71FF R4 R4 100
+  ( 1 /sens_led4 )
+  ( 2 N-000012 )
+ )
+ ( /4B6B72EF SIL-3 RV1 10k
+  ( 1 /sens_tr1 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4B6B7344 SIL-3 RV2 10k
+  ( 1 /sens_tr2 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4B6B7359 SIL-3 RV3 10k
+  ( 1 /sens_tr3 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4B6B734C SIL-3 RV4 10k
+  ( 1 /sens_tr4 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4B6B6FA5 CNY70 U1 CNY70
+  ( 1 GND )
+  ( 2 N-000008 )
+  ( 3 GND )
+  ( 4 /sens_tr1 )
+ )
+ ( /4B6B6FAB CNY70 U2 CNY70
+  ( 1 GND )
+  ( 2 N-000009 )
+  ( 3 GND )
+  ( 4 /sens_tr2 )
+ )
+ ( /4B6B71FC CNY70 U3 CNY70
+  ( 1 GND )
+  ( 2 N-000011 )
+  ( 3 GND )
+  ( 4 /sens_tr3 )
+ )
+ ( /4B6B71FD CNY70 U4 CNY70
+  ( 1 GND )
+  ( 2 N-000012 )
+  ( 3 GND )
+  ( 4 /sens_tr4 )
+ )
+)
+*
+{ Allowed footprints by component:
+$component R1
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R2
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R3
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R4
+ R?
+ SM0603
+ SM0805
+$endlist
+$endfootprintlist
+}
