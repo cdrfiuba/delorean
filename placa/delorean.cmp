@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (20100406 SVN-R2509)-final date = Sat 23 Oct 2010 21:54:08 ART
+Cmp-Mod V01 Genere par PcbNew le 24/10/2010 14:29:53
 
 BeginCmp
 TimeStamp = /4CC22213;
@@ -221,14 +221,14 @@ BeginCmp
 TimeStamp = /4CC0BBD7;
 Reference = R7;
 ValeurCmp = 100;
-IdModule  = R3;
+IdModule  = R4;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CC0BDD0;
 Reference = R8;
 ValeurCmp = 100;
-IdModule  = R3;
+IdModule  = R4;
 EndCmp
 
 BeginCmp

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 23 Oct 2010 17:48:21 ART
+EESchema Schematic File Version 2  date 24/10/2010 14:58:26
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -31,13 +31,12 @@ LIBS:contrib
 LIBS:valves
 LIBS:L298
 LIBS:cny70
-LIBS:delorean-cache
 EELAYER 24  0
 EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
 Title "Delorean"
-Date "23 oct 2010"
+Date "24 oct 2010"
 Rev "0.5"
 Comp "Club de Robótica"
 Comment1 ""
@@ -45,6 +44,9 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+NoConn ~ 3950 3950
+Wire Wire Line
+	3950 4650 5250 4650
 Connection ~ 8300 5550
 Wire Wire Line
 	8200 5550 8300 5550
@@ -91,7 +93,7 @@ Connection ~ 9350 5700
 Wire Wire Line
 	9350 5350 9350 5900
 Wire Wire Line
-	5350 4750 5350 4650
+	5250 5450 5250 5350
 Connection ~ 6300 2800
 Wire Wire Line
 	6300 2900 6300 2650
@@ -395,9 +397,7 @@ Wire Wire Line
 Wire Wire Line
 	6300 3300 6300 3400
 Wire Wire Line
-	5350 4050 5350 3950
-Wire Wire Line
-	5350 3950 3950 3950
+	5250 4650 5250 4750
 Wire Wire Line
 	9000 5250 9350 5250
 Connection ~ 5750 5750
@@ -607,7 +607,6 @@ F 2 "DIL28" H 3450 2475 50  0001 C CNN
 	1    2950 3950
 	1    0    0    -1  
 $EndComp
-NoConn ~ 3950 4650
 $Comp
 L GND #PWR012
 U 1 1 4CC219FC
@@ -638,19 +637,19 @@ $EndComp
 $Comp
 L GND #PWR013
 U 1 1 4CC0C5E9
-P 5350 4750
-F 0 "#PWR013" H 5350 4750 30  0001 C CNN
-F 1 "GND" H 5350 4680 30  0001 C CNN
-	1    5350 4750
+P 5250 5450
+F 0 "#PWR013" H 5250 5450 30  0001 C CNN
+F 1 "GND" H 5250 5380 30  0001 C CNN
+	1    5250 5450
 	-1   0    0    -1  
 $EndComp
 $Comp
 L SW_PUSH SW2
 U 1 1 4CC0C538
-P 5350 4350
-F 0 "SW2" H 5500 4460 50  0000 C CNN
-F 1 "Arranque" H 5350 4270 50  0000 C CNN
-	1    5350 4350
+P 5250 5050
+F 0 "SW2" H 5400 5160 50  0000 C CNN
+F 1 "Arranque" H 5250 4970 50  0000 C CNN
+	1    5250 5050
 	0    1    -1   0   
 $EndComp
 Text Notes 3500 900  0    60   ~ 0
