@@ -1,18 +1,11 @@
-update=Sat 23 Oct 2010 01:20:40 ART
-last_client=eeschema
+update=Sat 23 Oct 2010 21:53:58 ART
+last_client=cvpcb
 [general]
 version=1
 RootSch=delorean.sch
 BoardNm=delorean.brd
 [common]
 NetDir=
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=smd_active
-EquName2=smd_resistor_0805
-EquName3=smd_capa_0805
 [pcbnew]
 version=1
 PadDrlX=320
@@ -36,7 +29,6 @@ TxtLar=120
 MSegLar=150
 WpenSer=10
 [pcbnew/libraries]
-LibDir=
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -47,8 +39,9 @@ LibName7=valves
 LibName8=divers
 LibName9=led
 LibName10=dip_sockets
-LibName11=CNY70
-LibName12=L298
+LibName11=L298
+LibName12=cny70
+LibDir=
 [eeschema]
 version=1
 LibDir=
@@ -117,3 +110,10 @@ LibName29=contrib
 LibName30=valves
 LibName31=L298
 LibName32=cny70
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=smd_active
+EquName2=smd_resistor_0805
+EquName3=smd_capa_0805
