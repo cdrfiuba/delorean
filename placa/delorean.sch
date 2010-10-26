@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 25/10/2010 22:57:05
+EESchema Schematic File Version 2  date Tue 26 Oct 2010 19:23:12 ART
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,22 +29,35 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:L298
+LIBS:delorean-cache
 EELAYER 24  0
 EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
 Title "Delorean"
 Date "26 oct 2010"
-Rev "0.5"
-Comp "Club de Robótica"
+Rev "1.0"
+Comp "Club de Robótica - FIUBA"
 Comment1 ""
 Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Connection ~ 7850 5700
+Wire Wire Line
+	7500 5700 8200 5700
+Wire Wire Line
+	7500 5700 7500 5150
+Wire Wire Line
+	7950 5700 7950 5800
+Connection ~ 8200 5700
+Wire Wire Line
+	8200 5700 8200 5150
+Wire Wire Line
+	7950 5150 7950 5550
+Wire Wire Line
+	7950 5550 6300 5550
 Connection ~ 3700 1150
-Connection ~ 7950 5800
 Connection ~ 2800 1050
 Connection ~ 2900 1150
 Connection ~ 3950 3850
@@ -65,7 +78,6 @@ Connection ~ 1750 3150
 Connection ~ 2050 3050
 Connection ~ 2050 3150
 Connection ~ 2050 3250
-Connection ~ 7400 6250
 Connection ~ 5250 5450
 Connection ~ 5250 5350
 Connection ~ 4850 5450
@@ -94,31 +106,21 @@ Connection ~ 3950 3950
 Connection ~ 3950 3850
 Connection ~ 3950 3750
 Wire Wire Line
-	8300 5150 8300 5700
-Wire Wire Line
 	8500 5250 8100 5250
 Wire Wire Line
 	8100 5250 8100 5150
 Connection ~ 7950 5700
 Wire Wire Line
-	7950 5150 7950 5800
-Wire Wire Line
 	7750 5150 7750 5450
 Wire Wire Line
 	7750 5450 7150 5450
-Wire Wire Line
-	7500 5150 7500 5250
-Wire Wire Line
-	7500 5250 5750 5250
 Connection ~ 6400 6650
 Wire Wire Line
 	10400 5900 10400 6650
 Wire Wire Line
 	10400 6650 5850 6650
 Wire Wire Line
-	9350 5350 8200 5350
-Wire Wire Line
-	6300 5900 6300 5550
+	6300 5550 6300 5900
 Wire Wire Line
 	5850 6650 5850 6500
 Wire Wire Line
@@ -139,7 +141,7 @@ Wire Wire Line
 Connection ~ 7950 5700
 Connection ~ 9350 5700
 Wire Wire Line
-	9350 5350 9350 5900
+	9350 5900 9350 5350
 Wire Wire Line
 	5250 5450 5250 5350
 Connection ~ 6300 2800
@@ -462,7 +464,7 @@ Wire Wire Line
 	9350 6500 9550 6500
 Connection ~ 5850 6500
 Wire Wire Line
-	5750 5250 5750 5900
+	5750 5900 5750 5250
 Connection ~ 9450 6650
 Wire Wire Line
 	3950 3950 5250 3950
@@ -488,15 +490,15 @@ Connection ~ 6700 3200
 Connection ~ 6700 3300
 Connection ~ 6700 3400
 Wire Wire Line
-	6300 5550 7850 5550
+	5750 5250 7600 5250
 Wire Wire Line
-	7850 5550 7850 5150
+	7600 5250 7600 5150
 Wire Wire Line
-	7600 5150 7600 5700
+	8300 5150 8300 5350
 Wire Wire Line
-	7600 5700 8300 5700
+	8300 5350 9350 5350
 Wire Wire Line
-	8200 5350 8200 5150
+	7850 5700 7850 5150
 $Comp
 L CONN_3 K3
 U 1 1 4CC61C53

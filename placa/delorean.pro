@@ -1,4 +1,4 @@
-update=25/10/2010 22:56:58
+update=Tue 26 Oct 2010 19:43:43 ART
 last_client=pcbnew
 [pcbnew]
 version=1
@@ -17,7 +17,7 @@ DrawLar=150
 EdgeLar=150
 TxtLar=120
 MSegLar=150
-LastNetListRead=
+LastNetListRead=delorean.net
 [pcbnew/libraries]
 LibDir=
 LibName1=sockets
