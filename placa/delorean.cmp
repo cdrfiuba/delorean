@@ -1,10 +1,10 @@
-Cmp-Mod V01 Genere par PcbNew le 24/10/2010 14:29:53
+Cmp-Mod V01 Genere par PcbNew le 25/10/2010 22:18:07
 
 BeginCmp
 TimeStamp = /4CC22213;
 Reference = C1;
 ValeurCmp = 47u;
-IdModule  = C1V5;
+IdModule  = C1V7;
 EndCmp
 
 BeginCmp
@@ -67,14 +67,14 @@ BeginCmp
 TimeStamp = /4CB8F3E9;
 Reference = D4;
 ValeurCmp = DIODE;
-IdModule  = D3;
+IdModule  = D4;
 EndCmp
 
 BeginCmp
 TimeStamp = /4CB8F3E8;
 Reference = D5;
 ValeurCmp = DIODE;
-IdModule  = D3;
+IdModule  = D4;
 EndCmp
 
 BeginCmp
@@ -141,6 +141,27 @@ IdModule  = SIL-2;
 EndCmp
 
 BeginCmp
+TimeStamp = /4CC61C41;
+Reference = K1;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC61C4F;
+Reference = K2;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /4CC61C53;
+Reference = K3;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
 TimeStamp = /4CB8E14D;
 Reference = P1;
 ValeurCmp = CONN_2;
@@ -166,13 +187,6 @@ TimeStamp = /4CB8F368;
 Reference = P5;
 ValeurCmp = CONN_2;
 IdModule  = bornier2;
-EndCmp
-
-BeginCmp
-TimeStamp = /4CC0BCB9;
-Reference = P6;
-ValeurCmp = CONN_5X2;
-IdModule  = PIN_ARRAY_5x2;
 EndCmp
 
 BeginCmp
