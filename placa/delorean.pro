@@ -1,10 +1,10 @@
-update=Tue 26 Oct 2010 19:43:43 ART
+update=Tue 26 Oct 2010 20:37:01 ART
 last_client=pcbnew
 [pcbnew]
 version=1
-PadDrlX=320
-PadDimH=600
-PadDimV=600
+PadDrlX=400
+PadDimH=709
+PadDimV=709
 BoardThickness=630
 SgPcb45=1
 TxtPcbV=800
