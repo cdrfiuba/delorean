@@ -1,4 +1,4 @@
-update=24/10/2010 14:58:35
+update=Fri 29 Oct 2010 11:42:10 ART
 last_client=pcbnew
 [eeschema]
 version=1
@@ -77,9 +77,9 @@ EquName2=smd_resistor_0805
 EquName3=smd_capa_0805
 [pcbnew]
 version=1
-PadDrlX=200
-PadDimH=600
-PadDimV=600
+PadDrlX=787
+PadDimH=1600
+PadDimV=1600
 BoardThickness=630
 SgPcb45=1
 TxtPcbV=800
