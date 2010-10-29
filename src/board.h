@@ -1,3 +1,8 @@
+#ifndef _BOARD_
+#define _BOARD_
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 #define true	1
 #define	false	0
 
@@ -198,3 +203,6 @@
 /* Macros */
 
 /* ----------------------------------------------------- */
+
+
+#endif
