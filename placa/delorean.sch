@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Tue 26 Oct 2010 19:23:12 ART
+EESchema Schematic File Version 2  date Sat 30 Oct 2010 07:28:49 ART
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -35,7 +35,7 @@ EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
 Title "Delorean"
-Date "26 oct 2010"
+Date "30 oct 2010"
 Rev "1.0"
 Comp "Club de Robótica - FIUBA"
 Comment1 ""
@@ -610,7 +610,7 @@ L CAPAPOL C1
 U 1 1 4CC22213
 P 2800 1500
 F 0 "C1" H 2850 1600 50  0000 L CNN
-F 1 "47u" H 2850 1400 50  0000 L CNN
+F 1 "470u" H 2850 1400 50  0000 L CNN
 	1    2800 1500
 	1    0    0    -1  
 $EndComp
@@ -877,7 +877,7 @@ L R R4
 U 1 1 4CC06680
 P 4850 4750
 F 0 "R4" V 4930 4750 50  0000 C CNN
-F 1 "R" V 4850 4750 50  0000 C CNN
+F 1 "220" V 4850 4750 50  0000 C CNN
 	1    4850 4750
 	1    0    0    -1  
 $EndComp
@@ -886,7 +886,7 @@ L R R3
 U 1 1 4CC0667C
 P 4650 4750
 F 0 "R3" V 4730 4750 50  0000 C CNN
-F 1 "R" V 4650 4750 50  0000 C CNN
+F 1 "220" V 4650 4750 50  0000 C CNN
 	1    4650 4750
 	1    0    0    -1  
 $EndComp
@@ -895,7 +895,7 @@ L R R2
 U 1 1 4CC06678
 P 4450 4750
 F 0 "R2" V 4530 4750 50  0000 C CNN
-F 1 "R" V 4450 4750 50  0000 C CNN
+F 1 "220" V 4450 4750 50  0000 C CNN
 	1    4450 4750
 	1    0    0    -1  
 $EndComp

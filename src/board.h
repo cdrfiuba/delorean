@@ -21,13 +21,13 @@
 #define PORT_MLPWM_NAME  B
 #define MLPWM_NUMBER     2
 
-#define PORT_MRPWM     def_port_reg(PORT_MREN_NAME)
-#define PIN_MRPWM      def_pin_reg(PORT_MREN_NAME)
-#define DDR_MRPWM      def_ddr_reg(PORT_MREN_NAME)
+#define PORT_MRPWM     def_port_reg(PORT_MRPWM_NAME)
+#define PIN_MRPWM      def_pin_reg(PORT_MRPWM_NAME)
+#define DDR_MRPWM      def_ddr_reg(PORT_MRPWM_NAME)
 
-#define PORT_MLPWM     def_port_reg(PORT_MLEN_NAME)
-#define PIN_MLPWM      def_pin_reg(PORT_MLEN_NAME)
-#define DDR_MLPWM      def_ddr_reg(PORT_MLEN_NAME)
+#define PORT_MLPWM     def_port_reg(PORT_MLPWM_NAME)
+#define PIN_MLPWM      def_pin_reg(PORT_MLPWM_NAME)
+#define DDR_MLPWM      def_ddr_reg(PORT_MLPWM_NAME)
 
 
 /*MLIN1 = Motor Left IN1*/
@@ -168,17 +168,22 @@
 #define IsLed3On()    ( (PORT_LED3 & (1<<LED3_NUMBER)) == (1<<LED3_NUMBER) )
 #define Led3Toggle()  {if ( IsLed3On() ) Led3Off(); else Led3On();}
 
+#define IntArranqueInit()  DDR_INT_ARRANQUE &= ~(1<<INT_ARRANQUE_NUMBER)
+#define IntArranqueOn()    PIN_INT_ARRANQUE |= (1<<INT_ARRANQUE_NUMBER)
 /* ----------------------------------------------------------------- */
 
 /* Definiciones correspondientes a los pulsadores */
 
-/* PULST = Pulsador de Arranque */
-#define PORT_PULST_NAME   D
-#define PULST_NUMBER      2
+/* INT_ARRANQUE = Pulsador de Arranque */
+#define PORT_INT_ARRANQUE_NAME   D
+#define INT_ARRANQUE_NUMBER      2
 
-#define PORT_PULST     def_port_reg(PORT_PULST_NAME)
-#define PIN_PULST      def_pin_reg(PORT_PULST_NAME)
-#define DDR_PULST      def_ddr_reg(PORT_PULST_NAME)
+#define PORT_INT_ARRANQUE     def_port_reg(PORT_INT_ARRANQUE_NAME)
+#define PIN_INT_ARRANQUE      def_pin_reg(PORT_INT_ARRANQUE_NAME)
+#define DDR_INT_ARRANQUE      def_ddr_reg(PORT_INT_ARRANQUE_NAME)
+
+
+
 
 /* Macros */
 
