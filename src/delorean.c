@@ -24,18 +24,17 @@ int main (void) {
 void startup(void) {
 	
 	IntArranqueInit();
-	IntArranqueOn();
-	set_interrupts();
 
 	Led1Init();
 	Led2Init();
 	Led3Init();
+	set_interrupts();
 }
 
 void set_interrupts(void){
 	
-	GICR |= (1<<INT0); /* Esto habilita la interrupcion */
-	MCUCR |= ((1<<ISC00) | (0<<ISC01)); /* Esto habilida la interrupcion por flanco ascendente*/
+	GICR |= (1<<INT0); /* Esto habilita la interrupción INT0*/
+	MCUCR |= ((1<<ISC00) | (0<<ISC01)); /* Esto configura INT0 por flanco ascendente*/
 	sei();
 }
 

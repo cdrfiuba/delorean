@@ -3,13 +3,32 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define true	1
-#define	false	0
+/* Defines y Macros de proposito general, deberían ir en otro archivo */
+
+#define bool	_Bool
+#define true	  1
+#define false   0
+#define OK		true
+#define ERROR	false
+#define Nop()	asm volatile("nop")
+
+#define LOW(a)		(char)(a & 0x00ff)
+#define	HIGH(a)		(char)(a >> 8)
+
+#define SetBit(Byte,Bit)	 (Byte |= (1<<Bit))
+#define	ClearBit(Byte,Bit)	 (Byte &= (~(1<<Bit)))
+#define IsBitSet(Byte,Bit)	 ( (Byte & (1<<Bit)) ? true : false )
+//#define IsBitClear(Byte,Bit) ( (Byte & (1<<Bit)) ? false : true )
+// En general no hace falta preguntar IsBitClear(), ya que se puede saber a 
+// partir de IsBitSet() = false
+
 
 #define concat(a,b)             a ## b
 #define def_port_reg(name)      concat(PORT,name)
 #define def_pin_reg(name)       concat(PIN,name)
 #define def_ddr_reg(name)       concat(DDR,name)
+
+/* ----------------------------------------------------------*/
 
 
 /* Definiciones de los pines correspondientes a los motores */
@@ -147,29 +166,27 @@
 //puerto que contiene el pin sobre el que queremos actuar, y una máscara. 
 //Y en base al resultado de esa comparación pone un cero o un uno en el pin.
 
-#define Led1On()    PORT_LED1 |= (1<<LED1_NUMBER)
-#define Led1Off()   PORT_LED1 &= ~(1<<LED1_NUMBER)
-#define Led1Init()  DDR_LED1 |= (1<<LED1_NUMBER)
+#define Led1On()    SetBit(PORT_LED1,LED1_NUMBER)
+#define Led1Off()   ClearBit(PORT_LED1,LED1_NUMBER)
+#define Led1Init()  SetBit(DDR_LED1,LED1_NUMBER)
 
-#define IsLed1On()    ( (PORT_LED1 & (1<<LED1_NUMBER)) == (1<<LED1_NUMBER) )
+#define IsLed1On()    IsBitSet(PORT_LED1,LED1_NUMBER)
 #define Led1Toggle()  {if ( IsLed1On() ) Led1Off(); else Led1On();}
 
-#define Led2On()    PORT_LED2 |= (1<<LED2_NUMBER)
-#define Led2Off()   PORT_LED2 &= ~(1<<LED2_NUMBER)
-#define Led2Init()  DDR_LED2 |= (1<<LED2_NUMBER)
+#define Led2On()    SetBit(PORT_LED2,LED2_NUMBER)
+#define Led2Off()   ClearBit(PORT_LED2,LED2_NUMBER)
+#define Led2Init()  SetBit(DDR_LED2,LED2_NUMBER)
 
-#define IsLed2On()    ( (PORT_LED2 & (1<<LED2_NUMBER)) == (1<<LED2_NUMBER) )
+#define IsLed2On()    IsBitSet(PORT_LED2,LED2_NUMBER)
 #define Led2Toggle()  {if ( IsLed2On() ) Led2Off(); else Led2On();}
 
-#define Led3On()    PORT_LED3 |= (1<<LED3_NUMBER)
-#define Led3Off()   PORT_LED3 &= ~(1<<LED3_NUMBER)
-#define Led3Init()  DDR_LED3 |= (1<<LED3_NUMBER)
+#define Led3On()    SetBit(PORT_LED3,LED3_NUMBER)
+#define Led3Off()   ClearBit(PORT_LED3,LED3_NUMBER)
+#define Led3Init()  SetBit(DDR_LED3,LED3_NUMBER)
 
-#define IsLed3On()    ( (PORT_LED3 & (1<<LED3_NUMBER)) == (1<<LED3_NUMBER) )
+#define IsLed3On()    IsBitSet(PORT_LED3,LED3_NUMBER)
 #define Led3Toggle()  {if ( IsLed3On() ) Led3Off(); else Led3On();}
 
-#define IntArranqueInit()  DDR_INT_ARRANQUE &= ~(1<<INT_ARRANQUE_NUMBER)
-#define IntArranqueOn()    PIN_INT_ARRANQUE |= (1<<INT_ARRANQUE_NUMBER)
 /* ----------------------------------------------------------------- */
 
 /* Definiciones correspondientes a los pulsadores */
@@ -182,10 +199,15 @@
 #define PIN_INT_ARRANQUE      def_pin_reg(PORT_INT_ARRANQUE_NAME)
 #define DDR_INT_ARRANQUE      def_ddr_reg(PORT_INT_ARRANQUE_NAME)
 
-
-
-
 /* Macros */
+// Se setea como entrada y se pone el pin en '1'. Esto último hace que se 
+// active el pull-up interno
+#define IntArranqueInit()  {ClearBit(DDR_INT_ARRANQUE,INT_ARRANQUE_NUMBER);SetBit(PORT_INT_ARRANQUE,INT_ARRANQUE_NUMBER);}
+
+//#define IntArranqueOn()    PIN_INT_ARRANQUE |= (1<<INT_ARRANQUE_NUMBER)
+
+#define IsIntArranqueSet()      IsBitSet(PIN_INT_ARRANQUE,INT_ARRANQUE_NUMBER)
+//#define IsIntArranqueClear()    IsBitClear(PIN_INT_ARRANQUE,INT_ARRANQUE_NUMBER)
 
 /* ----------------------------------------------------- */
 
@@ -206,6 +228,16 @@
 #define DDR_JMP2      def_ddr_reg(PORT_JMP2_NAME)
 
 /* Macros */
+
+// Se configuran los pines de los jumpers como entrada. Al setear los pines en '1'
+// y estando configurados como entradas, se activan los pull-up internos
+#define Jumper1Init()  {ClearBit(PORT_JMP1,JMP1_NUMBER);SetBit(PORT_JMP1,JMP1_NUMBER);}
+#define Jumper2Init()  {ClearBit(PORT_JMP2,JMP2_NUMBER);SetBit(PORT_JMP2,JMP2_NUMBER);}
+
+#define IsJumper1Set()     IsBitSet(PIN_JMP1,JMP1_NUMBER)
+//#define IsJumper1Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
+#define IsJumper2Set()     IsBitSet(PIN_JMP1,JMP1_NUMBER)
+//#define IsJumper2Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
 
 /* ----------------------------------------------------- */
 
