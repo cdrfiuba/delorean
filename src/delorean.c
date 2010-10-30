@@ -16,10 +16,10 @@ int main (void) {
 	
 	arrancar = 1;
 
-	while(1){
-		//TestLeds();
+	while(1)
+	{
+		// Si saltó INT0
 		if (flagInt0 == 1) decidirArranque();
-		//if (IsIntArranqueSet()) Led3On(); else Led3Off();
 	}
 
 }
@@ -44,12 +44,14 @@ void set_interrupts(void){
 
 void decidirArranque()
 {
-	// Esperar mientras el pin permanezca
+	// Esperar mientras el pin permanezca bajo.
 	while (IsIntArranqueSet() == 0) Led2On();//TestLeds();
+	
 	Led1Off(); Led2Off(); Led3Off();
 	
 	if (arrancar == 1)
 	{
+		// Juego de luces y arrancar!!!
 		Led3On();
 		_delay_ms(100);
 		Led3Off();
@@ -60,16 +62,17 @@ void decidirArranque()
 		_delay_ms(100);
 		Led1Off();
 
+		// Cambiar el estado para que la próxima vez que presionemos el botón se apague.
 		arrancar = 0;
 	}
 	else
 	{
-		Led1Off();
+		// Apagar y cambiar estado para que la próxima vez que presionemos el botón se encienda.
 		arrancar = 1;
 	}
 	
-	flagInt0 = 0;
-	GICR |= (1<<INT0); /* Encendemos INT0. */
+	flagInt0 = 0;  // Apagar el flag de interrupción
+	GICR |= (1<<INT0);  // Encendemos INT0.
 }
 		
 /**
@@ -77,9 +80,10 @@ void decidirArranque()
 **/
 ISR(INT0_vect)
 {
-	GICR &= ~(1<<INT0); /* Apagamos INT0. */	
+	// Apagamos INT0 para que no salte mientras mantenemos apretado.
+	GICR &= ~(1<<INT0);
 	
-	flagInt0 = 1;
+	flagInt0 = 1;  // Anunciar que la interrupción ocurrió.
 	
 	// Delay para debounce
 	_delay_ms(50);
