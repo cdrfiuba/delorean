@@ -1,8 +1,12 @@
 #include "delorean.h"
+#include "motores.h"
 
 /* Definicion de prototipos */
 void startup(void);
 void set_interrupts(void);
+void configurarTimer1(void);
+void decidirArranque(void);
+
 
 /* ------------------------ */
 
@@ -34,6 +38,9 @@ void startup(void) {
 	Led2Init();
 	Led3Init();
 	set_interrupts();
+
+	configurarMotores();
+	configurarTimer1();
 }
 
 void set_interrupts(void){
@@ -42,7 +49,28 @@ void set_interrupts(void){
 	sei();
 }
 
-void decidirArranque()
+
+void configurarTimer1(void){
+	// Configuracion del timer 1 para el PWM
+	
+	// Estamos seteando COM1A = 11 , COM1B = 11 y WGM = 8 (para usar un TOP fijo)
+	TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0);
+ 	// y el "prescaler" en 1 (CS12 = 0 , CS11 =0 , CS10 = 1)
+	TCCR1B = (1<<WGM13) | (0<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10); 
+
+	ICR1 = MOTORES_MAX_VEL;  // Esto define al TOP
+
+	// PWM A   MOTOR DERECHO
+	OCR1A = MOTORES_MAX_VEL; //50% cycle
+
+	// PWM B   MOTOR IZQUIERDO
+	OCR1B = MOTORES_MAX_VEL; //50% cycle
+
+	//Habilitamos la interrupcion del Timer1 del overflow
+	TIMSK = (1<<TOIE1);
+}
+
+void decidirArranque(void)
 {
 	// Esperar mientras el pin permanezca bajo.
 	while (IsIntArranqueSet() == 0) Led2On();//TestLeds();

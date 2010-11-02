@@ -2,83 +2,64 @@
 #define _BOARD_
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
-/* Defines y Macros de proposito general, deberían ir en otro archivo */
-
-#define bool	_Bool
-#define true	  1
-#define false   0
-#define OK		true
-#define ERROR	false
-#define Nop()	asm volatile("nop")
-
-#define LOW(a)		(char)(a & 0x00ff)
-#define	HIGH(a)		(char)(a >> 8)
-
-#define SetBit(Byte,Bit)	 (Byte |= (1<<Bit))
-#define	ClearBit(Byte,Bit)	 (Byte &= (~(1<<Bit)))
-#define IsBitSet(Byte,Bit)	 ( (Byte & (1<<Bit)) ? true : false )
-//#define IsBitClear(Byte,Bit) ( (Byte & (1<<Bit)) ? false : true )
-// En general no hace falta preguntar IsBitClear(), ya que se puede saber a 
-// partir de IsBitSet() = false
-
-
-#define concat(a,b)             a ## b
-#define def_port_reg(name)      concat(PORT,name)
-#define def_pin_reg(name)       concat(PIN,name)
-#define def_ddr_reg(name)       concat(DDR,name)
-
-/* ----------------------------------------------------------*/
-
+#include "definiciones.h"
 
 /* Definiciones de los pines correspondientes a los motores */
 
-/*MLWPM = Motor Left PWM (Enable) */
-#define PORT_MRPWM_NAME  B
-#define MRPWM_NUMBER     1
-/*MRPWM = Motor Right Enable (Enable)*/
-#define PORT_MLPWM_NAME  B
-#define MLPWM_NUMBER     2
+/*MD_PWM = Motor Derecho Enable (Enable)*/
+#define PORT_MD_PWM_NAME  B
+#define MD_PWM_NUMBER     1
+/*MI_WPM = Motor Izquierdo PWM (Enable) */
+#define PORT_MI_PWM_NAME  B
+#define MI_PWM_NUMBER     2
 
-#define PORT_MRPWM     def_port_reg(PORT_MRPWM_NAME)
-#define PIN_MRPWM      def_pin_reg(PORT_MRPWM_NAME)
-#define DDR_MRPWM      def_ddr_reg(PORT_MRPWM_NAME)
+#define PORT_MD_PWM     def_port_reg(PORT_MD_PWM_NAME)
+#define PIN_MD_PWM      def_pin_reg(PORT_MD_PWM_NAME)
+#define DDR_MD_PWM      def_ddr_reg(PORT_MD_PWM_NAME)
 
-#define PORT_MLPWM     def_port_reg(PORT_MLPWM_NAME)
-#define PIN_MLPWM      def_pin_reg(PORT_MLPWM_NAME)
-#define DDR_MLPWM      def_ddr_reg(PORT_MLPWM_NAME)
+#define PORT_MI_PWM     def_port_reg(PORT_MI_PWM_NAME)
+#define PIN_MI_PWM      def_pin_reg(PORT_MI_PWM_NAME)
+#define DDR_MI_PWM      def_ddr_reg(PORT_MI_PWM_NAME)
 
 
-/*MLIN1 = Motor Left IN1*/
-#define PORT_MLIN1_NAME  D
-#define MLIN1_NUMBER     0
+/*MI_IN1 = Motor Left IN1*/
+#define PORT_MI_IN1_NAME  D
+#define MI_IN1_NUMBER     0
+/*MI_IN2 = Motor Left IN2*/
+#define PORT_MI_IN2_NAME	 D
+#define MI_IN2_NUMBER		 1
 
-/*MLIN2 = Motor Left IN2*/
-#define PORT_MLIN2_NAME	 D
-#define MLIN2_NUMBER		 1
+/*MD_IN1 = Motor Right IN1*/
+#define PORT_MD_IN1_NAME  D
+#define MD_IN1_NUMBER     3
+/*MD_IN2 = Motor Right IN2*/
+#define PORT_MD_IN2_NAME  D
+#define MD_IN2_NUMBER     4
 
-/*MRIN1 = Motor Right IN1*/
-#define PORT_MRIN1_NAME  D
-#define MRIN1_NUMBER     3
-/*MRIN2 = Motor Right IN2*/
-#define PORT_MRIN2_NAME  D
-#define MRIN2_NUMBER     4
+#define PORT_MD_IN1     def_port_reg(PORT_MD_IN1_NAME)
+#define PIN_MD_IN1      def_pin_reg(PORT_MD_IN1_NAME)
+#define DDR_MD_IN1      def_ddr_reg(PORT_MD_IN1_NAME)
 
-#define PORT_MRIN1     def_port_reg(PORT_MRIN1_NAME)
-#define PIN_MRIN1      def_pin_reg(PORT_MRIN1_NAME)
-#define DDR_MRIN1      def_ddr_reg(PORT_MRIN1_NAME)
+#define PORT_MD_IN2     def_port_reg(PORT_MD_IN2_NAME)
+#define PIN_MD_IN2      def_pin_reg(PORT_MD_IN2_NAME)
+#define DDR_MD_IN2      def_ddr_reg(PORT_MD_IN2_NAME)
 
-#define PORT_MRIN2     def_port_reg(PORT_MRIN2_NAME)
-#define PIN_MRIN2      def_pin_reg(PORT_MRIN2_NAME)
-#define DDR_MRIN2      def_ddr_reg(PORT_MRIN2_NAME)
+#define PORT_MI_IN1     def_port_reg(PORT_MI_IN1_NAME)
+#define PIN_MI_IN1      def_pin_reg(PORT_MI_IN1_NAME)
+#define DDR_MI_IN1      def_ddr_reg(PORT_MI_IN1_NAME)
 
-#define PORT_MLIN1     def_port_reg(PORT_MLIN1_NAME)
-#define PIN_MLIN1      def_pin_reg(PORT_MLIN1_NAME)
-#define DDR_MLIN1      def_ddr_reg(PORT_MLIN1_NAME)
+#define PORT_MI_IN2     def_port_reg(PORT_MI_IN2_NAME)
+#define PIN_MI_IN2      def_pin_reg(PORT_MI_IN2_NAME)
+#define DDR_MI_IN2      def_ddr_reg(PORT_MI_IN2_NAME)
 
-#define PORT_MLIN2     def_port_reg(PORT_MLIN2_NAME)
-#define PIN_MLIN2      def_pin_reg(PORT_MLIN2_NAME)
-#define DDR_MLIN2      def_ddr_reg(PORT_MLIN2_NAME)
+
+
+#define MAX_MOTOR_F	0x00FF  //revisar si estan bien los valores
+#define	MAX_MOTOR_B	0x0000  //revisar si estan bien los valores
+
+
+#define STOP_MOTOR 0x80  
+
 
 /* Macros */
 
@@ -168,25 +149,28 @@
 
 #define Led1On()    SetBit(PORT_LED1,LED1_NUMBER)
 #define Led1Off()   ClearBit(PORT_LED1,LED1_NUMBER)
-#define Led1Init()  SetBit(DDR_LED1,LED1_NUMBER)
 
 #define IsLed1On()    IsBitSet(PORT_LED1,LED1_NUMBER)
 #define Led1Toggle()  {if ( IsLed1On() ) Led1Off(); else Led1On();}
 
 #define Led2On()    SetBit(PORT_LED2,LED2_NUMBER)
 #define Led2Off()   ClearBit(PORT_LED2,LED2_NUMBER)
-#define Led2Init()  SetBit(DDR_LED2,LED2_NUMBER)
 
 #define IsLed2On()    IsBitSet(PORT_LED2,LED2_NUMBER)
 #define Led2Toggle()  {if ( IsLed2On() ) Led2Off(); else Led2On();}
 
 #define Led3On()    SetBit(PORT_LED3,LED3_NUMBER)
 #define Led3Off()   ClearBit(PORT_LED3,LED3_NUMBER)
-#define Led3Init()  SetBit(DDR_LED3,LED3_NUMBER)
 
 #define IsLed3On()    IsBitSet(PORT_LED3,LED3_NUMBER)
 #define Led3Toggle()  {if ( IsLed3On() ) Led3Off(); else Led3On();}
 
+
+#define Led1Init()  SetBit(DDR_LED1,LED1_NUMBER)
+#define Led2Init()  SetBit(DDR_LED2,LED2_NUMBER)
+#define Led3Init()  SetBit(DDR_LED3,LED3_NUMBER)
+
+//#define LedInit(MAC_NUM) SetBit(DDR_LED##MAC_NUM,LED##MAC_NUM_NUMBER)
 /* ----------------------------------------------------------------- */
 
 /* Definiciones correspondientes a los pulsadores */

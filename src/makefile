@@ -1,11 +1,7 @@
 all: delorean.hex
 
-delorean.hex: delorean.c 
-	avr-gcc -O -mmcu=atmega8 -Wall -o delorean.bin -I/usr/avr/include/ delorean.c
-	avr-objcopy -j .text -O ihex  delorean.bin delorean.hex
-
-boxes: delorean.c boxes.c
-	avr-gcc -O -mmcu=atmega8 -Wall -o delorean.bin -I/usr/avr/include/ delorean.c boxes.c
+delorean.hex: delorean.c motores.c boxes.c
+	avr-gcc -O -mmcu=atmega8 -Wall -o delorean.bin -I/usr/avr/include/ delorean.c motores.c boxes.c
 	avr-objcopy -j .text -O ihex  delorean.bin delorean.hex
 
 program: delorean.hex
@@ -22,4 +18,4 @@ clean:
 	rm  *.bin
 
 editgvim:
-	gvim -p delorean.h delorean.c board.h boxes.h boxes.c makefile
+	gvim -p delorean.h delorean.c motores.h motores.c board.h definiciones.h boxes.h boxes.c makefile
