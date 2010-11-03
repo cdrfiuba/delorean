@@ -113,6 +113,24 @@
 
 /* Macros */
 
+/* 
+//Prende los conversores
+SetBit(ADCSRA,ADEN);
+
+// define que los 10 bits de la conversion se alinean a la izquierda
+// esto hace que ADCH tenga los 8 bits mas significativos y 
+// ADCL tengo los 2 menos significativos en sus bits 7 y 6.
+// Si no se setea ADLAR, ADCH tiene los 2 bits mas significativos de la
+// conversion y ADCL los 8 menos significativos. (pagina 197)
+SetBit(ADMUX,ADLAR);
+
+
+
+
+*/
+
+
+
 /* ---------------------------------------------- */
 
 /* Definiciones correspondientes a los pines de los LEDs */

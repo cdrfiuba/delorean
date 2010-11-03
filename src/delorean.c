@@ -19,7 +19,8 @@ int main (void) {
 	startup();
 	
 	arrancar = 1;
-
+	motorDerechoAvanzar();
+	motorIzquierdoAvanzar();
 	while(1)
 	{
 		// Si saltó INT0
@@ -41,12 +42,13 @@ void startup(void) {
 
 	configurarMotores();
 	configurarTimer1();
+	sei();
 }
 
 void set_interrupts(void){
 	GICR |= (1<<INT0); /* Esto habilita la interrupción INT0. */	
 	MCUCR |= ((0<<ISC00) | (0<<ISC01)); /* Esto configura INT0 por nivel bajo. */
-	sei();
+	//sei();
 }
 
 
@@ -58,7 +60,7 @@ void configurarTimer1(void){
  	// y el "prescaler" en 1 (CS12 = 0 , CS11 =0 , CS10 = 1)
 	TCCR1B = (1<<WGM13) | (0<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10); 
 
-	ICR1 = MOTORES_MAX_VEL;  // Esto define al TOP
+	ICR1 = MOTORES_TOP_CUENTA;  // Esto define al TOP
 
 	// PWM A   MOTOR DERECHO
 	OCR1A = MOTORES_MAX_VEL; //50% cycle
@@ -116,3 +118,14 @@ ISR(INT0_vect)
 	// Delay para debounce
 	_delay_ms(50);
 }
+
+ISR(TIMER1_OVF_vect)
+{
+	//PWM A RUEDA DERECHA
+	OCR1A = MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
+
+	//PWM A RUEDA IZQUIERDA
+	OCR1B = MOTORES_MAX_VEL; //
+	return;
+}
+
