@@ -1,21 +1,49 @@
-all: delorean.hex
+#TARGET es el nombre del proyecto
+TARGET = delorean
 
-delorean.hex: delorean.c motores.c boxes.c
-	avr-gcc -O -mmcu=atmega8 -Wall -o delorean.bin -I/usr/avr/include/ delorean.c motores.c boxes.c
-	avr-objcopy -j .text -O ihex  delorean.bin delorean.hex
+#MMCU es el microcontralador para el target para el avr-gcc
+MMCU = atmega8
 
-program: delorean.hex
-	avrdude -c usbtiny -p m8 -U flash:w:delorean.hex:i
+# TARGET_P es el microcontrolador para el target del programador
+# Para el Atemga8: m8
+TARGET_P = m8
+
+# HFUSE 
+# Para el Atmega8 0xD9 es el default
+HFUSE = 0xD9
+
+# LFUSE
+# Para el Atemega8:
+# 0xE1 es el default, con oscilador interno de 1Mhz
+# 0xE4 es el default + oscilador interno de 8Mhz
+LFUSE = 0xE4
+
+#SRC contiene el nombre de todos los .c existentes en el directorio actual
+SRC = $(shell find . -name '*.[c]')
+
+#INC contiene el nombre de todos los .h existentes en el directorio actual
+INC = $(shell find . -name '*.[h]')
+
+all: hex
+
+hex: $(SRC) $(INC)
+	avr-gcc -O -mmcu=$(MMCU) -Wall -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
+	avr-objcopy -j .text -O ihex  $(TARGET).bin $(TARGET).hex
+	avr-size $(TARGET).bin
+
+program: hex
+	avrdude -c usbtiny -p $(TARGET_P) -U flash:w:$(TARGET).hex:i
+
+asm: $(SRC) $(INC)
+	avr-gcc -mmcu=$(MMCU) -O$(CFLAGS) -S -o $(TARGET).s $<
 
 fuses:
-	# 0xD9 es el default
-	avrdude -c usbtiny -p m8 -U hfuse:w:0xD9:m
-	# 0xE1 es el default, con oscilador interno de 1Mhz
-	# 0xE4 es el default + oscilador interno de 8Mhz
-	avrdude -c usbtiny -p m8 -U lfuse:w:0xE4:m
+	avrdude -c usbtiny -p $(TARGET_P) -U hfuse:w:$(HFUSE):m
+	avrdude -c usbtiny -p $(TARGET_P) -U lfuse:w:$(LFUSE):m
 
 clean:
-	rm  *.bin
+	rm -rf $(TARGET).hex $(TARGET).bin $(TARGET).s
 
 editgvim:
-	gvim -p delorean.h delorean.c motores.h motores.c board.h definiciones.h boxes.h boxes.c makefile
+	gvim -p $(SRC) $(INC) makefile
+

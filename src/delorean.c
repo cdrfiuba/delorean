@@ -1,5 +1,4 @@
 #include "delorean.h"
-#include "motores.h"
 
 /* Definicion de prototipos */
 void startup(void);
@@ -12,6 +11,8 @@ void decidirArranque(void);
 
 volatile uint8_t arrancar = 0;
 volatile uint8_t flagInt0 = 0;
+
+
 
 
 int main (void) {
@@ -71,6 +72,7 @@ void configurarTimer1(void){
 	//Habilitamos la interrupcion del Timer1 del overflow
 	TIMSK = (1<<TOIE1);
 }
+
 
 void decidirArranque(void)
 {

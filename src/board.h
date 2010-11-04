@@ -113,23 +113,44 @@
 
 /* Macros */
 
-/* 
-//Prende los conversores
-SetBit(ADCSRA,ADEN);
+/*Configuracion ADC*/
 
-// define que los 10 bits de la conversion se alinean a la izquierda
-// esto hace que ADCH tenga los 8 bits mas significativos y 
-// ADCL tengo los 2 menos significativos en sus bits 7 y 6.
-// Si no se setea ADLAR, ADCH tiene los 2 bits mas significativos de la
-// conversion y ADCL los 8 menos significativos. (pagina 197)
-SetBit(ADMUX,ADLAR);
+// Para elegir la referencia se usan los bits REFS1 y REFS0. Pero como 
+// por default vienen en cero y ese es el modo AREF (que vamos a usar),
+// no hacemos nada con ellos.
+
+// Prende los conversores seteando bit en el ADCSRA
+#define EncenderADC() SetBit(ADCSRA,ADEN)
+
+// Clearemos el bit ADPS para NO tener el prescaler del clock activo (pag 198)
+#define PrescalerInit() ClearBit(ADCSRA,ADPS)
+
+// Formato alineacion:Alineamos a la izquierda los 10 bits de la conversion,
+// y nos quedamos solo con los 8bits del byte alto [ADCH] (pagina 197)
+#define AlineacionInit() SetBit(ADMUX,ADLAR)
+
+// Modo de funcionamiento (pag 198)
+
+// Modo Single Conversion: Para empezar la conversion se debe poner en alto 
+// el bit ADSC (ADC Start Convertion) en el Reg: ADCSRA
+// Modo Free Runing: En este modo el ADC toma datos todo el tiempo, 
+// se debe setear el bit ADFR en el Reg: ADCSRA
+// Cuando una conversion termina, se escribe en el ADC Register, y se pone 
+// en alto el bit ADIF. Si se trabaja en Single Conversion, el bit ADSC se
+// clerea automaticamente.
 
 
 
+// La siguiente funcion setea los 4 bits menos significativos del registro
+// ADMUX. Con esos bits se selecciona el canal de muestreo (NUM va de 0 a 7).
+// ATENCION! Utilizar estafuncion con NUM > 7 puede ocasionar 
+// malfuncionamiento de los AD
+// ANALIZAR LA DIFERENCIA ENTRE MACRO y static inline function
 
-*/
-
-
+#define ADSeleccionarCanal2(NUM) 			(ADMUX = (ADMUX & 0xF0) | NUME)
+static inline void ADSeleccionarCanal(NUM) {
+	ADMUX = (ADMUX & 0xF0) | NUM;
+}
 
 /* ---------------------------------------------- */
 
