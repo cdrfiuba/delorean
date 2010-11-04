@@ -6,6 +6,8 @@ void set_interrupts(void);
 void configurarTimer1(void);
 void decidirArranque(void);
 
+volatile uint16_t velocidadMD;
+volatile uint16_t velocidadMI;
 
 /* ------------------------ */
 
@@ -22,6 +24,10 @@ int main (void) {
 	arrancar = 1;
 	motorDerechoAvanzar();
 	motorIzquierdoAvanzar();
+	
+	velocidadMD = 380;
+	velocidadMI = velocidadMD+15;
+	
 	while(1)
 	{
 		// Si saltó INT0
@@ -52,12 +58,11 @@ void set_interrupts(void){
 	//sei();
 }
 
-
 void configurarTimer1(void){
 	// Configuracion del timer 1 para el PWM
 	
 	// Estamos seteando COM1A = 11 , COM1B = 11 y WGM = 8 (para usar un TOP fijo)
-	TCCR1A = (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0);
+	TCCR1A = (1<<COM1A1) | (0<<COM1A0) | (1<<COM1B1) | (0<<COM1B0);
  	// y el "prescaler" en 1 (CS12 = 0 , CS11 =0 , CS10 = 1)
 	TCCR1B = (1<<WGM13) | (0<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10); 
 
@@ -80,6 +85,8 @@ void decidirArranque(void)
 	while (IsIntArranqueSet() == 0) Led2On();//TestLeds();
 	
 	Led1Off(); Led2Off(); Led3Off();
+	
+	velocidadMD+=5;
 	
 	if (arrancar == 1)
 	{
@@ -106,7 +113,8 @@ void decidirArranque(void)
 	flagInt0 = 0;  // Apagar el flag de interrupción
 	GICR |= (1<<INT0);  // Encendemos INT0.
 }
-		
+
+	
 /**
 	Interrupción del botón de arranque.
 **/
@@ -123,11 +131,11 @@ ISR(INT0_vect)
 
 ISR(TIMER1_OVF_vect)
 {
-	//PWM A RUEDA DERECHA
-	OCR1A = MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
-
 	//PWM A RUEDA IZQUIERDA
-	OCR1B = MOTORES_MAX_VEL; //
+	OCR1A = velocidadMI;//MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
+
+	//PWM A RUEDA DERECHA
+	OCR1B = velocidadMD;  //MOTORES_MAX_VEL; //
 	return;
 }
 

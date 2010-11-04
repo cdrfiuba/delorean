@@ -1,8 +1,8 @@
 #include "board.h"
 #include "definiciones.h"
 
-#define MOTORES_MAX_VEL	0x02F0F
-#define MOTORES_TOP_CUENTA 0X02FF
+#define MOTORES_MAX_VEL	400
+#define MOTORES_TOP_CUENTA 800
 
 
 void configurarMotores(void);
