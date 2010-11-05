@@ -110,6 +110,10 @@ void configurarADCs(void){
 	
 	//Habilitamos la interrupcion de finalizacion de conversion AD
 	SetBit(ADCSRA, ADIE);
+
+	// Inicia la primera conversion
+	ADSeleccionarCanalB(0);
+	IniciarConversion();
 }
 
 ISR(ADC_vect){
@@ -142,4 +146,6 @@ ISR(ADC_vect){
 			ADSeleccionarCanalB(0);
 			break;
 	}
+	// Volvemos a iniciar la conversion
+	IniciarConversion();
 }
