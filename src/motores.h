@@ -1,3 +1,6 @@
+#ifndef _MOTORES_
+#define _MOTORES_
+
 #include "board.h"
 #include "definiciones.h"
 
@@ -12,3 +15,6 @@ void motorDerechoRetroceder(void);
 void motorIzquierdoDetener(void);
 void motorIzquierdoAvanzar(void);
 void motorIzquierdoRetroceder(void);
+
+
+#endif
