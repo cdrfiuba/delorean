@@ -54,11 +54,11 @@
 
 
 
-#define MAX_MOTOR_F	0x00FF  //revisar si estan bien los valores
-#define	MAX_MOTOR_B	0x0000  //revisar si estan bien los valores
+//#define MAX_MOTOR_F	0x00FF  //revisar si estan bien los valores
+//#define	MAX_MOTOR_B	0x0000  //revisar si estan bien los valores
 
 
-#define STOP_MOTOR 0x80  
+//#define STOP_MOTOR 0x80  
 
 
 /* Macros */
@@ -120,14 +120,15 @@
 // no hacemos nada con ellos.
 
 // Prende los conversores seteando bit en el ADCSRA
-#define EncenderADC() SetBit(ADCSRA,ADEN)
+#define EncenderADC() SetBit(ADCSRA, ADEN)
 
 // Clearemos el bit ADPS para NO tener el prescaler del clock activo (pag 198)
-#define PrescalerInit() ClearBit(ADCSRA,ADPS)
+#define ADCPrescalerSelec(PN) (ADCSRA = (ADCSRA & 0xF8) | PN)
+
 
 // Formato alineacion:Alineamos a la izquierda los 10 bits de la conversion,
 // y nos quedamos solo con los 8bits del byte alto [ADCH] (pagina 197)
-#define AlineacionInit() SetBit(ADMUX,ADLAR)
+#define AlineacionInit(CHAR) {if (CHAR=='I') SetBit(ADMUX, ADLAR);else ClearBit(ADMUX, ADLAR);}
 
 // Modo de funcionamiento (pag 198)
 
@@ -139,7 +140,7 @@
 // en alto el bit ADIF. Si se trabaja en Single Conversion, el bit ADSC se
 // clerea automaticamente.
 
-
+#define IniciarConversion()      SetBit(ADCSRA, ADSC)
 
 // La siguiente funcion setea los 4 bits menos significativos del registro
 // ADMUX. Con esos bits se selecciona el canal de muestreo (NUM va de 0 a 7).
@@ -147,11 +148,15 @@
 // malfuncionamiento de los AD
 // ANALIZAR LA DIFERENCIA ENTRE MACRO y static inline function
 
-#define ADSeleccionarCanal2(NUM) 			(ADMUX = (ADMUX & 0xF0) | NUME)
+#define ADSeleccionarCanalB(CN) 			(ADMUX = (ADMUX & 0xF0) | CN)
 static inline void ADSeleccionarCanal(NUM) {
 	ADMUX = (ADMUX & 0xF0) | NUM;
 }
 
+#define ADDeterminarCanalB()	(ADMUX & 0x07)
+static inline char ADDeterminaCanal() {
+				return (ADMUX & 0x07);
+}
 /* ---------------------------------------------- */
 
 /* Definiciones correspondientes a los pines de los LEDs */
@@ -186,28 +191,28 @@ static inline void ADSeleccionarCanal(NUM) {
 //puerto que contiene el pin sobre el que queremos actuar, y una máscara. 
 //Y en base al resultado de esa comparación pone un cero o un uno en el pin.
 
-#define Led1On()    SetBit(PORT_LED1,LED1_NUMBER)
-#define Led1Off()   ClearBit(PORT_LED1,LED1_NUMBER)
+#define Led1On()    SetBit(PORT_LED1, LED1_NUMBER)
+#define Led1Off()   ClearBit(PORT_LED1, LED1_NUMBER)
 
-#define IsLed1On()    IsBitSet(PORT_LED1,LED1_NUMBER)
+#define IsLed1On()    IsBitSet(PORT_LED1, LED1_NUMBER)
 #define Led1Toggle()  {if ( IsLed1On() ) Led1Off(); else Led1On();}
 
-#define Led2On()    SetBit(PORT_LED2,LED2_NUMBER)
-#define Led2Off()   ClearBit(PORT_LED2,LED2_NUMBER)
+#define Led2On()    SetBit(PORT_LED2, LED2_NUMBER)
+#define Led2Off()   ClearBit(PORT_LED2, LED2_NUMBER)
 
-#define IsLed2On()    IsBitSet(PORT_LED2,LED2_NUMBER)
+#define IsLed2On()    IsBitSet(PORT_LED2, LED2_NUMBER)
 #define Led2Toggle()  {if ( IsLed2On() ) Led2Off(); else Led2On();}
 
-#define Led3On()    SetBit(PORT_LED3,LED3_NUMBER)
-#define Led3Off()   ClearBit(PORT_LED3,LED3_NUMBER)
+#define Led3On()    SetBit(PORT_LED3, LED3_NUMBER)
+#define Led3Off()   ClearBit(PORT_LED3, LED3_NUMBER)
 
-#define IsLed3On()    IsBitSet(PORT_LED3,LED3_NUMBER)
+#define IsLed3On()    IsBitSet(PORT_LED3, LED3_NUMBER)
 #define Led3Toggle()  {if ( IsLed3On() ) Led3Off(); else Led3On();}
 
 
-#define Led1Init()  SetBit(DDR_LED1,LED1_NUMBER)
-#define Led2Init()  SetBit(DDR_LED2,LED2_NUMBER)
-#define Led3Init()  SetBit(DDR_LED3,LED3_NUMBER)
+#define Led1Init()  SetBit(DDR_LED1, LED1_NUMBER)
+#define Led2Init()  SetBit(DDR_LED2, LED2_NUMBER)
+#define Led3Init()  SetBit(DDR_LED3, LED3_NUMBER)
 
 //#define LedInit(MAC_NUM) SetBit(DDR_LED##MAC_NUM,LED##MAC_NUM_NUMBER)
 /* ----------------------------------------------------------------- */
@@ -225,11 +230,11 @@ static inline void ADSeleccionarCanal(NUM) {
 /* Macros */
 // Se setea como entrada y se pone el pin en '1'. Esto último hace que se 
 // active el pull-up interno
-#define IntArranqueInit()  {ClearBit(DDR_INT_ARRANQUE,INT_ARRANQUE_NUMBER);SetBit(PORT_INT_ARRANQUE,INT_ARRANQUE_NUMBER);}
+#define IntArranqueInit()  {ClearBit(DDR_INT_ARRANQUE, INT_ARRANQUE_NUMBER); SetBit(PORT_INT_ARRANQUE, INT_ARRANQUE_NUMBER);}
 
 //#define IntArranqueOn()    PIN_INT_ARRANQUE |= (1<<INT_ARRANQUE_NUMBER)
 
-#define IsIntArranqueSet()      IsBitSet(PIN_INT_ARRANQUE,INT_ARRANQUE_NUMBER)
+#define IsIntArranqueSet()      IsBitSet(PIN_INT_ARRANQUE, INT_ARRANQUE_NUMBER)
 //#define IsIntArranqueClear()    IsBitClear(PIN_INT_ARRANQUE,INT_ARRANQUE_NUMBER)
 
 /* ----------------------------------------------------- */
@@ -254,12 +259,12 @@ static inline void ADSeleccionarCanal(NUM) {
 
 // Se configuran los pines de los jumpers como entrada. Al setear los pines en '1'
 // y estando configurados como entradas, se activan los pull-up internos
-#define Jumper1Init()  {ClearBit(PORT_JMP1,JMP1_NUMBER);SetBit(PORT_JMP1,JMP1_NUMBER);}
-#define Jumper2Init()  {ClearBit(PORT_JMP2,JMP2_NUMBER);SetBit(PORT_JMP2,JMP2_NUMBER);}
+#define Jumper1Init()  {ClearBit(PORT_JMP1, JMP1_NUMBER); SetBit(PORT_JMP1, JMP1_NUMBER);}
+#define Jumper2Init()  {ClearBit(PORT_JMP2, JMP2_NUMBER); SetBit(PORT_JMP2, JMP2_NUMBER);}
 
-#define IsJumper1Set()     IsBitSet(PIN_JMP1,JMP1_NUMBER)
+#define IsJumper1Set()     IsBitSet(PIN_JMP1, JMP1_NUMBER)
 //#define IsJumper1Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
-#define IsJumper2Set()     IsBitSet(PIN_JMP1,JMP1_NUMBER)
+#define IsJumper2Set()     IsBitSet(PIN_JMP1, JMP1_NUMBER)
 //#define IsJumper2Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
 
 /* ----------------------------------------------------- */
