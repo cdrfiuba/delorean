@@ -7,7 +7,9 @@
 
 #include "delorean.h"
 #include "board.h"
+#include "motores.h"
 
 void TestLeds (void);
+void configurarADCs(void);
 
 #endif

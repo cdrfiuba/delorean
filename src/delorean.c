@@ -8,7 +8,6 @@ void decidirArranque(void);
 
 volatile uint16_t velocidadMD;
 volatile uint16_t velocidadMI;
-
 /* ------------------------ */
 
 volatile uint8_t arrancar = 0;
@@ -49,14 +48,18 @@ void startup(void) {
 
 	configurarMotores();
 	configurarTimer1();
+	configurarADCs();
 	sei();
 }
+
+
 
 void set_interrupts(void){
 	GICR |= (1<<INT0); /* Esto habilita la interrupción INT0. */	
 	MCUCR |= ((0<<ISC00) | (0<<ISC01)); /* Esto configura INT0 por nivel bajo. */
 	//sei();
 }
+
 
 void configurarTimer1(void){
 	// Configuracion del timer 1 para el PWM
@@ -113,8 +116,7 @@ void decidirArranque(void)
 	flagInt0 = 0;  // Apagar el flag de interrupción
 	GICR |= (1<<INT0);  // Encendemos INT0.
 }
-
-	
+		
 /**
 	Interrupción del botón de arranque.
 **/
