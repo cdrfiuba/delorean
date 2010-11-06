@@ -163,7 +163,7 @@
 // ANALIZAR LA DIFERENCIA ENTRE MACRO y static inline function
 
 #define ADSeleccionarCanalB(CN) 			(ADMUX = (ADMUX & 0xF0) | CN)
-static inline void ADSeleccionarCanal(NUM) {
+static inline void ADSeleccionarCanal(char NUM) {
 	ADMUX = (ADMUX & 0xF0) | NUM;
 }
 
