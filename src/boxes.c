@@ -17,11 +17,6 @@ void TestLeds(void){
 	}
 }
 
-//si se usan 2 sensores, utilizar solo Izquierda y derecha
-char estado = 0;
-char analogSensorI = 0;
-char analogSensorC = 0;
-char analogSensorD = 0;
 
 //ISR(INT0_vect)
 void interupINT0(void) {
@@ -42,8 +37,8 @@ void interupINT0(void) {
 		// se podria reemplazar la variable por poner apagar todo, poner 
 		// el micro a dormir esperando solo esta interrupcion y luego
 		// despertalo. Aca se lo despertaria
-		if (estado==0) estado = 1;
-		else estado = 0;
+		//if (estado==0) estado = 1;
+		//else estado = 0;
 	}
 	else {
 		// significa que fue un flanco ascendente producto del ruido de haber 
@@ -74,7 +69,7 @@ int main2 (void) {
 
 	//configuracion
 	while(1){
-		// si eliminamos la variable 'arrancar' no hace falta este condicional
+/*		// si eliminamos la variable 'arrancar' no hace falta este condicional
 		switch (estado){
 			case 0:
 				//motor detenido
@@ -92,60 +87,7 @@ int main2 (void) {
 			default:
 				break;
 		}
-	}
+	*/}
 }
 
 
-void configurarADCs(void){
-	EncenderADC();
-	// Seleccionamos la mayor velocidad de conversion, o sea prescaler 0
-	ADCPrescalerSelec(0);
-	
-	// Alineacion a la izquierda
-	AlineacionInit('I');
-
-	//lo utilizamos en el modo single conversion
-	//no seteamos free run
-	//
-	
-	//Habilitamos la interrupcion de finalizacion de conversion AD
-	SetBit(ADCSRA, ADIE);
-
-	// Inicia la primera conversion
-	ADSeleccionarCanalB(0);
-	IniciarConversion();
-}
-
-ISR(ADC_vect){
-	// ver canal en que se termino la conversion
-	char temp = ADDeterminarCanalB();
-	// guardar en variable correspondiente
-	switch (temp){
-		case 0:
-			// AD0 es el sensor derecho
-			analogSensorD = ADCH;
-			// seleccionar siguiente canal
-			ADSeleccionarCanalB(1);
-			break;
-		case 1:
-			// AD1 es el sensor cental
-			analogSensorC = ADCH;
-			// seleccionar siguiente canal
-			ADSeleccionarCanalB(2);
-			break;
-		case 2:
-			// AD2 es el sensor izquierdo
-			analogSensorI = ADCH;
-			// seleccionar siguiente canal
-			ADSeleccionarCanalB(0);
-			break;
-		default:
-			// no esperado, se descarta el valor de conversion y se
-			// vuelve a arrancar con el sensor derecho
-			temp = ADCH;
-			ADSeleccionarCanalB(0);
-			break;
-	}
-	// Volvemos a iniciar la conversion
-	IniciarConversion();
-}

@@ -67,27 +67,27 @@
 
 /* Definiciones de los pines correspondientes a los sensores */
 
-/*S1EM = Sensor 1 Emisor*/
-#define PORT_S1EM_NAME C
-#define S1EM_NUMBER    3
-/*S2EM = Sensor 2 Emisor*/
-#define PORT_S2EM_NAME C
-#define S2EM_NUMBER    4
-/*S3EM = Sensor 3 Emisor*/
-#define PORT_S3EM_NAME C
-#define S3EM_NUMBER    5
+/*S1EM = Sensor Izquierda Emisor*/
+#define PORT_SIEM_NAME C
+#define SIEM_NUMBER    5
+/*S2EM = Sensor Centro Emisor*/
+#define PORT_SCEM_NAME C
+#define SCEM_NUMBER    4
+/*S3EM = Sensor Derecha Emisor*/
+#define PORT_SDEM_NAME C
+#define SDEM_NUMBER    3
 
-#define PORT_S1EM     def_port_reg(PORT_S1EM_NAME)
-#define PIN_S1EM      def_pin_reg(PORT_S1EM_NAME)
-#define DDR_S1EM     def_ddr_reg(PORT_S1EM_NAME)
+#define PORT_SIEM     def_port_reg(PORT_SIEM_NAME)
+#define PIN_SIEM      def_pin_reg(PORT_SIEM_NAME)
+#define DDR_SIEM     def_ddr_reg(PORT_SIEM_NAME)
 
-#define PORT_S2EM    def_port_reg(PORT_S2EM_NAME)
-#define PIN_S2EM      def_pin_reg(PORT_S2EM_NAME)
-#define DDR_S2EM      def_ddr_reg(PORT_S2EM_NAME)
+#define PORT_SCEM    def_port_reg(PORT_SCEM_NAME)
+#define PIN_SCEM      def_pin_reg(PORT_SCEM_NAME)
+#define DDR_SCEM      def_ddr_reg(PORT_SCEM_NAME)
 
-#define PORT_S3EM     def_port_reg(PORT_S3EM_NAME)
-#define PIN_S3EM      def_pin_reg(PORT_S3EM_NAME)
-#define DDR_S3EM      def_ddr_reg(PORT_S3EM_NAME)
+#define PORT_SDEM     def_port_reg(PORT_SDEM_NAME)
+#define PIN_SDEM      def_pin_reg(PORT_SDEM_NAME)
+#define DDR_SDEM      def_ddr_reg(PORT_SDEM_NAME)
 
 /*S1RE = Sensor 1 Receptor*/
 #define PORT_S1RE_NAME C
@@ -112,6 +112,20 @@
 #define DDR_S3RE      def_ddr_reg(PORT_S3RE_NAME)
 
 /* Macros */
+
+#define EmisorIzqOn()    SetBit(PORT_SIEM, SIEM_NUMBER)
+#define EmisorIzqOff()   ClearBit(PORT_SIEM, SIEM_NUMBER)
+
+#define EmisorCenOn()    SetBit(PORT_SCEM, SCEM_NUMBER)
+#define EmisorCenOff()   ClearBit(PORT_SCEM, SCEM_NUMBER)
+
+#define EmisorDerOn()    SetBit(PORT_SDEM, SDEM_NUMBER)
+#define EmisorDerOff()   ClearBit(PORT_SDEM, SDEM_NUMBER)
+
+
+#define EmisorDerInit()    SetBit(DDR_SDEM, SDEM_NUMBER)
+#define EmisorCenInit()    SetBit(DDR_SCEM, SCEM_NUMBER)
+#define EmisorIzqInit()    SetBit(DDR_SIEM, SIEM_NUMBER)
 
 /*Configuracion ADC*/
 

@@ -10,6 +10,5 @@
 #include "motores.h"
 
 void TestLeds (void);
-void configurarADCs(void);
 
 #endif
