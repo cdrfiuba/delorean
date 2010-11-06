@@ -11,5 +11,6 @@
 
 void TestLeds (void);
 void TestADCs (void);
+void TestCerebroSimple(void);
 
 #endif

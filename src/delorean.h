@@ -14,4 +14,17 @@
 #include "motores.h"
 #include "adc.h"
 
+typedef enum{
+    APAGADO,
+    ON_TRACK,
+    IZ_BAJO,
+    IZ_MEDIO,
+    IZ_ALTO,
+    DE_BAJO,
+    DE_MEDIO,
+    DE_ALTO
+    } estado_t;
+
+estado_t estadoActual;
+
 #endif

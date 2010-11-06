@@ -30,31 +30,19 @@ void TestADCs(void){
 }
 
 
+void TestCerebroSimple(void) {
 
-
-int main2 (void) {
-
-	//configuracion
-	while(1){
-/*		// si eliminamos la variable 'arrancar' no hace falta este condicional
-		switch (estado){
-			case 0:
-				//motor detenido
-				motorDerechoDetener();
-				motorIzquierdoDetener();
-				break;
-			case 1:
-				// Evaluar estados AD
-				//
-				motorDerechoAvanzar();
-				motorIzquierdoAvanzar();
-				break;
-			case 2:
-				break;
-			default:
-				break;
+		if (estadoActual == APAGADO){
+						motorDerechoDetener();
+						motorIzquierdoDetener();
 		}
-	*/}
+		else if (estadoActual == ON_TRACK){
+			motorDerechoAvanzar();
+			PwmMDvel(100);
+			motorIzquierdoAvanzar();
+			PwmMIvel(100);
+			TestADCs();
+			capturarADc();
+		}
 }
-
 

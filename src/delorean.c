@@ -1,59 +1,36 @@
 #include "delorean.h"
 
-
 /* Definicion de prototipos */
 void startup(void);
-//void set_interrupts(void);
 void configurarPulsadorArranque(void);
 void configurarTimer1(void);
-//void decidirArranque(void);
-
+estado_t evaluarEstado(estado_sensor_t );
+void accionar(void);
 /* ------------------------ */
 
-//volatile uint8_t arrancar = 0;
-//volatile uint8_t flagInt0 = 0;
-
 //si se usan 2 sensores, utilizar solo Izquierda y derecha
-char estadoActual = 0;
 
 
 int main (void) {
 	//Inicializaciones
 	startup();
 	
-//	arrancar = 1;
-//	motorDerechoAvanzar();
-//	motorIzquierdoAvanzar();
-	
-	
-	
-	
 	while(1)
 	{	
-		if (estadoActual == 0){
-						motorDerechoDetener();
-						motorIzquierdoDetener();
-	//					sleep_mode();
-		}
-		else if (estadoActual == 1){
-			motorDerechoAvanzar();
-			motorIzquierdoAvanzar();
-			TestADCs();
-			capturarADc();
-		}
-		// Si saltó INT0
-		//if (flagInt0 == 1) decidirArranque();
+	// Codigo Principal
+	//
+		capturarADc();
+		estadoSensores = analizarSensores();
+		estadoActual	= evaluarEstado(estadoSensores);
+		accionar();
 	}
-
 }
 
 /* Funciones */
 
 void startup(void) {
 	
-	estadoActual = 0;
-	velocidadMD = MOTORES_MAX_VEL;
-	velocidadMI = MOTORES_MAX_VEL;
+	estadoActual = APAGADO;
 	//IntArranqueInit();
 
 	Led1Init();
@@ -70,13 +47,6 @@ void startup(void) {
 }
 
 
-
-void set_interrupts(void){
-	GICR |= (1<<INT0); /* Esto habilita la interrupción INT0. */	
-	MCUCR |= ((0<<ISC00) | (0<<ISC01)); /* Esto configura INT0 por nivel bajo. */
-	//sei();
-}
-
 void configurarPulsadorArranque(void){
 	IntArranqueInit();
 	// Configuracion de modo de interrupcion (pagina 66)
@@ -90,60 +60,6 @@ void configurarPulsadorArranque(void){
 	SetBit(GICR, INT0); 
 }
 
-
-/*
-void decidirArranque(void)
-{
-	// Esperar mientras el pin permanezca bajo.
-	while (IsIntArranqueSet() == 0) Led2On();//TestLeds();
-	
-	Led1Off(); Led2Off(); Led3Off();
-	
-	velocidadMD+=5;
-	
-	if (arrancar == 1)
-	{
-		// Juego de luces y arrancar!!!
-		Led3On();
-		_delay_ms(100);
-		Led3Off();
-		Led2On();
-		_delay_ms(100);
-		Led2Off();
-		Led1On();
-		_delay_ms(100);
-		Led1Off();
-
-		// Cambiar el estado para que la próxima vez que presionemos el botón se apague.
-		arrancar = 0;
-		
-
-	}
-	else
-	{
-		// Apagar y cambiar estado para que la próxima vez que presionemos el botón se encienda.
-		arrancar = 1;
-	}
-	
-	flagInt0 = 0;  // Apagar el flag de interrupción
-	GICR |= (1<<INT0);  // Encendemos INT0.
-}
-*/
-
-
-/**
-	Interrupción del botón de arranque.
-ISR(INT0_vect)
-{
-	// Apagamos INT0 para que no salte mientras mantenemos apretado.
-	GICR &= ~(1<<INT0);
-	
-	flagInt0 = 1;  // Anunciar que la interrupción ocurrió.
-	
-	// Delay para debounce
-//	_delay_ms(50);
-}
-**/
 
 
 ISR(INT0_vect) {
@@ -165,8 +81,8 @@ ISR(INT0_vect) {
 		// se podria reemplazar la variable por poner apagar todo, poner 
 		// el micro a dormir esperando solo esta interrupcion y luego
 		// despertalo. Aca se lo despertaria
-		if (estadoActual==0) estadoActual = 1;
-		else estadoActual = 0;
+		if (estadoActual==APAGADO) estadoActual = ON_TRACK;
+		else estadoActual = APAGADO;
 	}
 	SetBit(GIFR, INTF0);
 	// Creo que no hace falta por lo mismo de arriba, VERIFICAR
@@ -174,14 +90,111 @@ ISR(INT0_vect) {
 }
 
 
-ISR(TIMER1_OVF_vect)
-{
-	//PWM A RUEDA IZQUIERDA
-	////MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
-	OCR1A = velocidadMI;
-	
-	//PWM A RUEDA DERECHA
-	OCR1B = velocidadMD;  //MOTORES_MAX_VEL; //
-	return;
+
+
+// Recibe el estado actual de los sensores y devuelve el futuro 
+// estado de la maquina de estados
+estado_t evaluarEstado(estado_sensor_t es){
+	estado_t vd = estadoActual;
+
+    switch (vd)
+    {
+        case APAGADO:
+					motorDerechoDetener();
+					motorIzquierdoDetener();
+          break;
+        case ON_TRACK:
+            if(es == ES_011)
+                vd = IZ_BAJO;
+            if(es == ES_110)
+                vd = DE_BAJO;
+            break;
+        case IZ_BAJO:
+            if(es == ES_010)
+                vd = ON_TRACK;
+            if(es == ES_110)
+                vd = DE_BAJO;
+            if(es == ES_001)
+                vd = IZ_MEDIO;
+            if(es == ES_000)
+                vd = IZ_ALTO;
+            break;
+
+        case IZ_MEDIO:
+            if(es == ES_011)
+                vd = IZ_BAJO;
+            if(es == ES_010)
+                vd = ON_TRACK;
+            if(es == ES_000)
+                vd = IZ_ALTO;
+            break;
+
+        case IZ_ALTO:
+            if(es == ES_001)
+                vd = IZ_MEDIO;
+            if(es == ES_010)
+                vd = ON_TRACK;
+            break;
+
+        case DE_BAJO:
+            if(es == ES_110)
+                vd = DE_MEDIO;
+            if(es == ES_000)
+                vd = DE_ALTO;
+            if(es == ES_011)
+                vd = IZ_BAJO;
+            if(es == ES_010)
+                vd = ON_TRACK;
+            break;
+
+        case DE_MEDIO:
+            if(es == ES_110)
+                vd = DE_BAJO;
+            if(es == ES_010)
+                vd = ON_TRACK;
+            if(es == ES_000)
+                vd = DE_ALTO;
+            break;
+
+        case DE_ALTO:
+            if(es == ES_010)
+                vd = ON_TRACK;
+            if(es == ES_100)
+                vd = DE_MEDIO;
+            break;
+    }
+		if (estadoActual == APAGADO) return APAGADO;
+		else return vd;
 }
+
+void accionar(void) {
+    switch (estadoActual)
+    {
+        case ON_TRACK:
+						motorDerechoAvanzar();
+						PwmMDvel(100);
+						motorIzquierdoAvanzar();
+						PwmMIvel(100);
+            break;
+        case IZ_BAJO:
+        case IZ_MEDIO:
+        case IZ_ALTO:
+						motorDerechoRetroceder();
+						PwmMDvel(100);
+						motorIzquierdoAvanzar();
+						PwmMIvel(100);
+            break;
+        case DE_BAJO:
+        case DE_MEDIO:
+        case DE_ALTO:
+						motorDerechoAvanzar();
+						PwmMDvel(100);
+						motorIzquierdoRetroceder();
+						PwmMIvel(100);
+            break;
+				case APAGADO:
+						break;
+    }
+}
+
 

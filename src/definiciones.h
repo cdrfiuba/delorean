@@ -19,6 +19,8 @@
 // En general no hace falta preguntar IsBitClear(), ya que se puede saber a 
 // partir de IsBitSet() = false
 
+#define max(a,b)			( a>b ? a : b)
+#define min(a,b)		  ( a>b ? a : b)
 
 #define concat(a,b)             a ## b
 #define def_port_reg(name)      concat(PORT,name)

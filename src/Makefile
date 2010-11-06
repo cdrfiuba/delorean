@@ -61,5 +61,5 @@ clean:
 	rm -rf $(TARGET).hex $(TARGET).bin $(TARGET).s
 
 editgvim:
-	gvim -p $(SRC) $(INC) makefile
+	gvim -p $(SRC) $(INC) Makefile
 

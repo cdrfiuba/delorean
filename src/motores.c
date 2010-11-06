@@ -18,13 +18,15 @@ void configurarMotores(void){
 	configurarTimer1();
 
 
-	ICR1 = MOTORES_TOP_CUENTA;  // Esto define al TOP
+	ICR1 = PWM_ICR1;  // Esto define al TOP
 
 	// PWM A   MOTOR DERECHO
 	OCR1A = 0;
+	velocidadMD = 0;
 
 	// PWM B   MOTOR IZQUIERDO
 	OCR1B = 0;
+	velocidadMI = 0;
 }
 
 void motorDerechoDetener(void){
@@ -68,3 +70,18 @@ void configurarTimer1(void){
 	//Habilitamos la interrupcion del Timer1 del overflow
 	TIMSK = (1<<TOIE1);
 }
+
+
+
+ISR(TIMER1_OVF_vect)
+{
+	//PWM A RUEDA IZQUIERDA
+	////MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
+	OCR1A = velocidadMI;
+	
+	//PWM A RUEDA DERECHA
+	OCR1B = velocidadMD;  //MOTORES_MAX_VEL; //
+	return;
+}
+
+

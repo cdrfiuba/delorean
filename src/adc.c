@@ -1,5 +1,30 @@
 #include "adc.h" 
 
+
+bool  getSensor (unsigned char analogSensor) {
+	if (analogSensor > NIVEL_MEDIO_SENSORES) return false;
+	if (analogSensor < NIVEL_MEDIO_SENSORES) return true;
+	return false;
+}
+
+estado_sensor_t analizarSensores(void) {
+   // 0------88------168------255
+   // | bajo |  medio  |  alto  |
+    bool si, sm, sd;
+
+    si = getSensor(analogSensorIzq);
+    sm = getSensor(analogSensorCen);
+    sd = getSensor(analogSensorDer);
+
+    if (!si && !sm && !sd) return ES_000;
+    if (si && !sm && !sd)  return ES_100;
+    if (!si && sm && !sd)  return ES_010;
+    if (!si && !sm && sd)  return ES_001;
+    if (si && sm && !sd)   return ES_110;
+    if (!si && sm && sm)   return ES_011;
+		return ES_000;
+}
+
 void capturarADc(void){
 	//Esta funcion no utiliza interrupciones
 	//verificar que en configurar ADC este
@@ -24,6 +49,9 @@ void capturarADc(void){
 	SetBit(ADCSRA,ADIF);
 	analogSensorIzq	= ADCH;
 }
+
+
+
 
 void configurarADCs(void){
 	EncenderADC();
