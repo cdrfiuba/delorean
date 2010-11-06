@@ -38,12 +38,12 @@ int main (void) {
 	
 	while(1)
 	{	
-		/*Led1Off(); Led2Off(); Led3Off();	
-		_delay_ms(300);
-		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
-		if(analogSensorCen > NIVEL_MEDIO_SENSORES) Led2On();
-		if(analogSensorDer > NIVEL_MEDIO_SENSORES) Led3On();
-		_delay_ms(300);*/
+//		Led1Off(); Led2Off(); Led3Off();	
+		//_delay_ms(300);
+//		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
+//		if(analogSensorCen > NIVEL_MEDIO_SENSORES) Led2On();
+//		if(analogSensorDer > NIVEL_MEDIO_SENSORES) Led3On();
+		//_delay_ms(300);
 		// Si saltó INT0
 		//if (flagInt0 == 1) decidirArranque();
 	}
@@ -145,7 +145,7 @@ ISR(INT0_vect)
 	flagInt0 = 1;  // Anunciar que la interrupción ocurrió.
 	
 	// Delay para debounce
-	_delay_ms(50);
+//	_delay_ms(50);
 }
 
 ISR(TIMER1_OVF_vect)
@@ -174,7 +174,7 @@ void configurarADCs(void){
 	SetBit(ADCSRA, ADIE);
 
 	// Inicia la primera conversion
-	ADSeleccionarCanalB(0);
+	ADSeleccionarCanal(0);
 	EmisorIzqInit();
 	EmisorCenInit();
 	EmisorDerInit();
@@ -186,7 +186,7 @@ void configurarADCs(void){
 
 ISR(ADC_vect){
 	// ver canal en que se termino la conversion
-	char temp = ADDeterminarCanalB();
+	char temp = ADDeterminarCanal();
 	// guardar en variable correspondiente
 	unsigned char temp2 = ADCH;	
 	
@@ -197,7 +197,7 @@ ISR(ADC_vect){
 			if(analogSensorDer < NIVEL_MEDIO_SENSORES) Led1On();
 			else Led1Off();
 			// seleccionar siguiente canal
-			ADSeleccionarCanalB(1);
+			ADSeleccionarCanal(1);
 			break;
 		case 1:
 			// AD1 es el sensor cental
@@ -205,7 +205,7 @@ ISR(ADC_vect){
 			if(analogSensorCen < NIVEL_MEDIO_SENSORES) Led2On();
 			else Led2Off();
 			// seleccionar siguiente canal
-			ADSeleccionarCanalB(2);
+			ADSeleccionarCanal(2);
 			break;
 		case 2:
 			// AD2 es el sensor izquierdo
@@ -213,13 +213,13 @@ ISR(ADC_vect){
 			if(analogSensorIzq < NIVEL_MEDIO_SENSORES) Led3On();
 			else Led3Off();
 			// seleccionar siguiente canal
-			ADSeleccionarCanalB(0);
+			ADSeleccionarCanal(0);
 			break;
 		default:
 			// no esperado, se descarta el valor de conversion y se
 			// vuelve a arrancar con el sensor derecho
 			temp = ADCH;
-			ADSeleccionarCanalB(0);
+			ADSeleccionarCanal(0);
 			Led1On();
 			break;
 	}

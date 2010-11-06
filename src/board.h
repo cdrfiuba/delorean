@@ -162,15 +162,9 @@
 // malfuncionamiento de los AD
 // ANALIZAR LA DIFERENCIA ENTRE MACRO y static inline function
 
-#define ADSeleccionarCanalB(CN) 			(ADMUX = (ADMUX & 0xF0) | CN)
-static inline void ADSeleccionarCanal(char NUM) {
-	ADMUX = (ADMUX & 0xF0) | NUM;
-}
+#define ADSeleccionarCanal(CN) 			(ADMUX = (ADMUX & 0xF0) | CN)
 
-#define ADDeterminarCanalB()	(ADMUX & 0x07)
-static inline char ADDeterminaCanal() {
-				return (ADMUX & 0x07);
-}
+#define ADDeterminarCanal()					(ADMUX & 0x07)
 /* ---------------------------------------------- */
 
 /* Definiciones correspondientes a los pines de los LEDs */
