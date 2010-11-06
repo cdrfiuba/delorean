@@ -10,19 +10,19 @@ bool  getSensor (unsigned char analogSensor) {
 estado_sensor_t analizarSensores(void) {
    // 0------88------168------255
    // | bajo |  medio  |  alto  |
-    bool si, sm, sd;
+	bool si, sm, sd;
 
-    si = getSensor(analogSensorIzq);
-    sm = getSensor(analogSensorCen);
-    sd = getSensor(analogSensorDer);
+	si = getSensor(analogSensorIzq);
+	sm = getSensor(analogSensorCen);
+	sd = getSensor(analogSensorDer);
 
-    if (!si && !sm && !sd) return ES_000;
-    if (si && !sm && !sd)  return ES_100;
-    if (!si && sm && !sd)  return ES_010;
-    if (!si && !sm && sd)  return ES_001;
-    if (si && sm && !sd)   return ES_110;
-    if (!si && sm && sm)   return ES_011;
-		return ES_000;
+	if (!si && !sm && !sd) return ES_000;
+	if ( si && !sm && !sd) return ES_100;
+	if (!si &&  sm && !sd) return ES_010;
+	if (!si && !sm &&  sd) return ES_001;
+	if ( si &&  sm && !sd) return ES_110;
+	if (!si &&  sm &&  sd) return ES_011;
+	return ES_000;
 }
 
 void capturarADc(void){

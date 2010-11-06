@@ -23,12 +23,12 @@ unsigned char analogSensorCen;
 unsigned char analogSensorDer;
 
 typedef enum{
-    ES_010,
-    ES_011,
-    ES_001,
-    ES_110,
-    ES_100,
-    ES_000
+    ES_000 = 0,
+    ES_001 = 1,
+    ES_010 = 2,
+    ES_011 = 3,
+    ES_100 = 4,
+    ES_110 = 6 
     } estado_sensor_t;
 
 estado_sensor_t estadoSensores;

@@ -33,7 +33,7 @@ INC = $(shell find . -name '*.[h]')
 
 # Flags de optimizacion '-Os' tamaño '-O3' velocidad '-O0
 # Si se deja -O vacio ¿elije el compilador?
-CFLAGS = -O -Wall
+CFLAGS = -O3 -Wall
 
 CDEFINES = -DF_CPU=$(CLK)
 
