@@ -10,5 +10,6 @@
 #include "motores.h"
 
 void TestLeds (void);
+void TestADCs (void);
 
 #endif

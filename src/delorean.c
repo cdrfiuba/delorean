@@ -1,49 +1,46 @@
 #include "delorean.h"
 
-#define NIVEL_MEDIO_SENSORES 	230
 
 /* Definicion de prototipos */
 void startup(void);
-void set_interrupts(void);
+//void set_interrupts(void);
+void configurarPulsadorArranque(void);
 void configurarTimer1(void);
-void decidirArranque(void);
-void configurarADCs(void);
+//void decidirArranque(void);
 
-volatile uint16_t velocidadMD;
-volatile uint16_t velocidadMI;
 /* ------------------------ */
 
-volatile uint8_t arrancar = 0;
-volatile uint8_t flagInt0 = 0;
+//volatile uint8_t arrancar = 0;
+//volatile uint8_t flagInt0 = 0;
 
 //si se usan 2 sensores, utilizar solo Izquierda y derecha
-char estado = 0;
-unsigned char analogSensorIzq = 0;
-unsigned char analogSensorCen = 0;
-unsigned char analogSensorDer = 0;
+char estadoActual = 0;
 
 
 int main (void) {
 	//Inicializaciones
 	startup();
 	
-	arrancar = 1;
-	motorDerechoAvanzar();
-	motorIzquierdoAvanzar();
+//	arrancar = 1;
+//	motorDerechoAvanzar();
+//	motorIzquierdoAvanzar();
 	
-	velocidadMD = 380;
-	velocidadMI = velocidadMD+15;
 	
 	
 	
 	while(1)
 	{	
-//		Led1Off(); Led2Off(); Led3Off();	
-		//_delay_ms(300);
-//		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
-//		if(analogSensorCen > NIVEL_MEDIO_SENSORES) Led2On();
-//		if(analogSensorDer > NIVEL_MEDIO_SENSORES) Led3On();
-		//_delay_ms(300);
+		if (estadoActual == 0){
+						motorDerechoDetener();
+						motorIzquierdoDetener();
+	//					sleep_mode();
+		}
+		else if (estadoActual == 1){
+			motorDerechoAvanzar();
+			motorIzquierdoAvanzar();
+			TestADCs();
+			capturarADc();
+		}
 		// Si saltó INT0
 		//if (flagInt0 == 1) decidirArranque();
 	}
@@ -54,16 +51,21 @@ int main (void) {
 
 void startup(void) {
 	
-	IntArranqueInit();
+	estadoActual = 0;
+	velocidadMD = MOTORES_MAX_VEL;
+	velocidadMI = MOTORES_MAX_VEL;
+	//IntArranqueInit();
 
 	Led1Init();
 	Led2Init();
 	Led3Init();
-	set_interrupts();
-
+	//set_interrupts();
+	configurarPulsadorArranque();
 	configurarMotores();
 	configurarTimer1();
 	configurarADCs();
+	PwmStart();
+//	set_sleep_mode(SLEEP_MODE_IDLE);
 	sei();
 }
 
@@ -75,28 +77,21 @@ void set_interrupts(void){
 	//sei();
 }
 
+void configurarPulsadorArranque(void){
+	IntArranqueInit();
+	// Configuracion de modo de interrupcion (pagina 66)
+	// MCUCR |= ((0<<ISC01) | (0<<ISC00)); // Nivel bajo. 
+	// MCUCR |= ((0<<ISC01) | (1<<ISC00)); // Cualquier cambio de nivel
+	// MCUCR |= ((1<<ISC01) | (0<<ISC00)); // Flanco descendente 
+	MCUCR |= ((1<<ISC01) | (1<<ISC00)); // Flanco ascendente.
 
-void configurarTimer1(void){
-	// Configuracion del timer 1 para el PWM
-	
-	// Estamos seteando COM1A = 11 , COM1B = 11 y WGM = 8 (para usar un TOP fijo)
-	TCCR1A = (1<<COM1A1) | (0<<COM1A0) | (1<<COM1B1) | (0<<COM1B0);
- 	// y el "prescaler" en 1 (CS12 = 0 , CS11 =0 , CS10 = 1)
-	TCCR1B = (1<<WGM13) | (0<<WGM12) | (0<<CS12) | (0<<CS11) | (1<<CS10); 
-
-	ICR1 = MOTORES_TOP_CUENTA;  // Esto define al TOP
-
-	// PWM A   MOTOR DERECHO
-	OCR1A = MOTORES_MAX_VEL; //50% cycle
-
-	// PWM B   MOTOR IZQUIERDO
-	OCR1B = MOTORES_MAX_VEL; //50% cycle
-
-	//Habilitamos la interrupcion del Timer1 del overflow
-	TIMSK = (1<<TOIE1);
+	// Esto habilita la interrupción INT0 escribiendo un '1' en el bit INT0
+	// del registro global de interrupcions GICR
+	SetBit(GICR, INT0); 
 }
 
 
+/*
 void decidirArranque(void)
 {
 	// Esperar mientras el pin permanezca bajo.
@@ -133,10 +128,11 @@ void decidirArranque(void)
 	flagInt0 = 0;  // Apagar el flag de interrupción
 	GICR |= (1<<INT0);  // Encendemos INT0.
 }
-		
+*/
+
+
 /**
 	Interrupción del botón de arranque.
-**/
 ISR(INT0_vect)
 {
 	// Apagamos INT0 para que no salte mientras mantenemos apretado.
@@ -147,82 +143,45 @@ ISR(INT0_vect)
 	// Delay para debounce
 //	_delay_ms(50);
 }
+**/
+
+
+ISR(INT0_vect) {
+//void interupINT0(void) {
+	// Apagamos INT0 para que no salte mientras mantenemos apretado.
+	// (creo que no hace falta. Cuando salta una interrupcion hay un 'cli'
+	// automatico, y cuando se termina este ISR se clerea el flag de INT0
+	// VERIFICAR
+	// ClearBit(GICR, INT0);
+
+	// Delay para debounce
+	// Dado que no tenemos necesidad de hacer nada mientras esperamos por el
+	// debounce lo dejamos asi. Sino, deberiamos utilizar algun timer y dejar
+	//  que
+	_delay_ms(50);
+	
+	if (IsIntArranqueSet()==true) { 
+		// significa que esta en 1 y hubo flanco ascendente genuino
+		// se podria reemplazar la variable por poner apagar todo, poner 
+		// el micro a dormir esperando solo esta interrupcion y luego
+		// despertalo. Aca se lo despertaria
+		if (estadoActual==0) estadoActual = 1;
+		else estadoActual = 0;
+	}
+	SetBit(GIFR, INTF0);
+	// Creo que no hace falta por lo mismo de arriba, VERIFICAR
+//	SetBit(GICR,INT0);
+}
+
 
 ISR(TIMER1_OVF_vect)
 {
 	//PWM A RUEDA IZQUIERDA
-	OCR1A = velocidadMI;//MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
-
+	////MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
+	OCR1A = velocidadMI;
+	
 	//PWM A RUEDA DERECHA
 	OCR1B = velocidadMD;  //MOTORES_MAX_VEL; //
 	return;
 }
 
-void configurarADCs(void){
-	EncenderADC();
-	// Seleccionamos la mayor velocidad de conversion, o sea prescaler 0
-	ADCPrescalerSelec(3);
-	
-	// Alineacion a la izquierda
-	AlineacionInit('I');
-
-	//lo utilizamos en el modo single conversion
-	//no seteamos free run
-	//
-	
-	//Habilitamos la interrupcion de finalizacion de conversion AD
-	SetBit(ADCSRA, ADIE);
-
-	// Inicia la primera conversion
-	ADSeleccionarCanal(0);
-	EmisorIzqInit();
-	EmisorCenInit();
-	EmisorDerInit();
-	EmisorIzqOn();
-	EmisorCenOn();
-	EmisorDerOn();	
-	IniciarConversion();
-}
-
-ISR(ADC_vect){
-	// ver canal en que se termino la conversion
-	char temp = ADDeterminarCanal();
-	// guardar en variable correspondiente
-	unsigned char temp2 = ADCH;	
-	
-	switch (temp){
-		case 0:
-			// AD0 es el sensor derecho
-			analogSensorDer = temp2;
-			if(analogSensorDer < NIVEL_MEDIO_SENSORES) Led1On();
-			else Led1Off();
-			// seleccionar siguiente canal
-			ADSeleccionarCanal(1);
-			break;
-		case 1:
-			// AD1 es el sensor cental
-			analogSensorCen = temp2;
-			if(analogSensorCen < NIVEL_MEDIO_SENSORES) Led2On();
-			else Led2Off();
-			// seleccionar siguiente canal
-			ADSeleccionarCanal(2);
-			break;
-		case 2:
-			// AD2 es el sensor izquierdo
-			analogSensorIzq = temp2;
-			if(analogSensorIzq < NIVEL_MEDIO_SENSORES) Led3On();
-			else Led3Off();
-			// seleccionar siguiente canal
-			ADSeleccionarCanal(0);
-			break;
-		default:
-			// no esperado, se descarta el valor de conversion y se
-			// vuelve a arrancar con el sensor derecho
-			temp = ADCH;
-			ADSeleccionarCanal(0);
-			Led1On();
-			break;
-	}
-	// Volvemos a iniciar la conversion
-	IniciarConversion();
-}

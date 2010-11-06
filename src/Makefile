@@ -1,3 +1,6 @@
+CLK = 8000000UL
+
+
 # TARGET es el nombre del proyecto
 TARGET = delorean
 
@@ -30,13 +33,15 @@ INC = $(shell find . -name '*.[h]')
 
 # Flags de optimizacion '-Os' tamaño '-O3' velocidad '-O0
 # Si se deja -O vacio ¿elije el compilador?
-CFLAGS = -O
+CFLAGS = -O -Wall
+
+CDEFINES = -DF_CPU=$(CLK)
 
 all: hex
 
 hex: $(SRC) $(INC)
-	avr-gcc $(CFLAGS) -mmcu=$(MMCU) -Wall -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
-	avr-objcopy -j .text $(CFLAGS) ihex  $(TARGET).bin $(TARGET).hex
+	avr-gcc $(CFLAGS) $(CDEFINES) -mmcu=$(MMCU)  -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
+	avr-objcopy -j .text -O ihex  $(TARGET).bin $(TARGET).hex
 	avr-size $(TARGET).bin
 
 program: hex
@@ -46,7 +51,7 @@ asm: $(SRC) $(INC)
 	avr-gcc -mmcu=$(MMCU) $(CFLAGS) -S -o $(TARGET).s $<
 
 asmdebug: $(SRC) $(INC)
-	avr-gcc -mmcu=$(MMCU) -O0 -S -o $(TARGET).s $<
+	avr-gcc -mmcu=$(MMCU) -O -S -o $(TARGET).s $<
 
 fuses:
 	avrdude -c usbtiny -p $(TARGET_P) -U hfuse:w:$(HFUSE):m
