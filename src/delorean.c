@@ -15,27 +15,34 @@ int main (void) {
 	//Inicializaciones
 	startup();
 	
+	calibrarNiveles();
+	
 	while(1)
 	{	
 	// Codigo Principal
 	//
 		capturarADc();
 		estadoSensores = analizarSensores();
-		estadoActual	= evaluarEstado(estadoSensores);
-		accionar();
+		estadoActual = evaluarEstado(estadoSensores);
+		//accionar();
 	}
 }
 
 /* Funciones */
 
-void startup(void) {
-	
+void startup(void)
+{
+	/*maxNivelSensor = 255;
+	minNivelSensor = 200;
+	colorLinea = 0;*/
+		
 	estadoActual = APAGADO;
 	//IntArranqueInit();
 
 	Led1Init();
 	Led2Init();
 	Led3Init();
+	
 	//set_interrupts();
 	configurarPulsadorArranque();
 	configurarMotores();
@@ -160,7 +167,7 @@ void accionar(void) {
 			motorIzquierdoAvanzar();
 			PwmMIvel(100);
 			break;
-    case IZ_ALTO:
+    	case IZ_ALTO:
 			motorDerechoRetroceder();
 			PwmMDvel(100);
 			motorIzquierdoAvanzar();

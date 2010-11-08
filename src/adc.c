@@ -1,10 +1,32 @@
 #include "adc.h" 
+#include <util/delay.h>
 
 
-bool  getSensor (unsigned char analogSensor) {
+/*bool  getSensor (unsigned char analogSensor)
+{
 	if (analogSensor > NIVEL_MEDIO_SENSORES) return false;
 	if (analogSensor < NIVEL_MEDIO_SENSORES) return true;
 	return false;
+}*/
+
+/*bool  getSensor (unsigned char analogSensor, bool s)
+{
+	if (analogSensor > NIVEL_MEDIO_SENSORES) return false;
+	if (analogSensor < NIVEL_MEDIO_SENSORES) return true;
+	return false;
+}*/
+
+/**
+	Retorna 1 si está sobre la línea y 0 si no lo esta
+**/
+bool getSensor(uint8_t analogSensor)
+{
+	uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
+	bool v;
+	
+	if (analogSensor < media) v = colorLinea; else v = !colorLinea;
+	
+	return v;
 }
 
 estado_sensor_t analizarSensores(void) {
@@ -16,6 +38,10 @@ estado_sensor_t analizarSensores(void) {
 	sm = getSensor(analogSensorCen);
 	sd = getSensor(analogSensorDer);
 
+	if (si) Led1On(); else Led1Off();
+	if (sm) Led2On(); else Led2Off();
+	if (sd) Led3On(); else Led3Off();
+	
 	if (!si && !sm && !sd) return ES_000;
 	if ( si && !sm && !sd) return ES_100;
 	if (!si &&  sm && !sd) return ES_010;
@@ -49,8 +75,6 @@ void capturarADc(void){
 	SetBit(ADCSRA,ADIF);
 	analogSensorIzq	= ADCH;
 }
-
-
 
 
 void configurarADCs(void){
@@ -92,24 +116,21 @@ ISR(ADC_vect){
 		case 0:
 			// AD0 es el sensor derecho
 			analogSensorDer = temp2;
-			if(analogSensorDer < NIVEL_MEDIO_SENSORES) Led1On();
-			else Led1Off();
+			//if(analogSensorDer < NIVEL_MEDIO_SENSORES) Led1On(); else Led1Off();
 			// seleccionar siguiente canal
 			ADSeleccionarCanal(1);
 			break;
 		case 1:
 			// AD1 es el sensor cental
 			analogSensorCen = temp2;
-			if(analogSensorCen < NIVEL_MEDIO_SENSORES) Led2On();
-			else Led2Off();
+			//if(analogSensorCen < NIVEL_MEDIO_SENSORES) Led2On(); else Led2Off();
 			// seleccionar siguiente canal
 			ADSeleccionarCanal(2);
 			break;
 		case 2:
 			// AD2 es el sensor izquierdo
 			analogSensorIzq = temp2;
-			if(analogSensorIzq < NIVEL_MEDIO_SENSORES) Led3On();
-			else Led3Off();
+			//if(analogSensorIzq < NIVEL_MEDIO_SENSORES) Led3On(); else Led3Off();
 			// seleccionar siguiente canal
 			ADSeleccionarCanal(0);
 			break;
@@ -123,4 +144,39 @@ ISR(ADC_vect){
 	}
 	// Volvemos a iniciar la conversion
 	IniciarConversion();
+}
+
+/**
+	Calibra los niveles de blanco y negro y define el color de la linea.
+**/
+void calibrarNiveles()
+{
+	uint16_t s1=0, s2=0, s3=0;
+	uint8_t i;
+	
+	for (i=0; i<20; i++)
+	{
+		capturarADc();
+		s1 += analogSensorIzq;
+		s2 += analogSensorCen;
+		s3 += analogSensorDer;
+	}
+	s1 = s1 / 20;
+	s2 = s2 / 20;
+	s3 = s3 / 20;
+	s1 = (s1 + s3) / 2;
+
+	// Si el sensor central vale menos que la media, lee blanco, sino negro.	
+	if (s2 < (s1 + s2) / 2)
+	{
+		maxNivelSensor = s1;
+		minNivelSensor = s2;
+		colorLinea = 1;
+	}
+	else
+	{
+		colorLinea = 0;
+		maxNivelSensor = s2;
+		minNivelSensor = s1;
+	}
 }
