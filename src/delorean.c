@@ -24,7 +24,7 @@ int main (void) {
 		capturarADc();
 		estadoSensores = analizarSensores();
 		estadoActual = evaluarEstado(estadoSensores);
-		//accionar();
+		accionar();
 	}
 }
 
@@ -156,17 +156,17 @@ void accionar(void) {
 			PwmMIvel(100);
 			break;
 		case IZ_BAJO:
-			motorDerechoAvanzar();
+			/*motorDerechoAvanzar();
 			PwmMDvel(80);
 			motorIzquierdoAvanzar();
 			PwmMIvel(100);
-			break;
+			break;*/
 		case IZ_MEDIO:
-			motorDerechoDetener();
-			//PwmMDvel(10);
+			/*motorDerechoDetener();
+			PwmMDvel(10);
 			motorIzquierdoAvanzar();
 			PwmMIvel(100);
-			break;
+			break;*/
     	case IZ_ALTO:
 			motorDerechoRetroceder();
 			PwmMDvel(100);
@@ -174,17 +174,17 @@ void accionar(void) {
 			PwmMIvel(100);
 			break;
 		case DE_BAJO:
-			motorDerechoAvanzar();
+			/*motorDerechoAvanzar();
 			PwmMDvel(100);
 			motorIzquierdoAvanzar();
 			PwmMIvel(80);
-			break;
+			break;*/
 		case DE_MEDIO:
-			motorDerechoAvanzar();
+			/*motorDerechoAvanzar();
 			PwmMDvel(100);
 			motorIzquierdoDetener();
-			//PwmMIvel(100);
-			break;
+			PwmMIvel(100);
+			break;*/
 		case DE_ALTO:
 			motorDerechoAvanzar();
 			PwmMDvel(100);

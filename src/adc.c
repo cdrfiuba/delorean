@@ -19,12 +19,15 @@
 /**
 	Retorna 1 si está sobre la línea y 0 si no lo esta
 **/
-bool getSensor(uint8_t analogSensor)
+bool getSensor(uint8_t analogSensor, bool s)
 {
 	uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
-	bool v;
+	bool v = s;
 	
-	if (analogSensor < media) v = colorLinea; else v = !colorLinea;
+	uint8_t umbral = (maxNivelSensor - minNivelSensor)/6;
+	
+	if (analogSensor < (media-umbral)) v = colorLinea;
+	if (analogSensor > (media+umbral)) v = !colorLinea;
 	
 	return v;
 }
@@ -34,9 +37,9 @@ estado_sensor_t analizarSensores(void) {
    // | bajo |  medio  |  alto  |
 	bool si, sm, sd;
 
-	si = getSensor(analogSensorIzq);
-	sm = getSensor(analogSensorCen);
-	sd = getSensor(analogSensorDer);
+	si = getSensor(analogSensorIzq, estadoSensores & ES_100);
+	sm = getSensor(analogSensorCen, estadoSensores & ES_010);
+	sd = getSensor(analogSensorDer, estadoSensores & ES_001);
 
 	if (si) Led1On(); else Led1Off();
 	if (sm) Led2On(); else Led2Off();
