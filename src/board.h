@@ -67,13 +67,13 @@
 
 /* Definiciones de los pines correspondientes a los sensores */
 
-/*S1EM = Sensor Izquierda Emisor*/
+/*SIEM = Sensor Izquierdo Emisor*/
 #define PORT_SIEM_NAME C
 #define SIEM_NUMBER    5
-/*S2EM = Sensor Centro Emisor*/
+/*SCEM = Sensor Centro Emisor*/
 #define PORT_SCEM_NAME C
 #define SCEM_NUMBER    4
-/*S3EM = Sensor Derecha Emisor*/
+/*SDEM = Sensor Derecho Emisor*/
 #define PORT_SDEM_NAME C
 #define SDEM_NUMBER    3
 
@@ -89,27 +89,30 @@
 #define PIN_SDEM      def_pin_reg(PORT_SDEM_NAME)
 #define DDR_SDEM      def_ddr_reg(PORT_SDEM_NAME)
 
-/*S1RE = Sensor 1 Receptor*/
-#define PORT_S1RE_NAME C
-#define S1RE_NUMBER    0
-/*S2RE= Sensor 2 Receptor*/
-#define PORT_S2RE_NAME C
-#define S2RE_NUMBER    1
-/*S3RE = Sensor 3 Receptor*/
-#define PORT_S3RE_NAME C
-#define S3RE_NUMBER    2
+/*SDRE = Sensor Derecho Receptor*/
+#define PORT_SDRE_NAME C
+#define SDRE_NUMBER    0
+#define ADC_NUM_SDRE	 0
+/*SCRE= Sensor Central Receptor*/
+#define PORT_SCRE_NAME C
+#define SCRE_NUMBER    1
+#define ADC_NUM_SCRE	 1
+/*SIRE = Sensor Izquierdo Receptor*/
+#define PORT_SIRE_NAME C
+#define SIRE_NUMBER    2
+#define ADC_NUM_SIRE	 2
 
-#define PORT_S1RE     def_port_reg(PORT_S1RE_NAME)
-#define PIN_S1RE      def_pin_reg(PORT_S1RE_NAME)
-#define DDR_S1RE     def_ddr_reg(PORT_S1RE_NAME)
+#define PORT_SDRE     def_port_reg(PORT_SDRE_NAME)
+#define PIN_SDRE      def_pin_reg(PORT_SDRE_NAME)
+#define DDR_SDRE     def_ddr_reg(PORT_SDRE_NAME)
 
-#define PORT_S2RE    def_port_reg(PORT_S2RE_NAME)
-#define PIN_S2RE      def_pin_reg(PORT_S2RE_NAME)
-#define DDR_S2RE      def_ddr_reg(PORT_S2RE_NAME)
+#define PORT_SCRE    def_port_reg(PORT_SCRE_NAME)
+#define PIN_SCRE      def_pin_reg(PORT_SCRE_NAME)
+#define DDR_SCRE      def_ddr_reg(PORT_SCRE_NAME)
 
-#define PORT_S3RE     def_port_reg(PORT_S3RE_NAME)
-#define PIN_S3RE      def_pin_reg(PORT_S3RE_NAME)
-#define DDR_S3RE      def_ddr_reg(PORT_S3RE_NAME)
+#define PORT_SIRE     def_port_reg(PORT_SIRE_NAME)
+#define PIN_SIRE      def_pin_reg(PORT_SIRE_NAME)
+#define DDR_SIRE      def_ddr_reg(PORT_SIRE_NAME)
 
 /* Macros */
 
@@ -169,15 +172,15 @@
 
 /* Definiciones correspondientes a los pines de los LEDs */
 
-/*LED1 = LED 1 */
+/*LED1 = LED 1 (Verde)*/
 #define PORT_LED1_NAME	D
 #define LED1_NUMBER	    5
 
-/*LED2 = LED 2 */
+/*LED2 = LED 2 (Amarillo)*/
 #define PORT_LED2_NAME	D
 #define LED2_NUMBER	    6
 
-/*LED3 = LED 3 */
+/*LED3 = LED 3 (Rojo)*/
 #define PORT_LED3_NAME	D
 #define LED3_NUMBER	    7
 
@@ -265,8 +268,8 @@
 
 /* Macros */
 
-// Se configuran los pines de los jumpers como entrada. Al setear los pines en '1'
-// y estando configurados como entradas, se activan los pull-up internos
+// Se configuran los pines de los jumpers como entrada. Al setear los pines en
+// '1' y estando configurados como entradas, se activan los pull-up internos
 #define Jumper1Init()  {ClearBit(PORT_JMP1, JMP1_NUMBER); SetBit(PORT_JMP1, JMP1_NUMBER);}
 #define Jumper2Init()  {ClearBit(PORT_JMP2, JMP2_NUMBER); SetBit(PORT_JMP2, JMP2_NUMBER);}
 

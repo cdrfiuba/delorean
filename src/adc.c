@@ -57,25 +57,55 @@ void capturarADc(void){
 	// ClearBit(ADCSRA, ADIE);
 	// 
 
-	ADSeleccionarCanal(0);
+	ADSeleccionarCanal(ADC_NUM_SDRE);
 	IniciarConversion();
 	while (IsBitSet(ADCSRA,ADIF)==false);
 	SetBit(ADCSRA,ADIF);
 	analogSensorDer	= ADCH;
 
-	ADSeleccionarCanal(1);
+	ADSeleccionarCanal(ADC_NUM_SCRE);
 	IniciarConversion();
 	while (IsBitSet(ADCSRA,ADIF)==false);
 	SetBit(ADCSRA,ADIF);	
 	analogSensorCen	= ADCH;
 
-	ADSeleccionarCanal(2);
+	ADSeleccionarCanal(ADC_NUM_SIRE);
 	IniciarConversion();
 	while (IsBitSet(ADCSRA,ADIF)==false);
 	SetBit(ADCSRA,ADIF);
 	analogSensorIzq	= ADCH;
 }
 
+
+void capturarADcPRO(void){
+	//Esta funcion no utiliza interrupciones
+	//verificar que en configurar ADC este
+	// ClearBit(ADCSRA, ADIE);
+	// 
+	EmisorDerOn();
+	ADSeleccionarCanal(ADC_NUM_SDRE);
+	IniciarConversion();
+	while (IsBitSet(ADCSRA,ADIF)==false);
+	SetBit(ADCSRA,ADIF);
+	analogSensorDer	= ADCH;
+	EmisorDerOff();
+
+	EmisorCenOn();
+	ADSeleccionarCanal(ADC_NUM_SCRE);
+	IniciarConversion();
+	while (IsBitSet(ADCSRA,ADIF)==false);
+	SetBit(ADCSRA,ADIF);	
+	analogSensorCen	= ADCH;
+	EmisorCenOff();
+
+	EmisorIzqOn();
+	ADSeleccionarCanal(ADC_NUM_SIRE);
+	IniciarConversion();
+	while (IsBitSet(ADCSRA,ADIF)==false);
+	SetBit(ADCSRA,ADIF);
+	analogSensorIzq	= ADCH;
+	EmisorIzqOff();
+}
 
 void configurarADCs(void){
 	EncenderADC();
@@ -113,26 +143,32 @@ ISR(ADC_vect){
 	unsigned char temp2 = ADCH;	
 	
 	switch (temp){
-		case 0:
+		case ADC_NUM_SDRE:
 			// AD0 es el sensor derecho
 			analogSensorDer = temp2;
+			EmisorDerOff();
 			//if(analogSensorDer < NIVEL_MEDIO_SENSORES) Led1On(); else Led1Off();
 			// seleccionar siguiente canal
-			ADSeleccionarCanal(1);
+			EmisorCenOn();
+			ADSeleccionarCanal(ADC_NUM_SCRE);
 			break;
-		case 1:
+		case ADC_NUM_SCRE:
 			// AD1 es el sensor cental
 			analogSensorCen = temp2;
+			EmisorCenOff();
 			//if(analogSensorCen < NIVEL_MEDIO_SENSORES) Led2On(); else Led2Off();
 			// seleccionar siguiente canal
-			ADSeleccionarCanal(2);
+			EmisorIzqOn();
+			ADSeleccionarCanal(ADC_NUM_SIRE);
 			break;
-		case 2:
+		case ADC_NUM_SIRE:
 			// AD2 es el sensor izquierdo
 			analogSensorIzq = temp2;
+			EmisorIzqOff();
 			//if(analogSensorIzq < NIVEL_MEDIO_SENSORES) Led3On(); else Led3Off();
 			// seleccionar siguiente canal
-			ADSeleccionarCanal(0);
+			EmisorDerOn();
+			ADSeleccionarCanal(ADC_NUM_SDRE);
 			break;
 		default:
 			// no esperado, se descarta el valor de conversion y se
