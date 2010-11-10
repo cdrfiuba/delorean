@@ -22,6 +22,7 @@ int main (void) {
 	// Codigo Principal
 	//
 		capturarADc();
+		//capturarADcPRO();
 		estadoSensores = analizarSensores();
 		estadoActual = evaluarEstado(estadoSensores);
 		accionar();
@@ -109,23 +110,25 @@ estado_t evaluarEstado(estado_sensor_t es){
 			motorIzquierdoDetener();
 			break;
 		case ON_TRACK:
-			if(es == ES_011) vd = IZ_BAJO;
-			if(es == ES_110) vd = DE_BAJO;
+			if (es == ES_011) vd = IZ_BAJO;
+			if (es == ES_110) vd = DE_BAJO;
+			if (es == ES_100) vd = DE_MEDIO;
+			if (es == ES_001) vd = IZ_MEDIO;
 			break;
 		case IZ_BAJO:
-			if(es == ES_010) vd = ON_TRACK;
-			if(es == ES_110) vd = DE_BAJO;
-			if(es == ES_001) vd = IZ_MEDIO;
-			if(es == ES_000) vd = IZ_ALTO;
+			if (es == ES_010) vd = ON_TRACK;
+			if (es == ES_110) vd = DE_BAJO;
+			if (es == ES_001) vd = IZ_MEDIO;
+			if (es == ES_000) vd = IZ_ALTO;
 			break;
 		case IZ_MEDIO:
-			if(es == ES_011) vd = IZ_BAJO;
-			if(es == ES_010) vd = ON_TRACK;
-			if(es == ES_000) vd = IZ_ALTO;
+			if (es == ES_011) vd = IZ_BAJO;
+			if (es == ES_010) vd = ON_TRACK;
+			if (es == ES_000) vd = IZ_ALTO;
 			break;
 		case IZ_ALTO:
-			if(es == ES_001) vd = IZ_MEDIO;
 			if(es == ES_010) vd = ON_TRACK;
+			if(es == ES_001) vd = IZ_MEDIO;
 			break;
 		case DE_BAJO:
 			if(es == ES_110) vd = DE_MEDIO;
@@ -147,49 +150,59 @@ estado_t evaluarEstado(estado_sensor_t es){
 	else return vd;
 }
 
+#define VEL_CRUCERO 100
+
 void accionar(void) {
 	switch (estadoActual) {
 		case ON_TRACK:
 			motorDerechoAvanzar();
-			PwmMDvel(100);
+			PwmMDvel(VEL_CRUCERO);
 			motorIzquierdoAvanzar();
-			PwmMIvel(100);
+			PwmMIvel(VEL_CRUCERO);
 			break;
 		case IZ_BAJO:
-			/*motorDerechoAvanzar();
-			PwmMDvel(80);
+			motorDerechoAvanzar();
+			PwmMDvel(VEL_CRUCERO-35);
 			motorIzquierdoAvanzar();
-			PwmMIvel(100);
-			break;*/
+			PwmMIvel(VEL_CRUCERO);
+			break;
 		case IZ_MEDIO:
-			/*motorDerechoDetener();
-			PwmMDvel(10);
+			motorDerechoRetroceder();
+			PwmMDvel(VEL_CRUCERO-25);
 			motorIzquierdoAvanzar();
-			PwmMIvel(100);
-			break;*/
+			PwmMIvel(VEL_CRUCERO-25);
+			/*motorDerechoAvanzar();
+			PwmMDvel(VEL_CRUCERO-35);
+			motorIzquierdoAvanzar();
+			PwmMIvel(VEL_CRUCERO);*/
+			break;
     	case IZ_ALTO:
 			motorDerechoRetroceder();
-			PwmMDvel(100);
+			PwmMDvel(VEL_CRUCERO-10);
 			motorIzquierdoAvanzar();
-			PwmMIvel(100);
+			PwmMIvel(VEL_CRUCERO-10);
 			break;
 		case DE_BAJO:
-			/*motorDerechoAvanzar();
-			PwmMDvel(100);
+			motorDerechoAvanzar();
+			PwmMDvel(VEL_CRUCERO);
 			motorIzquierdoAvanzar();
-			PwmMIvel(80);
-			break;*/
+			PwmMIvel(VEL_CRUCERO-20);
+			break;
 		case DE_MEDIO:
+			motorDerechoAvanzar();
+			PwmMDvel(VEL_CRUCERO-25);
+			motorIzquierdoRetroceder();
+			PwmMIvel(VEL_CRUCERO-25);
 			/*motorDerechoAvanzar();
-			PwmMDvel(100);
-			motorIzquierdoDetener();
-			PwmMIvel(100);
-			break;*/
+			PwmMDvel(VEL_CRUCERO);
+			motorIzquierdoAvanzar();
+			PwmMIvel(VEL_CRUCERO-35);*/
+			break;
 		case DE_ALTO:
 			motorDerechoAvanzar();
-			PwmMDvel(100);
+			PwmMDvel(VEL_CRUCERO-10);
 			motorIzquierdoRetroceder();
-			PwmMIvel(100);
+			PwmMIvel(VEL_CRUCERO-10);
 			break;
 		case APAGADO:
 			break;

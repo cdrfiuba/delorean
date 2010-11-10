@@ -24,7 +24,7 @@ bool getSensor(uint8_t analogSensor, bool s)
 	uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
 	bool v = s;
 	
-	uint8_t umbral = (maxNivelSensor - minNivelSensor)/6;
+	uint8_t umbral = (maxNivelSensor - minNivelSensor)/4;
 	
 	if (analogSensor < (media-umbral)) v = colorLinea;
 	if (analogSensor > (media+umbral)) v = !colorLinea;
@@ -196,6 +196,8 @@ void calibrarNiveles()
 	for (i=0; i<20; i++)
 	{
 		capturarADc();
+		//capturarADcPRO();
+		
 		s1 += analogSensorIzq;
 		s2 += analogSensorCen;
 		s3 += analogSensorDer;

@@ -26,8 +26,8 @@ volatile uint16_t velocidadMI;
 #define PWM_MAX_VEL   (PWM_ICR1 * 0.55)
 
 // Macros para setear la vel de los motores: 0% - 100%
-#define PwmMIvel(velocidad) (velocidadMI = velocidad*PWM_MAX_VEL/100)
-#define PwmMDvel(velocidad) (velocidadMD = velocidad*PWM_MAX_VEL/100)
+#define PwmMIvel(velocidad) (velocidadMI = (velocidad)*PWM_MAX_VEL/100)
+#define PwmMDvel(velocidad) (velocidadMD = (velocidad)*PWM_MAX_VEL/100)
 
 
 // Metodo para prender y apagar los PWM. Pone o saca el prescaler.
