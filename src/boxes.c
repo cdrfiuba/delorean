@@ -17,10 +17,10 @@ void TestLeds(void){
 	}
 }
 
-
-void TestADCs(void){
+// para testear los adc cuanto 
+void TestADcNoInt(void){
 		capturarADc();
-
+		//capturarADcPRO();
 		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
 		else Led1Off();
 		if(analogSensorCen > NIVEL_MEDIO_SENSORES) Led2On();
@@ -29,6 +29,14 @@ void TestADCs(void){
 		else Led3Off();
 }
 
+void TestADcInt(void){
+		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
+		else Led1Off();
+		if(analogSensorCen > NIVEL_MEDIO_SENSORES) Led2On();
+		else Led2Off();
+		if(analogSensorDer > NIVEL_MEDIO_SENSORES) Led3On();
+		else Led3Off();
+}
 
 void TestCerebroSimple(void) {
 

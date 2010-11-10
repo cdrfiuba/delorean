@@ -56,9 +56,7 @@ estado_sensor_t analizarSensores(void) {
 
 void capturarADc(void){
 	//Esta funcion no utiliza interrupciones
-	//verificar que en configurar ADC este
-	// ClearBit(ADCSRA, ADIE);
-	// 
+	//verificar que no este el define _ADC_MODO_INT_ en adc.h
 
 	ADSeleccionarCanal(ADC_NUM_SDRE);
 	IniciarConversion();
@@ -82,11 +80,11 @@ void capturarADc(void){
 
 void capturarADcPRO(void){
 	//Esta funcion no utiliza interrupciones
-	//verificar que en configurar ADC este
-	// ClearBit(ADCSRA, ADIE);
-	// 
+	//verificar que no este el define _ADC_MODO_INT_ en adc.h
 	EmisorDerOn();
 	ADSeleccionarCanal(ADC_NUM_SDRE);
+	//se debería utilizar un timer o algo
+	_delay_us(300);
 	IniciarConversion();
 	while (IsBitSet(ADCSRA,ADIF)==false);
 	SetBit(ADCSRA,ADIF);
@@ -95,6 +93,7 @@ void capturarADcPRO(void){
 
 	EmisorCenOn();
 	ADSeleccionarCanal(ADC_NUM_SCRE);
+	_delay_us(300);
 	IniciarConversion();
 	while (IsBitSet(ADCSRA,ADIF)==false);
 	SetBit(ADCSRA,ADIF);	
@@ -103,6 +102,7 @@ void capturarADcPRO(void){
 
 	EmisorIzqOn();
 	ADSeleccionarCanal(ADC_NUM_SIRE);
+	_delay_us(300);
 	IniciarConversion();
 	while (IsBitSet(ADCSRA,ADIF)==false);
 	SetBit(ADCSRA,ADIF);
@@ -111,34 +111,51 @@ void capturarADcPRO(void){
 }
 
 void configurarADCs(void){
+	EmisorIzqInit();
+	EmisorCenInit();
+	EmisorDerInit();
+	analogSensorDer = 0;
+	analogSensorCen = 0;
+	analogSensorDer	= 0;
+	
 	EncenderADC();
 
-	// Seleccionamos la mayor velocidad de conversion, o sea prescaler 0
-	ADCPrescalerSelec(0);
-	
 	// Alineacion a la izquierda
 	AlineacionInit('I');
+	
 
 	//lo utilizamos en el modo single conversion
 	//no seteamos free run
 	//
 	
+#ifdef _ADC_MODO_INT_
+	// Modo con interrupcion
+	// Seleccionamos la menor velocidad de muestreo. CK/128
+	ADCPrescalerSelec(7);
 	//Habilitar o no  la interrupcion de finalizacion de conversion AD
-	// SetBit(ADCSRA, ADIE);
+	SetBit(ADCSRA, ADIE);
+	//ClearBit(ADCSRA, ADIE);
+	medicionValida=false;
+	IniciarConversion();
+#else
+	// Modo sin interrupcion (utilizamos la funcion capturarADC();
+	// Seleccionamos la mayor velocidad de muestreo. CK/2
+	ADCPrescalerSelec(0);
+	//Habilitar o no  la interrupcion de finalizacion de conversion AD
 	ClearBit(ADCSRA, ADIE);
-
-	// Inicia la primera conversion
-	EmisorIzqInit();
-	EmisorCenInit();
-	EmisorDerInit();
 	EmisorIzqOn();
 	EmisorCenOn();
 	EmisorDerOn();	
-	analogSensorDer = 0;
-	analogSensorCen = 0;
-	analogSensorDer	= 0;
+#endif
 }
 
+volatile bool medicionValida;
+
+
+// se tuvo que hacer dos mediciones por sensor, ya que el tiempo de respuesta
+// entre que el Emisor se enciende, y el receptor detecta algo, es mayor
+// que el mayor tiempo de muestreo posible
+// para utilizar interrupciones, definir la etiqueta _ADC_MODO_INT_
 ISR(ADC_vect){
 	// ver canal en que se termino la conversion
 	char temp = ADDeterminarCanal();
@@ -147,42 +164,58 @@ ISR(ADC_vect){
 	
 	switch (temp){
 		case ADC_NUM_SDRE:
-			// AD0 es el sensor derecho
-			analogSensorDer = temp2;
-			EmisorDerOff();
-			//if(analogSensorDer < NIVEL_MEDIO_SENSORES) Led1On(); else Led1Off();
-			// seleccionar siguiente canal
-			EmisorCenOn();
-			ADSeleccionarCanal(ADC_NUM_SCRE);
+			if (medicionValida==true) {
+				// AD0 es el sensor derecho
+				analogSensorDer = temp2;
+				// seleccionar siguiente canal
+				ADSeleccionarCanal(ADC_NUM_SCRE);
+				medicionValida = false;
+				IniciarConversion();
+			}
+			else {
+				IniciarConversion();
+				medicionValida = true;
+				EmisorDerOff();
+				EmisorCenOn();
+			}
 			break;
 		case ADC_NUM_SCRE:
-			// AD1 es el sensor cental
-			analogSensorCen = temp2;
-			EmisorCenOff();
-			//if(analogSensorCen < NIVEL_MEDIO_SENSORES) Led2On(); else Led2Off();
-			// seleccionar siguiente canal
-			EmisorIzqOn();
-			ADSeleccionarCanal(ADC_NUM_SIRE);
+			if (medicionValida==true) {
+				// AD1 es el sensor cental
+				analogSensorCen = temp2;
+				// seleccionar siguiente canal
+				ADSeleccionarCanal(ADC_NUM_SIRE);
+				medicionValida = false;
+				IniciarConversion();
+			}
+			else {
+				IniciarConversion();
+				medicionValida = true;
+				EmisorCenOff();
+				EmisorIzqOn();
+			}
 			break;
 		case ADC_NUM_SIRE:
-			// AD2 es el sensor izquierdo
-			analogSensorIzq = temp2;
-			EmisorIzqOff();
-			//if(analogSensorIzq < NIVEL_MEDIO_SENSORES) Led3On(); else Led3Off();
-			// seleccionar siguiente canal
-			EmisorDerOn();
-			ADSeleccionarCanal(ADC_NUM_SDRE);
+			if (medicionValida==true) {
+				// AD2 es el sensor izquierdo
+				analogSensorIzq = temp2;
+				// seleccionar siguiente canal
+				ADSeleccionarCanal(ADC_NUM_SDRE);
+				medicionValida = false;
+				IniciarConversion();
+			}
+			else {
+				IniciarConversion();
+				medicionValida = true;
+				EmisorIzqOff();
+				EmisorDerOn();
+			}
 			break;
 		default:
 			// no esperado, se descarta el valor de conversion y se
 			// vuelve a arrancar con el sensor derecho
-			temp = ADCH;
-			ADSeleccionarCanal(0);
-			Led1On();
 			break;
 	}
-	// Volvemos a iniciar la conversion
-	IniciarConversion();
 }
 
 /**

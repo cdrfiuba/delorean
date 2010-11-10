@@ -4,21 +4,16 @@
 //#include "delorean.h"
 #include "board.h"
 
+// Si se quiere utilizar los conversores en el modo de Interrupcion
+// dejar el siguiente define. En caso de que se quiera trabajar con la
+// funcion capturarADc o capturarADcPRO comentar el siguiente define
+#define _ADC_MODO_INT_
 
-#define SENSOR_NIVEL_NEGRO		255
-#define SENSOR_NIVEL_BLANCO		200
-
-//#define NIVEL_MAYOR 		max(SENSOR_NIVEL_NEGRO,SENSOR_NIVEL_BLANCO)
-//#define NIVEL_MENOR 		min(SENSOR_NIVEL_NEGRO,SENSOR_NIVEL_BLANCO)
-
-#define NIVEL_BLANCO_INDET		SENSOR_NIVEL_BLANCO + (SENSOR_NIVEL_NEGRO - SENSOR_NIVEL_BLANCO)/3 
-#define NIVEL_NEGRO_INDET		  SENSOR_NIVEL_NEGRO  - (SENSOR_NIVEL_NEGRO - SENSOR_NIVEL_BLANCO)/3
-#define NIVEL_MEDIO_SENSORES 	SENSOR_NIVEL_BLANCO + (SENSOR_NIVEL_NEGRO - SENSOR_NIVEL_BLANCO)/2
 
 void configurarADCs(void);
 void capturarADc(void);
-void calibrarNiveles();
-
+void calibrarNiveles(void);
+void capturarADcPRO(void);
 
 unsigned char analogSensorIzq;
 unsigned char analogSensorCen;
