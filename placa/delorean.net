@@ -1,0 +1,383 @@
+# EESchema Netlist Version 1.1 created  Tue 26 Oct 2010 20:30:11 ART
+(
+ ( /4CC22213 C1V7 C1 47u
+  ( 1 +BATT )
+  ( 2 GND )
+ )
+ ( /4CC22230 C1V5 C2 22u
+  ( 1 VCC )
+  ( 2 GND )
+ )
+ ( /4CC22564 C1 C3 100n
+  ( 1 VCC )
+  ( 2 GND )
+ )
+ ( /4CB8E227 C1 C4 100n
+  ( 1 VCC )
+  ( 2 GND )
+ )
+ ( /4CC22286 C1 C5 100n
+  ( 1 VCC )
+  ( 2 GND )
+ )
+ ( /4CC22312 C1 C6 100n
+  ( 1 VCC )
+  ( 2 GND )
+ )
+ ( /4C785EA9 LED-5MM D1 LED
+  ( 1 N-000017 )
+  ( 2 GND )
+ )
+ ( /4CC0665E LED-5MM D2 LED
+  ( 1 N-000019 )
+  ( 2 GND )
+ )
+ ( /4CC06665 LED-5MM D3 LED
+  ( 1 N-000020 )
+  ( 2 GND )
+ )
+ ( /4CB8F3E9 D4 D4 DIODE
+  ( 1 GND )
+  ( 2 N-000035 )
+ )
+ ( /4CB8F3E8 D4 D5 DIODE
+  ( 1 GND )
+  ( 2 N-000034 )
+ )
+ ( /4C785E67 D3 D6 DIODE
+  ( 1 GND )
+  ( 2 N-000033 )
+ )
+ ( /4C785E65 D3 D7 DIODE
+  ( 1 GND )
+  ( 2 N-000037 )
+ )
+ ( /4CB8F3EB D3 D8 DIODE
+  ( 1 N-000035 )
+  ( 2 +BATT )
+ )
+ ( /4CB8F3EA D3 D9 DIODE
+  ( 1 N-000034 )
+  ( 2 +BATT )
+ )
+ ( /4C785E6A D3 D10 DIODE
+  ( 1 N-000033 )
+  ( 2 +BATT )
+ )
+ ( /4C785E68 D3 D11 DIODE
+  ( 1 N-000037 )
+  ( 2 +BATT )
+ )
+ ( /4C785E4E DIP-28__300_ELL IC1 ATMEGA8-P
+  ( 1 /reset )
+  ( 2 /in1 )
+  ( 3 /in2 )
+  ( 4 N-000008 )
+  ( 5 /in3 )
+  ( 6 /in4 )
+  ( 7 VCC )
+  ( 8 GND )
+  ( 9 N-000009 )
+  ( 10 N-000003 )
+  ( 11 N-000021 )
+  ( 12 N-000002 )
+  ( 13 N-000018 )
+  ( 14 ? )
+  ( 15 /enA )
+  ( 16 /enB )
+  ( 17 /mosi )
+  ( 18 /miso )
+  ( 19 /sck )
+  ( 20 VCC )
+  ( 21 VCC )
+  ( 22 GND )
+  ( 23 /sensor1 )
+  ( 24 /sensor2 )
+  ( 25 /sensor3 )
+  ( 26 /emisor1 )
+  ( 27 /emisor2 )
+  ( 28 /emisor3 )
+ )
+ ( /4CC219E8 SIL-2 JP1 JUMPER
+  ( 1 N-000009 )
+  ( 2 GND )
+ )
+ ( /4CC219E1 SIL-2 JP2 JUMPER
+  ( 1 N-000003 )
+  ( 2 GND )
+ )
+ ( /4CC61C41 SIL-3 K1 CONN_3
+  ( 1 N-000024 )
+  ( 2 GND )
+  ( 3 /sensor1 )
+ )
+ ( /4CC61C4F SIL-3 K2 CONN_3
+  ( 1 N-000007 )
+  ( 2 GND )
+  ( 3 /sensor3 )
+ )
+ ( /4CC61C53 SIL-3 K3 CONN_3
+  ( 1 N-000010 )
+  ( 2 GND )
+  ( 3 /sensor2 )
+ )
+ ( /4CB8E14D bornier2 P1 CONN_2
+  ( 1 +BATT )
+  ( 2 GND )
+ )
+ ( /4CB8DD95 pin_array_3x2 P2 CONN_3X2
+  ( 1 /miso )
+  ( 2 VCC )
+  ( 3 /sck )
+  ( 4 /mosi )
+  ( 5 /reset )
+  ( 6 GND )
+ )
+ ( /4CB8F3EC PIN_ARRAY_2X1 P4 CONN_2
+  ( 1 N-000035 )
+  ( 2 N-000034 )
+ )
+ ( /4CB8F368 PIN_ARRAY_2X1 P5 CONN_2
+  ( 1 N-000033 )
+  ( 2 N-000037 )
+ )
+ ( /4CB8E335 R3 R1 10k
+  ( 1 VCC )
+  ( 2 /reset )
+ )
+ ( /4CC06678 R3 R2 R
+  ( 1 N-000018 )
+  ( 2 N-000017 )
+ )
+ ( /4CC0667C R3 R3 R
+  ( 1 N-000002 )
+  ( 2 N-000019 )
+ )
+ ( /4CC06680 R3 R4 R
+  ( 1 N-000021 )
+  ( 2 N-000020 )
+ )
+ ( /4CB8F4F5 R4 R5 .1
+  ( 1 N-000013 )
+  ( 2 GND )
+ )
+ ( /4CB8F4FA R4 R6 .1
+  ( 1 N-000025 )
+  ( 2 GND )
+ )
+ ( /4CC0BBD7 R4 R7 100
+  ( 1 N-000024 )
+  ( 2 /emisor1 )
+ )
+ ( /4CC0BDD0 R4 R8 100
+  ( 1 /emisor2 )
+  ( 2 N-000010 )
+ )
+ ( /4CC0BDDB R1 R9 100
+  ( 1 N-000007 )
+  ( 2 /emisor3 )
+ )
+ ( /4CC0BBE5 SIL-3 RV1 10k
+  ( 1 /sensor1 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4CC0BBE3 SIL-3 RV2 10k
+  ( 1 /sensor2 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4CC0BBE1 SIL-3 RV3 10k
+  ( 1 /sensor3 )
+  ( 2 VCC )
+  ( 3 VCC )
+ )
+ ( /4CB8E2F3 SW_PUSH_SMALL SW1 Reset
+  ( 1 GND )
+  ( 2 /reset )
+ )
+ ( /4CC0C538 SW_PUSH_SMALL SW2 Arranque
+  ( 1 GND )
+  ( 2 N-000008 )
+ )
+ ( /4CB8E1E3 LM78XX U1 LM2940
+  ( GND GND )
+  ( VI +BATT )
+  ( VO VCC )
+ )
+ ( /4CB8F2FE L298D U2 L298D
+  ( 1 N-000013 )
+  ( 2 N-000035 )
+  ( 3 N-000034 )
+  ( 4 +BATT )
+  ( 5 /in1 )
+  ( 6 /enA )
+  ( 7 /in2 )
+  ( 8 GND )
+  ( 9 VCC )
+  ( 10 /in3 )
+  ( 11 /enB )
+  ( 12 /in4 )
+  ( 13 N-000033 )
+  ( 14 N-000037 )
+  ( 15 N-000025 )
+ )
+)
+*
+{ Allowed footprints by component:
+$component C1
+ CP*
+ SM*
+$endlist
+$component C2
+ CP*
+ SM*
+$endlist
+$component C3
+ SM*
+ C?
+ C1-1
+$endlist
+$component C4
+ SM*
+ C?
+ C1-1
+$endlist
+$component C5
+ SM*
+ C?
+ C1-1
+$endlist
+$component C6
+ SM*
+ C?
+ C1-1
+$endlist
+$component D1
+ LED-3MM
+ LED-5MM
+ LED-10MM
+ LED-0603
+ LED-0805
+ LED-1206
+ LEDV
+$endlist
+$component D2
+ LED-3MM
+ LED-5MM
+ LED-10MM
+ LED-0603
+ LED-0805
+ LED-1206
+ LEDV
+$endlist
+$component D3
+ LED-3MM
+ LED-5MM
+ LED-10MM
+ LED-0603
+ LED-0805
+ LED-1206
+ LEDV
+$endlist
+$component D4
+ D?
+ S*
+$endlist
+$component D5
+ D?
+ S*
+$endlist
+$component D6
+ D?
+ S*
+$endlist
+$component D7
+ D?
+ S*
+$endlist
+$component D8
+ D?
+ S*
+$endlist
+$component D9
+ D?
+ S*
+$endlist
+$component D10
+ D?
+ S*
+$endlist
+$component D11
+ D?
+ S*
+$endlist
+$component IC1
+ 28DIP-ELL600
+ 28dip600
+$endlist
+$component R1
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R2
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R3
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R4
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R5
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R6
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R7
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R8
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$component R9
+ R?
+ SM0603
+ SM0805
+ R?-*
+ SM1206
+$endlist
+$endfootprintlist
+}
