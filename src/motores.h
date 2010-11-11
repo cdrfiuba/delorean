@@ -23,11 +23,12 @@ volatile uint16_t velocidadMI;
 #define PWM_FREC 5000 // Frecuencia PWM
 #define PWM_ICR1  (F_CPU/(2*1*PWM_FREC) )// Calcula ICR1
 
-#define PWM_MAX_VEL   (PWM_ICR1 * 0.55)
+#define PWM_MAX_VEL_IZQ   (PWM_ICR1 * 0.55)
+#define PWM_MAX_VEL_DER   (PWM_ICR1 * 0.54)
 
 // Macros para setear la vel de los motores: 0% - 100%
-#define PwmMIvel(velocidad) (velocidadMI = (velocidad)*PWM_MAX_VEL/100)
-#define PwmMDvel(velocidad) (velocidadMD = (velocidad)*PWM_MAX_VEL/100)
+#define PwmMIvel(velocidad) (velocidadMI = (velocidad)*PWM_MAX_VEL_IZQ/100)
+#define PwmMDvel(velocidad) (velocidadMD = (velocidad)*PWM_MAX_VEL_DER/100)
 
 
 // Metodo para prender y apagar los PWM. Pone o saca el prescaler.

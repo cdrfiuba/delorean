@@ -15,13 +15,13 @@ void capturarADc(void);
 void calibrarNiveles(void);
 void capturarADcPRO(void);
 
-unsigned char analogSensorIzq;
-unsigned char analogSensorCen;
-unsigned char analogSensorDer;
+volatile uint8_t analogSensorIzq;
+volatile uint8_t analogSensorCen;
+volatile uint8_t analogSensorDer;
 
 // Variables del máximo que representa el blanco, el mínimo que representa el negro y cual de los dos es la linea.
 // colorLinea tiene 1 si la linea es blanca y 0 si la linea es negra
-uint8_t minNivelSensor, maxNivelSensor, colorLinea;
+uint16_t minNivelSensor, maxNivelSensor, colorLinea;
 
 typedef enum{
     ES_000 = 0,
@@ -35,4 +35,5 @@ typedef enum{
 estado_sensor_t estadoSensores;
 
 estado_sensor_t analizarSensores(void);
+
 #endif
