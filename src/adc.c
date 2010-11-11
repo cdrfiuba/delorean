@@ -1,6 +1,7 @@
 #include "adc.h" 
 #include <util/delay.h>
 
+volatile bool medicionValida;
 
 /*bool  getSensor (unsigned char analogSensor)
 {
@@ -21,10 +22,10 @@
 **/
 bool getSensor(uint8_t analogSensor, bool s)
 {
-	uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
+	uint16_t media = (minNivelSensor + maxNivelSensor) / 2;
 	bool v = s;
 	
-	uint8_t umbral = (maxNivelSensor - minNivelSensor)/4;
+	uint16_t umbral = (maxNivelSensor - minNivelSensor)/16;
 	
 	if (analogSensor < (media-umbral)) v = colorLinea;
 	if (analogSensor > (media+umbral)) v = !colorLinea;
@@ -149,7 +150,6 @@ void configurarADCs(void){
 #endif
 }
 
-volatile bool medicionValida;
 
 
 // se tuvo que hacer dos mediciones por sensor, ya que el tiempo de respuesta
@@ -160,7 +160,7 @@ ISR(ADC_vect){
 	// ver canal en que se termino la conversion
 	char temp = ADDeterminarCanal();
 	// guardar en variable correspondiente
-	unsigned char temp2 = ADCH;	
+	uint8_t temp2 = ADCH;	
 	
 	switch (temp){
 		case ADC_NUM_SDRE:
@@ -228,7 +228,8 @@ void calibrarNiveles()
 	
 	for (i=0; i<20; i++)
 	{
-		capturarADc();
+		_delay_ms(2);
+		//capturarADc();
 		//capturarADcPRO();
 		
 		s1 += analogSensorIzq;

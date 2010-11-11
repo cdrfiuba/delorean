@@ -30,10 +30,14 @@ void TestADcNoInt(void){
 }
 
 void TestADcInt(void){
+		uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
+//		if(analogSensorIzq > media) Led1On();
 		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
 		else Led1Off();
+//		if(analogSensorCen > media) Led2On();
 		if(analogSensorCen > NIVEL_MEDIO_SENSORES) Led2On();
 		else Led2Off();
+//		if(analogSensorDer > media) Led3On();
 		if(analogSensorDer > NIVEL_MEDIO_SENSORES) Led3On();
 		else Led3Off();
 }
@@ -49,7 +53,7 @@ void TestCerebroSimple(void) {
 			PwmMDvel(100);
 			motorIzquierdoAvanzar();
 			PwmMIvel(100);
-			TestADCs();
+			TestADcNoInt();
 			capturarADc();
 		}
 }
