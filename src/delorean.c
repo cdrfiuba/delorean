@@ -20,7 +20,9 @@ int main (void) {
 	while(1)
 	{	
 	// Codigo Principal
-	//	capturarADc();
+	//
+		//capturarADc();
+		//capturarADcPRO();
 		estadoSensores = analizarSensores();
 		estadoActual = evaluarEstado(estadoSensores);
 		accionar();
@@ -36,16 +38,19 @@ void startup(void)
 	colorLinea = 0;*/
 		
 	estadoActual = APAGADO;
+	//IntArranqueInit();
 
 	Led1Init();
 	Led2Init();
 	Led3Init();
 	
+	//set_interrupts();
 	configurarPulsadorArranque();
 	configurarMotores();
 	configurarTimer1();
 	configurarADCs();
 	PwmStart();
+//	set_sleep_mode(SLEEP_MODE_IDLE);
 	sei();
 }
 
@@ -146,15 +151,6 @@ estado_t evaluarEstado(estado_sensor_t es){
 }
 
 #define VEL_CRUCERO 100
-#define VEL_CRUCERO_90 (VEL_CRUCERO*0.9)
-#define VEL_CRUCERO_80 (VEL_CRUCERO*0.8)
-#define VEL_CRUCERO_70 (VEL_CRUCERO*0.7)
-#define VEL_CRUCERO_60 (VEL_CRUCERO*0.6)
-#define VEL_CRUCERO_50 (VEL_CRUCERO*0.5)
-#define VEL_CRUCERO_40 (VEL_CRUCERO*0.4)
-#define VEL_CRUCERO_30 (VEL_CRUCERO*0.3)
-#define VEL_CRUCERO_20 (VEL_CRUCERO*0.2)
-#define VEL_CRUCERO_10 (VEL_CRUCERO*0.1)
 
 void accionar(void) {
 	switch (estadoActual) {
@@ -166,39 +162,47 @@ void accionar(void) {
 			break;
 		case IZ_BAJO:
 			motorDerechoAvanzar();
-			PwmMDvel(VEL_CRUCERO_70);
+			PwmMDvel(VEL_CRUCERO-35);
 			motorIzquierdoAvanzar();
 			PwmMIvel(VEL_CRUCERO);
 			break;
 		case IZ_MEDIO:
 			motorDerechoRetroceder();
-			PwmMDvel(VEL_CRUCERO_80);
+			PwmMDvel(VEL_CRUCERO-35);
 			motorIzquierdoAvanzar();
-			PwmMIvel(VEL_CRUCERO_80);
+			PwmMIvel(VEL_CRUCERO-25);
+			/*motorDerechoAvanzar();
+			PwmMDvel(VEL_CRUCERO-35);
+			motorIzquierdoAvanzar();
+			PwmMIvel(VEL_CRUCERO);*/
 			break;
     	case IZ_ALTO:
 			motorDerechoRetroceder();
-			PwmMDvel(VEL_CRUCERO);
+			PwmMDvel(VEL_CRUCERO-15);
 			motorIzquierdoAvanzar();
-			PwmMIvel(VEL_CRUCERO);
+			PwmMIvel(VEL_CRUCERO-15);
 			break;
 		case DE_BAJO:
 			motorDerechoAvanzar();
 			PwmMDvel(VEL_CRUCERO);
 			motorIzquierdoAvanzar();
-			PwmMIvel(VEL_CRUCERO_70);
+			PwmMIvel(VEL_CRUCERO-35);
 			break;
 		case DE_MEDIO:
 			motorDerechoAvanzar();
-			PwmMDvel(VEL_CRUCERO_80);
+			PwmMDvel(VEL_CRUCERO-25);
 			motorIzquierdoRetroceder();
-			PwmMIvel(VEL_CRUCERO_80);
+			PwmMIvel(VEL_CRUCERO-35);
+			/*motorDerechoAvanzar();
+			PwmMDvel(VEL_CRUCERO);
+			motorIzquierdoAvanzar();
+			PwmMIvel(VEL_CRUCERO-35);*/
 			break;
 		case DE_ALTO:
 			motorDerechoAvanzar();
-			PwmMDvel(VEL_CRUCERO);
+			PwmMDvel(VEL_CRUCERO-10);
 			motorIzquierdoRetroceder();
-			PwmMIvel(VEL_CRUCERO);
+			PwmMIvel(VEL_CRUCERO-10);
 			break;
 		case APAGADO:
 			break;
