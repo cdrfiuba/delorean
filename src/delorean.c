@@ -162,15 +162,15 @@ void accionar(void) {
 			break;
 		case IZ_BAJO:
 			motorDerechoAvanzar();
-			PwmMDvel(VEL_CRUCERO-35);
+			PwmMDvel(VEL_CRUCERO-45);
 			motorIzquierdoAvanzar();
 			PwmMIvel(VEL_CRUCERO);
 			break;
 		case IZ_MEDIO:
 			motorDerechoRetroceder();
-			PwmMDvel(VEL_CRUCERO-35);
+			PwmMDvel(VEL_CRUCERO-30);
 			motorIzquierdoAvanzar();
-			PwmMIvel(VEL_CRUCERO-25);
+			PwmMIvel(VEL_CRUCERO-20);
 			/*motorDerechoAvanzar();
 			PwmMDvel(VEL_CRUCERO-35);
 			motorIzquierdoAvanzar();
@@ -178,21 +178,21 @@ void accionar(void) {
 			break;
     	case IZ_ALTO:
 			motorDerechoRetroceder();
-			PwmMDvel(VEL_CRUCERO-15);
+			PwmMDvel(VEL_CRUCERO-20);
 			motorIzquierdoAvanzar();
-			PwmMIvel(VEL_CRUCERO-15);
+			PwmMIvel(VEL_CRUCERO-20);
 			break;
 		case DE_BAJO:
 			motorDerechoAvanzar();
 			PwmMDvel(VEL_CRUCERO);
 			motorIzquierdoAvanzar();
-			PwmMIvel(VEL_CRUCERO-35);
+			PwmMIvel(VEL_CRUCERO-45);
 			break;
 		case DE_MEDIO:
 			motorDerechoAvanzar();
-			PwmMDvel(VEL_CRUCERO-25);
+			PwmMDvel(VEL_CRUCERO-20);
 			motorIzquierdoRetroceder();
-			PwmMIvel(VEL_CRUCERO-35);
+			PwmMIvel(VEL_CRUCERO-30);
 			/*motorDerechoAvanzar();
 			PwmMDvel(VEL_CRUCERO);
 			motorIzquierdoAvanzar();
@@ -200,9 +200,9 @@ void accionar(void) {
 			break;
 		case DE_ALTO:
 			motorDerechoAvanzar();
-			PwmMDvel(VEL_CRUCERO-10);
+			PwmMDvel(VEL_CRUCERO-20);
 			motorIzquierdoRetroceder();
-			PwmMIvel(VEL_CRUCERO-10);
+			PwmMIvel(VEL_CRUCERO-20);
 			break;
 		case APAGADO:
 			break;
