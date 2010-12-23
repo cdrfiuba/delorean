@@ -30,7 +30,7 @@ void TestADcNoInt(void){
 }
 
 void TestADcInt(void){
-		uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
+//		uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
 //		if(analogSensorIzq > media) Led1On();
 		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
 		else Led1Off();

@@ -10,9 +10,10 @@
 #include <avr/sleep.h>
 
 #include "board.h"
-#include "boxes.h"
 #include "motores.h"
 #include "adc.h"
+
+//#include "boxes.h"
 
 typedef enum{
     APAGADO,
