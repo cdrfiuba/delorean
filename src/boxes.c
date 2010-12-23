@@ -3,20 +3,35 @@
 void TestLeds(void){
 	while(1){
 		Led1On();
-		_delay_ms(200);
-		Led2On();
-		_delay_ms(200);
-		Led3On();
-		_delay_ms(200);
+		_delay_ms(100);
 		Led1Off();
-		_delay_ms(200);
+		Led2On();
+		_delay_ms(100);
 		Led2Off();
-		_delay_ms(200);
+		Led3On();
+		_delay_ms(100);
 		Led3Off();
-		_delay_ms(200);
+		Led2On();
+		_delay_ms(100);
+		Led2Off();
 	}
 }
 
+void TestLeds2(void){
+	while(1){
+		Led3On();
+		_delay_ms(200);
+		Led3Off();
+		Led2On();
+		_delay_ms(200);
+		Led2Off();
+		Led1On();
+		_delay_ms(200);
+		Led1Off();
+	}
+}
+
+/*
 // para testear los adc cuanto 
 void TestADcNoInt(void){
 		capturarADc();
@@ -30,7 +45,7 @@ void TestADcNoInt(void){
 }
 
 void TestADcInt(void){
-		uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
+//		uint8_t media = (minNivelSensor + maxNivelSensor) / 2;
 //		if(analogSensorIzq > media) Led1On();
 		if(analogSensorIzq > NIVEL_MEDIO_SENSORES) Led1On();
 		else Led1Off();
@@ -42,19 +57,20 @@ void TestADcInt(void){
 		else Led3Off();
 }
 
+*/
 void TestCerebroSimple(void) {
 
 		if (estadoActual == APAGADO){
-						motorDerechoDetener();
-						motorIzquierdoDetener();
+			motoresApagar();
 		}
 		else if (estadoActual == ON_TRACK){
-			motorDerechoAvanzar();
-			PwmMDvel(100);
-			motorIzquierdoAvanzar();
+			motoresEncender();
+			PwmMDvel(96);
+//			OCR1A= ICR1/2;
+//			OCR1B= ICR1/2;
 			PwmMIvel(100);
-			TestADcNoInt();
-			capturarADc();
+//			TestADcNoInt();
+//			capturarADc();
 		}
 }
 
