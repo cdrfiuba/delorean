@@ -8,6 +8,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <avr/sleep.h>
+#include <avr/eeprom.h>
 
 #include "board.h"
 #include "boxes.h"
@@ -25,6 +26,7 @@ typedef enum{
     DE_ALTO
     } estado_t;
 
-estado_t estadoActual;
+typedef void (*fptr) (void);
 
+volatile estado_t estadoActual;
 #endif

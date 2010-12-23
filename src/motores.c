@@ -2,10 +2,49 @@
 
 void configurarTimer1(void);
 
+inline void motoresEncender(void){
+	SetBit(PORT_MD_EN, MD_EN_NUMBER);
+	SetBit(PORT_MI_EN, MI_EN_NUMBER);
+}
+
+inline void motoresApagar(void){
+	ClearBit(PORT_MD_EN, MD_EN_NUMBER);
+	ClearBit(PORT_MI_EN, MI_EN_NUMBER);
+}
+
+inline void motorDerechoAvanzar(void){
+	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
+}
+inline void motorDerechoRetroceder(void){
+	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
+}
+
+inline void motorDerechoDetener(void){
+	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
+}
+
+inline void motorIzquierdoDetener(void){
+	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
+}
+
+inline void motorIzquierdoAvanzar(void){
+	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
+}
+
+inline void motorIzquierdoRetroceder(void){
+	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
+}
+
 void configurarMotores(void){
 	//Configuramos como salidas los pines de PWM
-	SetBit(DDR_MI_PWM, MI_PWM_NUMBER);
-	SetBit(DDR_MD_PWM, MD_PWM_NUMBER);
+	SetBit(DDR_MI_EN, MI_EN_NUMBER);
+	SetBit(DDR_MD_EN, MD_EN_NUMBER);
 
 	//Configuramos como salidas los pines "In's" del puente H
 	SetBit(DDR_MI_IN1, MI_IN1_NUMBER);
@@ -13,50 +52,22 @@ void configurarMotores(void){
 	SetBit(DDR_MD_IN1, MD_IN1_NUMBER);
 	SetBit(DDR_MD_IN2, MD_IN2_NUMBER);
 
-	motorDerechoDetener();
-	motorIzquierdoDetener();
+	motoresApagar();
 	configurarTimer1();
-
+	
 
 	ICR1 = PWM_ICR1;  // Esto define al TOP
 
 	// PWM A   MOTOR DERECHO
-	OCR1A = 0;
-	velocidadMD = 0;
+//	OCR1A = 0;
+//	velocidadMD = (ICR1/2);
 
 	// PWM B   MOTOR IZQUIERDO
-	OCR1B = 0;
-	velocidadMI = 0;
+//	OCR1B = 0;
+//	velocidadMI = (ICR1/2);
 }
 
-void motorDerechoDetener(void){
-	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
-}
 
-void motorDerechoAvanzar(void){
-	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
-}
-void motorDerechoRetroceder(void){
-	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
-}
-
-void motorIzquierdoDetener(void){
-	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
-}
-
-void motorIzquierdoAvanzar(void){
-	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
-}
-
-void motorIzquierdoRetroceder(void){
-	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
-}
 
 
 void configurarTimer1(void){
@@ -68,20 +79,24 @@ void configurarTimer1(void){
 
 	ICR1 = PWM_ICR1; 
 	//Habilitamos la interrupcion del Timer1 del overflow
-	TIMSK = (1<<TOIE1);
+	TIMSK = TIMSK_VALUE;
 }
-
-
 
 ISR(TIMER1_OVF_vect)
 {
-	//PWM A RUEDA IZQUIERDA
-	////MOTORES_MAX_VEL; //Cargamos las velocidades en los comparadores del timer
-	OCR1A = velocidadMI;
-	
-	//PWM A RUEDA DERECHA
-	OCR1B = velocidadMD;  //MOTORES_MAX_VEL; //
-	return;
+	// Los valores de comparacion se actualizan automaticamente en BOTTOM
+	motorDerechoAvanzar();
+	motorIzquierdoAvanzar();
 }
 
+//PWM A RUEDA IZQUIERDA
+ISR(TIMER1_COMPA_vect)
+{	
+	motorIzquierdoRetroceder();
+}
 
+//PWM A RUEDA DERECHA
+ISR(TIMER1_COMPB_vect)
+{
+	motorDerechoRetroceder();
+}
