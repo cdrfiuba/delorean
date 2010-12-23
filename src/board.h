@@ -7,19 +7,19 @@
 /* Definiciones de los pines correspondientes a los motores */
 
 /*MD_PWM = Motor Derecho Enable (Enable)*/
-#define PORT_MD_PWM_NAME  B
-#define MD_PWM_NUMBER     1
+#define PORT_MD_EN_NAME  B
+#define MD_EN_NUMBER     1
 /*MI_WPM = Motor Izquierdo PWM (Enable) */
-#define PORT_MI_PWM_NAME  B
-#define MI_PWM_NUMBER     2
+#define PORT_MI_EN_NAME  B
+#define MI_EN_NUMBER     2
 
-#define PORT_MD_PWM     def_port_reg(PORT_MD_PWM_NAME)
-#define PIN_MD_PWM      def_pin_reg(PORT_MD_PWM_NAME)
-#define DDR_MD_PWM      def_ddr_reg(PORT_MD_PWM_NAME)
+#define PORT_MD_EN     def_port_reg(PORT_MD_EN_NAME)
+#define PIN_MD_EN      def_pin_reg(PORT_MD_EN_NAME)
+#define DDR_MD_EN      def_ddr_reg(PORT_MD_EN_NAME)
 
-#define PORT_MI_PWM     def_port_reg(PORT_MI_PWM_NAME)
-#define PIN_MI_PWM      def_pin_reg(PORT_MI_PWM_NAME)
-#define DDR_MI_PWM      def_ddr_reg(PORT_MI_PWM_NAME)
+#define PORT_MI_EN     def_port_reg(PORT_MI_EN_NAME)
+#define PIN_MI_EN      def_pin_reg(PORT_MI_EN_NAME)
+#define DDR_MI_EN      def_ddr_reg(PORT_MI_EN_NAME)
 
 
 /*MI_IN1 = Motor Left IN1*/
@@ -275,7 +275,7 @@
 
 #define IsJumper1Set()     IsBitSet(PIN_JMP1, JMP1_NUMBER)
 //#define IsJumper1Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
-#define IsJumper2Set()     IsBitSet(PIN_JMP1, JMP1_NUMBER)
+#define IsJumper2Set()     IsBitSet(PIN_JMP2, JMP2_NUMBER)
 //#define IsJumper2Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
 
 /* ----------------------------------------------------- */
