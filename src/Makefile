@@ -26,21 +26,21 @@ HFUSE = 0xD9
 LFUSE = 0xE4
 
 # SRC contiene el nombre de todos los .c existentes en el directorio actual
-SRC = $(shell find . -name '*.[c]')
+SRC = $(shell find *.c)
 
 # INC contiene el nombre de todos los .h existentes en el directorio actual
-INC = $(shell find . -name '*.[h]')
+INC = $(shell find *.h)
 
-# Flags de optimizacion '-Os' tamaño '-O3' velocidad '-O0
-# Si se deja -O vacio ¿elije el compilador?
-CFLAGS = -O -Wall
+# Flags de optimizacion '-Os' tamaño '-O3' velocidad
+# Si se deja -O vacio el compilador elige '-01'
+CFLAGS = -O2 -Wall
 
 CDEFINES = -DF_CPU=$(CLK)
 
 all: hex
 
 hex: $(SRC) $(INC)
-	avr-gcc $(CFLAGS) $(CDEFINES) -mmcu=$(MMCU)  -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
+	avr-gcc $(CFLAGS) $(CDEFINES) -mmcu=$(MMCU) -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
 	avr-objcopy -j .text -O ihex  $(TARGET).bin $(TARGET).hex
 	avr-size $(TARGET).bin
 
@@ -48,10 +48,7 @@ program: hex
 	avrdude -c usbtiny -p $(TARGET_P) -U flash:w:$(TARGET).hex:i
 
 asm: $(SRC) $(INC)
-	avr-gcc -mmcu=$(MMCU) $(CFLAGS) -S -o $(TARGET).s $<
-
-asmdebug: $(SRC) $(INC)
-	avr-gcc -mmcu=$(MMCU) -O -S -o $(TARGET).s $<
+	avr-gcc -mmcu=$(MMCU) $(CFLAGS) $(CDEFINES) -S -o $(TARGET).s $(FILE)
 
 fuses:
 	avrdude -c usbtiny -p $(TARGET_P) -U hfuse:w:$(HFUSE):m
@@ -63,3 +60,8 @@ clean:
 editgvim:
 	gvim -p $(SRC) $(INC) Makefile
 
+eepromread:
+	avrdude -c usbtiny -p $(TARGET_P) -U eeprom:r:eeprom.hex:i
+
+eepromwrite:
+	avrdude -c usbtiny -p $(TARGET_P) -U eeprom:w:eeprom.hex:i
