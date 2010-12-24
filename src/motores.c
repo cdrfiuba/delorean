@@ -12,13 +12,28 @@ inline void motoresApagar(void){
 	ClearBit(PORT_MI_EN, MI_EN_NUMBER);
 }
 
+
 inline void motorDerechoAvanzar(void){
+#if defined _REDUCCION_A_
 	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
 	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
-}
-inline void motorDerechoRetroceder(void){
+#elif defined _REDUCCION_B_
 	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
 	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
+#else
+	DEFINIR_REDUCCION
+#endif
+}
+inline void motorDerechoRetroceder(void){
+#if defined _REDUCCION_A_
+	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
+#elif defined _REDUCCION_B_
+	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
+#else
+	DEFINIR_REDUCCION
+#endif
 }
 
 inline void motorDerechoDetener(void){
@@ -32,13 +47,27 @@ inline void motorIzquierdoDetener(void){
 }
 
 inline void motorIzquierdoAvanzar(void){
+#if defined _REDUCCION_A_
 	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
 	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
+#elif defined _REDUCCION_B_
+	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
+#else
+	DEFINIR_REDUCCION
+#endif
 }
 
 inline void motorIzquierdoRetroceder(void){
+#if defined _REDUCCION_A_
 	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
 	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
+#elif defined _REDUCCION_B_
+	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
+#else
+	DEFINIR_REDUCCION
+#endif
 }
 
 void configurarMotores(void){
@@ -81,11 +110,13 @@ ISR(TIMER1_OVF_vect)
 }
 
 //PWM A RUEDA IZQUIERDA
-ISR(TIMER1_COMPA_vect) {
+ISR(TIMER1_COMPA_vect, ISR_NAKED) {
 	motorIzquierdoRetroceder();
+	Reti();
 }
 
 //PWM A RUEDA DERECHA
-ISR(TIMER1_COMPB_vect) {
+ISR(TIMER1_COMPB_vect, ISR_NAKED) {
 	motorDerechoRetroceder();
+	Reti();
 } 

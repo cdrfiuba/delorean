@@ -8,6 +8,7 @@
 #define OK		true
 #define ERROR	false
 #define Nop()	asm volatile("nop")
+#define Reti()	asm volatile("reti")
 
 #define LOW(a)		(char)(a & 0x00ff)
 #define	HIGH(a)		(char)(a >> 8)
