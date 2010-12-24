@@ -8,10 +8,10 @@
 
 /*MD_PWM = Motor Derecho Enable (Enable)*/
 #define PORT_MD_EN_NAME  B
-#define MD_EN_NUMBER     2
+#define MD_EN_NUMBER     1
 /*MI_WPM = Motor Izquierdo PWM (Enable) */
 #define PORT_MI_EN_NAME  B
-#define MI_EN_NUMBER     1
+#define MI_EN_NUMBER     2
 
 #define PORT_MD_EN     def_port_reg(PORT_MD_EN_NAME)
 #define PIN_MD_EN      def_pin_reg(PORT_MD_EN_NAME)

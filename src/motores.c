@@ -102,21 +102,22 @@ void configurarTimer1(void){
 }
 
 
-ISR(TIMER1_OVF_vect)
+ISR(TIMER1_OVF_vect, ISR_NAKED)
 {
 	// Los valores de comparacion se actualizan automaticamente en BOTTOM
 	motorDerechoAvanzar();
 	motorIzquierdoAvanzar();
+	Reti();
 }
 
 //PWM A RUEDA IZQUIERDA
 ISR(TIMER1_COMPA_vect, ISR_NAKED) {
-	motorIzquierdoRetroceder();
+	motorDerechoRetroceder();
 	Reti();
 }
 
 //PWM A RUEDA DERECHA
 ISR(TIMER1_COMPB_vect, ISR_NAKED) {
-	motorDerechoRetroceder();
+	motorIzquierdoRetroceder();
 	Reti();
 } 

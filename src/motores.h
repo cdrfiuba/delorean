@@ -8,8 +8,8 @@
 //#define _REDUCCION_A_
 #define _REDUCCION_B_
 
-#define velocidadMD OCR1B
-#define velocidadMI OCR1A
+#define velocidadMD OCR1A
+#define velocidadMI OCR1B
 
 
 #define PRESCALER_PWM_OFF	(0<<CS12)|(0<<CS11)|(0<<CS10)
@@ -28,37 +28,26 @@
 #if PWM_ICR1 != 1600
 	#warning El fucking preprocesador hace cualquier cosa
 #endif
-//#define PWM_ICR1  1600// Calcula ICR1
 
-#define VMEDIO (PWM_ICR1/2)
-#if VMEDIO != 800
+#define PWM_VMEDIO (PWM_ICR1/2)
+#if PWM_VMEDIO != 800
 	#warning El fucking preprocesador hace cualquier cosa 2
 #endif
 
-#define PWM_MAXPC_VEL_IZQ   0.4
-#define PWM_MAXPC_VEL_DER   0.4
+#define PWM_MAXPC_VEL_IZQ   0.35
+#define PWM_MAXPC_VEL_DER   0.35
 
-#define PWM_MAX_VEL_IZQ   (uint16_t) VMEDIO * (1 + PWM_MAXPC_VEL_IZQ)
-#define PWM_MAX_VEL_DER   (uint16_t) VMEDIO * (1 + PWM_MAXPC_VEL_DER)
-
-#define VMAX VMEDIO + PWM350
-#define VMIN 100
-
-
-#define VEL_CRUCERO 100
+#define PWM_MAX_VEL_IZQ   (uint16_t)(PWM_VMEDIO * (1 + PWM_MAXPC_VEL_IZQ))
+#define PWM_MAX_VEL_DER   (uint16_t)(PWM_VMEDIO * (1 + PWM_MAXPC_VEL_DER))
 
 // Macros para setear la vel de los motores: 0% - 100% (con signo)
-//#define PwmMIvel(velocidad) (velocidadMI = ( (PWM_ICR1>>1) * ( 1 +  (velocidad/100.0) * PWM_MAXPC_VEL_IZQ ) ) )
-//#define PwmMDvel(velocidad) (velocidadMD = ( (PWM_ICR1>>1) * ( 1 +  (velocidad/100.0) * PWM_MAXPC_VEL_DER ) ) )
+#define PwmMIvel(velocidad) (velocidadMI = (uint16_t)( (PWM_ICR1>>1) * ( 1 +  (velocidad/100.0) * PWM_MAXPC_VEL_IZQ ) ) )
+#define PwmMDvel(velocidad) (velocidadMD = (uint16_t)( (PWM_ICR1>>1) * ( 1 +  (velocidad/100.0) * PWM_MAXPC_VEL_DER ) ) )
 
 #define PwmMIvelRaw(velocidad) (velocidadMI = velocidad )
 #define PwmMDvelRaw(velocidad) (velocidadMD = velocidad )
 
 // Metodo para prender y apagar los PWM. Pone o saca el prescaler.
-//void pwm_start(void);
-//void pwm_stop(void);
-
-
 #define PwmStart() (TCCR1B |= PRESCALER_PWM_ON)
 #define PwmStop()  (TCCR1B &=~ PRESCALER_PWM_OFF)
 
