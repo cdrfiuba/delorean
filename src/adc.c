@@ -50,18 +50,18 @@ void configurarADCs(void){
 	
 	EncenderADC();
 
-	// Alineacion a la izquierda
-	AlineacionInit('I');
-	
+	// Alineamos a la izquierda los 10 bits de la conversion,
+    // y nos quedamos solo con los 8bits del byte alto [ADCH] (pagina 208)
+    SetBit(ADMUX, ADLAR);
+
 	//lo utilizamos en el modo single conversion
 	//no seteamos free run
-	//
 	
 #ifdef _ADC_MODO_INT_
 	// Modo con interrupcion
 	// Seleccionamos la menor velocidad de muestreo. CK/128
 	ADCPrescalerSelec(7);
-	//Habilitar o no  la interrupcion de finalizacion de conversion AD
+	// Habilitar o no  la interrupcion de finalizacion de conversion AD
 	SetBit(ADCSRA, ADIE);
 	//ClearBit(ADCSRA, ADIE);
 	medicionValida=false;
@@ -143,57 +143,27 @@ ISR(ADC_vect){
 /**
 	Calibra los niveles de blanco y negro y define el color de la linea.
 **/
-uint8_t calibrarNiveles(void) {
-	uint8_t modo = 0;
-//	uint16_t sd=0,si=0,sc=0;
+void calibrarNiveles(void)
+{
+	// Guardar valores de nivel para la LINEA
+    Led3On();
+	_delay_ms(50);
+	eeprom_write_byte((uint8_t*)SI_LINE_EEP_ADDR,analogSensorIzq);
+	eeprom_write_byte((uint8_t*)SD_LINE_EEP_ADDR,analogSensorDer);
+	_delay_ms(50);
+	Led3Off();
+    
+    //agregar leer esperar pulsador
 
-	modo = eeprom_read_byte(MODO_EEPADDR);
-	if (modo == MODO_VALUE_START) {
-		Led3On();
-		eeprom_write_byte((uint8_t*)MODO_EEPADDR,MODO_VALUE_EEPCLEAN);
-	}
-	if (modo == MODO_VALUE_EEPCLEAN){
-		_delay_ms(2);
-		eeprom_write_byte((uint8_t*)SI_LINE_EEP_ADDR,analogSensorIzq);
-		eeprom_write_byte((uint8_t*)SC_LINE_EEP_ADDR,analogSensorCen);
-		eeprom_write_byte((uint8_t*)SD_LINE_EEP_ADDR,analogSensorDer);
-		Led3On();
-		_delay_ms(50);
-		Led3Off();
-		Led2On();
-		eeprom_write_byte(MODO_EEPADDR,MODO_VALUE_LINEDEF);
-	}
-	else if (modo == MODO_VALUE_LINEDEF) {
-/*		for (i=0; i<20; i++) {
-			_delay_ms(2);
-			si += analogSensorIzq;
-			sc += analogSensorCen;
-			sd += analogSensorDer;
-		}
-		si = si / 20;
-		sc = sc / 20;
-		sd = sd / 20;
-*/
-		_delay_ms(2);
-		eeprom_write_byte((uint8_t*)SI_NO_LINE_EEP_ADDR,(uint8_t)analogSensorIzq);
-		eeprom_write_byte((uint8_t*)SC_NO_LINE_EEP_ADDR,(uint8_t)analogSensorCen);
-		eeprom_write_byte((uint8_t*)SD_NO_LINE_EEP_ADDR,(uint8_t)analogSensorDer);
-		Led3On();
-		_delay_ms(50);
-		Led3Off();
-		Led1On();
-		eeprom_write_byte(MODO_EEPADDR,MODO_VALUE_COMPLETE);
-	}
-	else if (modo != MODO_VALUE_COMPLETE) {
-		while(1) {
-			Led3On();
-			_delay_ms(100);
-			Led3Off();
-			_delay_ms(100);
-		}
-	}
-	return modo;
+    // Guardar valores de nivel para NO_LINEA	
+	Led2On();
+	_delay_ms(50);
+	eeprom_write_byte((uint8_t*)SI_NO_LINE_EEP_ADDR,(uint8_t)analogSensorIzq);
+	eeprom_write_byte((uint8_t*)SD_NO_LINE_EEP_ADDR,(uint8_t)analogSensorDer);
+	_delay_ms(50);
+	Led2Off();
 }
+
 /*
 	si = (si + sd) / 2;
 
