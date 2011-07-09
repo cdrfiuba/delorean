@@ -143,19 +143,15 @@
 #define ADCPrescalerSelec(PN) (ADCSRA = (ADCSRA & 0xF8) | PN)
 
 
-// Formato alineacion:Alineamos a la izquierda los 10 bits de la conversion,
-// y nos quedamos solo con los 8bits del byte alto [ADCH] (pagina 197)
-#define AlineacionInit(CHAR) {if (CHAR=='I') SetBit(ADMUX, ADLAR);else ClearBit(ADMUX, ADLAR);}
-
 // Modo de funcionamiento (pag 198)
 
 // Modo Single Conversion: Para empezar la conversion se debe poner en alto 
-// el bit ADSC (ADC Start Convertion) en el Reg: ADCSRA
+// el bit ADSC (ADC Start Conversion) en el Reg: ADCSRA
 // Modo Free Runing: En este modo el ADC toma datos todo el tiempo, 
 // se debe setear el bit ADFR en el Reg: ADCSRA
 // Cuando una conversion termina, se escribe en el ADC Register, y se pone 
 // en alto el bit ADIF. Si se trabaja en Single Conversion, el bit ADSC se
-// clerea automaticamente.
+// clarea automaticamente.
 
 #define IniciarConversion()      SetBit(ADCSRA, ADSC)
 
