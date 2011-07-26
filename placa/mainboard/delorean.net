@@ -1,7 +1,7 @@
-# EESchema Netlist Version 1.1 created  07/22/11 21:30:53
+# EESchema Netlist Version 1.1 created  mar 26 jul 2011 16:06:32 ART
 (
  ( /4CC22213 C1V5 C1 100u
-  ( 1 N-000013 )
+  ( 1 +BATT )
   ( 2 GND )
  )
  ( /4CC22230 C1V5 C2 100u
@@ -21,63 +21,63 @@
   ( 2 GND )
  )
  ( /4C785EA9 LED-5MM D1 LED
-  ( 1 N-000021 )
+  ( 1 N-000015 )
   ( 2 GND )
  )
  ( /4CC0665E LED-5MM D2 LED
-  ( 1 N-000022 )
+  ( 1 N-000017 )
   ( 2 GND )
  )
  ( /4CC06665 LED-5MM D3 LED
-  ( 1 N-000024 )
+  ( 1 N-000018 )
   ( 2 GND )
  )
- ( /4CB8F3E9 D3 D4 DIODE
+ ( /4CB8F3E9 R1 D4 DIODE
   ( 1 GND )
   ( 2 N-000036 )
  )
  ( /4CB8F3E8 D3 D5 DIODE
   ( 1 GND )
-  ( 2 N-000018 )
+  ( 2 N-000034 )
  )
  ( /4C785E67 D3 D6 DIODE
   ( 1 GND )
-  ( 2 N-000037 )
+  ( 2 N-000033 )
  )
  ( /4C785E65 D3 D7 DIODE
   ( 1 GND )
-  ( 2 N-000019 )
+  ( 2 N-000035 )
  )
- ( /4CB8F3EB D3 D8 DIODE
+ ( /4CB8F3EB R1 D8 DIODE
   ( 1 N-000036 )
-  ( 2 +BATT )
+  ( 2 VCC )
  )
  ( /4CB8F3EA D3 D9 DIODE
-  ( 1 N-000018 )
-  ( 2 +BATT )
+  ( 1 N-000034 )
+  ( 2 VCC )
  )
  ( /4C785E6A D3 D10 DIODE
-  ( 1 N-000037 )
-  ( 2 +BATT )
+  ( 1 N-000033 )
+  ( 2 VCC )
  )
  ( /4C785E68 D3 D11 DIODE
-  ( 1 N-000019 )
-  ( 2 +BATT )
+  ( 1 N-000035 )
+  ( 2 VCC )
  )
  ( /4C785E4E DIP-28__300_ELL IC1 ATMEGA8-P
   ( 1 /reset )
   ( 2 /in1 )
   ( 3 /in2 )
-  ( 4 N-000004 )
+  ( 4 N-000003 )
   ( 5 /in3 )
   ( 6 /in4 )
   ( 7 VCC )
   ( 8 GND )
-  ( 9 N-000003 )
-  ( 10 N-000005 )
-  ( 11 N-000002 )
-  ( 12 N-000023 )
-  ( 13 N-000009 )
+  ( 9 N-000004 )
+  ( 10 N-000007 )
+  ( 11 N-000019 )
+  ( 12 N-000006 )
+  ( 13 N-000016 )
   ( 14 ? )
   ( 15 /enA )
   ( 16 /enB )
@@ -95,11 +95,11 @@
   ( 28 ? )
  )
  ( /4CC219E8 SIL-2 JP1 JUMPER
-  ( 1 N-000003 )
+  ( 1 N-000004 )
   ( 2 GND )
  )
  ( /4CC219E1 SIL-2 JP2 JUMPER
-  ( 1 N-000005 )
+  ( 1 N-000007 )
   ( 2 GND )
  )
  ( /4CB8E14D MOLEX_2_RECTO P1 CONN_2
@@ -116,47 +116,82 @@
  )
  ( /4CB8F3EC PIN_ARRAY_2X1 P4 CONN_2
   ( 1 N-000036 )
-  ( 2 N-000018 )
+  ( 2 N-000034 )
  )
  ( /4CB8F368 PIN_ARRAY_2X1 P5 CONN_2
-  ( 1 N-000037 )
-  ( 2 N-000019 )
+  ( 1 N-000033 )
+  ( 2 N-000035 )
  )
  ( /4E29E186 pin_array_3x2 P6 CON_SENS
-  ( 1 N-000011 )
-  ( 2 N-000010 )
+  ( 1 N-000022 )
+  ( 2 N-000002 )
   ( 3 /sensor1 )
   ( 4 /sensor2 )
   ( 5 GND )
   ( 6 VCC )
+ )
+ ( /4E2EE9A6 PinVia PVG1 CONN_1
+  ( 1 GND )
+ )
+ ( /4E2EE9A4 PinVia PVG2 CONN_1
+  ( 1 GND )
+ )
+ ( /4E2EE904 PinVia PVG3 CONN_1
+  ( 1 GND )
+ )
+ ( /4E2EE91D PinVia PVG4 CONN_1
+  ( 1 GND )
+ )
+ ( /4E2EE91F PinVia PVG5 CONN_1
+  ( 1 GND )
+ )
+ ( /4E2EE920 PinVia PVG6 CONN_1
+  ( 1 GND )
+ )
+ ( /4E2EE9BD PinVia PVV1 CONN_1
+  ( 1 VCC )
+ )
+ ( /4E2EE9BE PinVia PVV2 CONN_1
+  ( 1 VCC )
+ )
+ ( /4E2EE9BF PinVia PVV3 CONN_1
+  ( 1 VCC )
+ )
+ ( /4E2EE9C0 PinVia PVV4 CONN_1
+  ( 1 VCC )
+ )
+ ( /4E2EE9BC PinVia PVV5 CONN_1
+  ( 1 VCC )
+ )
+ ( /4E2EE9BB PinVia PVV6 CONN_1
+  ( 1 VCC )
+ )
+ ( /4E2F1009 PinVia PVV7 CONN_1
+  ( 1 VCC )
  )
  ( /4CB8E335 R3 R1 10k
   ( 1 VCC )
   ( 2 /reset )
  )
  ( /4CC06678 R3 R2 220
-  ( 1 N-000009 )
-  ( 2 N-000021 )
+  ( 1 N-000016 )
+  ( 2 N-000015 )
  )
  ( /4CC0667C R3 R3 220
-  ( 1 N-000023 )
-  ( 2 N-000022 )
+  ( 1 N-000006 )
+  ( 2 N-000017 )
  )
  ( /4CC06680 R3 R4 220
-  ( 1 N-000002 )
-  ( 2 N-000024 )
+  ( 1 N-000019 )
+  ( 2 N-000018 )
  )
  ( /4CC0BBD7 R4 R7 100
-  ( 1 N-000011 )
+  ( 1 N-000022 )
   ( 2 /emisor1 )
  )
  ( /4CC0BDD0 R4 R8 100
   ( 1 /emisor2 )
-  ( 2 N-000010 )
- )
- ( /4E2A125B R4 R9 R
-  ( 1 N-000012 )
-  ( 2 +BATT )
+  ( 2 N-000002 )
  )
  ( /4CC0BBE5 SIL-3 RV1 10k
   ( 1 /sensor1 )
@@ -174,13 +209,13 @@
  )
  ( /4CC0C538 SW_PUSH_SMALL SW2 Arranque
   ( 1 GND )
-  ( 2 N-000004 )
+  ( 2 N-000003 )
  )
  ( /4CB8F2FE L298D U2 L298D
   ( 1 GND )
   ( 2 N-000036 )
-  ( 3 N-000018 )
-  ( 4 +BATT )
+  ( 3 N-000034 )
+  ( 4 VCC )
   ( 5 /in1 )
   ( 6 /enA )
   ( 7 /in2 )
@@ -189,14 +224,14 @@
   ( 10 /in3 )
   ( 11 /enB )
   ( 12 /in4 )
-  ( 13 N-000037 )
-  ( 14 N-000019 )
+  ( 13 N-000033 )
+  ( 14 N-000035 )
   ( 15 GND )
  )
  ( /4E2A0251 PTN04050CAH U3 PTN4050
-  ( 1 +BATT )
-  ( 2 N-000013 )
-  ( 3 N-000012 )
+  ( 1 GND )
+  ( 2 +BATT )
+  ( 3 ? )
   ( 4 VCC )
  )
 )
@@ -324,13 +359,6 @@ $component R7
  SM1206
 $endlist
 $component R8
- R?
- SM0603
- SM0805
- R?-*
- SM1206
-$endlist
-$component R9
  R?
  SM0603
  SM0805
