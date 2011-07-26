@@ -5,10 +5,8 @@ volatile bool medicionValida;
 
 
 estado_sensor_t analizarSensores(void) {
-	uint8_t si=0, sc=0, sd=0;
-	Led1Off();
-	Led2Off();
-	Led3Off();
+	uint8_t si=0, sc=0;
+//	uint8_t  sd=0;
 
 	if (colorLinea == LINEA_NEGRA) {
 		if (analogSensorIzq > siNivelUmbralP) si = 3;
@@ -19,11 +17,11 @@ estado_sensor_t analizarSensores(void) {
 		else if (analogSensorCen > scNivelMedio) sc = 2;
 		else if (analogSensorCen > scNivelUmbralN) sc = 1;
 		else sc = 0;
-		if (analogSensorDer > sdNivelUmbralP) sd = 3;
+/*		if (analogSensorDer > sdNivelUmbralP) sd = 3;
 		else if (analogSensorDer > sdNivelMedio) sd = 2;
 		else if (analogSensorDer > sdNivelUmbralN) sd = 1;
 		else sd = 0;
-	}
+*/	}
 	else if (colorLinea == LINEA_BLANCA) {
 		if (analogSensorIzq > siNivelUmbralP) si = 0;
 		else if (analogSensorIzq > siNivelMedio) si = 1;
@@ -33,18 +31,13 @@ estado_sensor_t analizarSensores(void) {
 		else if (analogSensorCen > scNivelMedio) sc = 1;
 		else if (analogSensorCen > scNivelUmbralN) sc = 2;
 		else sc = 3;
-		if (analogSensorDer > sdNivelUmbralP) sd = 0;
+/*		if (analogSensorDer > sdNivelUmbralP) sd = 0;
 		else if (analogSensorDer > sdNivelMedio) sd = 1;
 		else if (analogSensorDer > sdNivelUmbralN) sd = 2;
 		else sd = 3;
-	}
-//	return ( (si<<2) | (sc<<0) );
-
-	if (sd > 1) Led1On();
-	if (sc > 1) Led2On();
-	if (si > 1) Led3On();
-
-	return ( (si<<4) | (sc<<2) | (sd<<0) );
+*/	}
+	return ( (si<<2) | (sc<<0) );
+//	return ( (si<<4) | (sc<<2) | (sd<<0) );
 }
 
 void configurarADCs(void){
@@ -57,18 +50,18 @@ void configurarADCs(void){
 	
 	EncenderADC();
 
-	// Alineacion a la izquierda
-	AlineacionInit('I');
-	
+	// Alineamos a la izquierda los 10 bits de la conversion,
+    // y nos quedamos solo con los 8bits del byte alto [ADCH] (pagina 208)
+    SetBit(ADMUX, ADLAR);
+
 	//lo utilizamos en el modo single conversion
 	//no seteamos free run
-	//
 	
 #ifdef _ADC_MODO_INT_
 	// Modo con interrupcion
 	// Seleccionamos la menor velocidad de muestreo. CK/128
 	ADCPrescalerSelec(7);
-	//Habilitar o no  la interrupcion de finalizacion de conversion AD
+	// Habilitar o no  la interrupcion de finalizacion de conversion AD
 	SetBit(ADCSRA, ADIE);
 	//ClearBit(ADCSRA, ADIE);
 	medicionValida=false;
@@ -110,8 +103,6 @@ ISR(ADC_vect){
 			else {
 				IniciarConversion();
 				medicionValida = true;
-				EmisorDerOff();
-				EmisorCenOn();
 			}
 			break;
 		case ADC_NUM_SCRE:
@@ -126,8 +117,6 @@ ISR(ADC_vect){
 			else {
 				IniciarConversion();
 				medicionValida = true;
-				EmisorCenOff();
-				EmisorIzqOn();
 			}
 			break;
 		case ADC_NUM_SIRE:
@@ -142,8 +131,6 @@ ISR(ADC_vect){
 			else {
 				IniciarConversion();
 				medicionValida = true;
-				EmisorIzqOff();
-				EmisorDerOn();
 			}
 			break;
 		default:
@@ -156,67 +143,36 @@ ISR(ADC_vect){
 /**
 	Calibra los niveles de blanco y negro y define el color de la linea.
 **/
-uint8_t calibrarNiveles(void) {
-	uint8_t modo = 0;
-//	uint16_t sd=0,si=0,sc=0;
+void calibrarNiveles(void)
+{
+	// Guardar valores de nivel para la LINEA
+    Led3On();
+	_delay_ms(50);
+	eeprom_write_byte((uint8_t*)SI_LINE_EEP_ADDR,analogSensorIzq);
+	eeprom_write_byte((uint8_t*)SD_LINE_EEP_ADDR,analogSensorDer);
+	_delay_ms(50);
+	Led3Off();
+    
+    //agregar leer esperar pulsador
 
-#ifndef _ADC_MODO_INT_
-	capturarADc();
-#endif
-	modo = eeprom_read_byte(MODO_EEPADDR);
-	if (modo == MODO_VALUE_START) {
-		Led3On();
-		eeprom_write_byte((uint8_t*)MODO_EEPADDR,MODO_VALUE_EEPCLEAN);
-	}
-	else if (modo == MODO_VALUE_EEPCLEAN){
-		_delay_ms(2);
-		eeprom_write_byte((uint8_t*)SI_LINE_EEP_ADDR,analogSensorIzq);
-		eeprom_write_byte((uint8_t*)SC_NO_LINE_EEP_ADDR,analogSensorCen);
-		eeprom_write_byte((uint8_t*)SD_LINE_EEP_ADDR,analogSensorDer);
-		Led3On();
-		_delay_ms(50);
-		Led3Off();
-		Led2On();
-		eeprom_write_byte(MODO_EEPADDR,MODO_VALUE_LINEDEF);
-	}
-	else if (modo == MODO_VALUE_LINEDEF) {
-		_delay_ms(2);
-		eeprom_write_byte((uint8_t*)SI_NO_LINE_EEP_ADDR,(uint8_t)analogSensorIzq);
-		eeprom_write_byte((uint8_t*)SC_LINE_EEP_ADDR,(uint8_t)analogSensorCen);
-		eeprom_write_byte((uint8_t*)SD_NO_LINE_EEP_ADDR,(uint8_t)analogSensorDer);
-		Led3On();
-		_delay_ms(50);
-		Led3Off();
-		Led1On();
-
-		if ( eeprom_read_byte((uint8_t*)SC_LINE_EEP_ADDR) < eeprom_read_byte((uint8_t*)SC_NO_LINE_EEP_ADDR) ) {
-			eeprom_write_byte((uint8_t*)LINEA_EEPADDR,LINEA_BLANCA);
-			if ( eeprom_read_byte((uint8_t*)SI_LINE_EEP_ADDR) > eeprom_read_byte((uint8_t*)SI_NO_LINE_EEP_ADDR) ) Led3On(); 
-			if ( eeprom_read_byte((uint8_t*)SD_LINE_EEP_ADDR) > eeprom_read_byte((uint8_t*)SD_NO_LINE_EEP_ADDR) ) Led3On();
-		}
-		else {
-			eeprom_write_byte((uint8_t*)LINEA_EEPADDR,LINEA_NEGRA);
-			if ( eeprom_read_byte((uint8_t*)SI_LINE_EEP_ADDR) < eeprom_read_byte((uint8_t*)SI_NO_LINE_EEP_ADDR) ) Led3On(); 
-			if ( eeprom_read_byte((uint8_t*)SD_LINE_EEP_ADDR) < eeprom_read_byte((uint8_t*)SD_NO_LINE_EEP_ADDR) ) Led3On(); 
-		}
-		eeprom_write_byte((uint8_t*)MODO_EEPADDR,MODO_VALUE_COMPLETE);
-	}
-	else if (modo != MODO_VALUE_COMPLETE) {
-		while(1) {
-			Led3On();
-			_delay_ms(100);
-			Led3Off();
-			_delay_ms(100);
-		}
-	}
-	return modo;
+    // Guardar valores de nivel para NO_LINEA	
+	Led2On();
+	_delay_ms(50);
+	eeprom_write_byte((uint8_t*)SI_NO_LINE_EEP_ADDR,(uint8_t)analogSensorIzq);
+	eeprom_write_byte((uint8_t*)SD_NO_LINE_EEP_ADDR,(uint8_t)analogSensorDer);
+	_delay_ms(50);
+	Led2Off();
 }
 
-void calcularNiveles(void) {
-	uint8_t maxsi=0, maxsc=0, maxsd=0, minsi=0, minsc=0, minsd=0;
-//	uint8_t temp, linea=0, nlinea=0;
+/*
+	si = (si + sd) / 2;
 
-	/*
+*/
+
+void calcularNiveles(void) {
+	uint16_t maxsi=0, maxsc=0, maxsd=0, minsi=0, minsc=0, minsd=0, linea=0, nlinea=0;
+	uint8_t temp;
+
 	temp = eeprom_read_byte((uint8_t*)SI_LINE_EEP_ADDR);
 //	eeprom_write_byte((uint8_t*)9,temp);
 	linea += temp;
@@ -238,11 +194,13 @@ void calcularNiveles(void) {
 //	eeprom_write_byte((uint8_t*)14,temp);
 	nlinea += temp;
 	nlinea = nlinea/3;
-*/
+
 	
-	colorLinea = eeprom_read_byte((uint8_t*)LINEA_EEPADDR);
+//	eeprom_write_byte((uint8_t*)16,(uint8_t)linea);
+//	eeprom_write_byte((uint8_t*)17,(uint8_t)nlinea);
 	// Si el sensor central vale menos que la media, lee blanco, sino negro.	
-	if (colorLinea == LINEA_BLANCA) {
+	if (nlinea > linea) {
+		colorLinea = LINEA_BLANCA;
 		maxsi = eeprom_read_byte((uint8_t*)SI_NO_LINE_EEP_ADDR);
 		maxsc = eeprom_read_byte((uint8_t*)SC_NO_LINE_EEP_ADDR);
 		maxsd = eeprom_read_byte((uint8_t*)SD_NO_LINE_EEP_ADDR);
@@ -251,6 +209,7 @@ void calcularNiveles(void) {
 		minsd = eeprom_read_byte((uint8_t*)SD_LINE_EEP_ADDR);
 	}
 	else {
+		colorLinea = LINEA_NEGRA;
 		minsi = eeprom_read_byte((uint8_t*)SI_NO_LINE_EEP_ADDR);
 		minsc = eeprom_read_byte((uint8_t*)SC_NO_LINE_EEP_ADDR);
 		minsd = eeprom_read_byte((uint8_t*)SD_NO_LINE_EEP_ADDR);
@@ -258,40 +217,27 @@ void calcularNiveles(void) {
 		maxsc = eeprom_read_byte((uint8_t*)SC_LINE_EEP_ADDR);
 		maxsd = eeprom_read_byte((uint8_t*)SD_LINE_EEP_ADDR);
 	}
-	sdNivelMedio = minsd + ((maxsd-minsd)>>1);	
-	sdNivelUmbralP = sdNivelMedio + ((maxsd-minsd)>>2);
-	sdNivelUmbralN = sdNivelMedio - ((maxsd-minsd)>>2);
+	sdNivelMedio = minsd + (maxsd-minsd)/2;	
+	sdNivelUmbralP = sdNivelMedio + (maxsd-minsd)/S_UMBRAL_CTE;
+	sdNivelUmbralN = sdNivelMedio - (maxsd-minsd)/S_UMBRAL_CTE;
 
-	scNivelMedio = minsc + ((maxsc-minsc)>>1);	
-	scNivelUmbralP = scNivelMedio + ((maxsc-minsc)>>2);
-	scNivelUmbralN = scNivelMedio - ((maxsc-minsc)>>2);
+	eeprom_write_byte((uint8_t*)10,(uint8_t)sdNivelUmbralP);
+	eeprom_write_byte((uint8_t*)11,(uint8_t)sdNivelMedio);
+	eeprom_write_byte((uint8_t*)12,(uint8_t)sdNivelUmbralN);
 
-	siNivelMedio = minsi + ((maxsi-minsi)>>1);	
-	siNivelUmbralP = siNivelMedio + ((maxsi-minsi)>>2);
-	siNivelUmbralN = siNivelMedio - ((maxsi-minsi)>>2);
+	scNivelMedio = minsc + (maxsc-minsc)/2;	
+	scNivelUmbralP = scNivelMedio + (maxsc-minsc)/S_UMBRAL_CTE;
+	scNivelUmbralN = scNivelMedio - (maxsc-minsc)/S_UMBRAL_CTE;
 
+	eeprom_write_byte((uint8_t*)13,(uint8_t)scNivelUmbralP);
+	eeprom_write_byte((uint8_t*)14,(uint8_t)scNivelMedio);
+	eeprom_write_byte((uint8_t*)15,(uint8_t)scNivelUmbralN);
+
+	siNivelMedio = minsi + (maxsi-minsi)/2;	
+	siNivelUmbralP = siNivelMedio + (maxsi-minsi)/S_UMBRAL_CTE;
+	siNivelUmbralN = siNivelMedio - (maxsi-minsi)/S_UMBRAL_CTE;
+
+	eeprom_write_byte((uint8_t*)17,(uint8_t)siNivelUmbralP);
+	eeprom_write_byte((uint8_t*)18,(uint8_t)siNivelMedio);
+	eeprom_write_byte((uint8_t*)19,(uint8_t)siNivelUmbralN);
 }
-
-
-void capturarADc(void){
-	//Esta funcion no utiliza interrupciones
-	//verificar que no este el define _ADC_MODO_INT_ en adc.h
-	ADSeleccionarCanal(ADC_NUM_SDRE);
-	IniciarConversion();
-	while (IsBitSet(ADCSRA,ADIF)==false);
-	SetBit(ADCSRA,ADIF);
-	analogSensorDer = ADCH;
-	
-	ADSeleccionarCanal(ADC_NUM_SCRE);
-	IniciarConversion();
-	while (IsBitSet(ADCSRA,ADIF)==false);
-	SetBit(ADCSRA,ADIF);
-	analogSensorCen = ADCH;
-	
-	ADSeleccionarCanal(ADC_NUM_SIRE);
-	IniciarConversion();
-	while (IsBitSet(ADCSRA,ADIF)==false);
-	SetBit(ADCSRA,ADIF);
-	analogSensorIzq = ADCH;
-} 
-
