@@ -1,0 +1,47 @@
+# EESchema Netlist Version 1.1 created  vie 22 jul 2011 21:29:46 ART
+(
+ ( /4E29FCF0 $noname  P1 CONN_3X2 {Lib=CONN_3X2}
+  (    1 /Emisor_I )
+  (    2 /Emisor_D )
+  (    3 /Receptor_I )
+  (    4 /Receptor_D )
+  (    5 GND )
+  (    6 VDD )
+ )
+ ( /4E29FBBE $noname  U2 CNY70 {Lib=CNY70}
+  (    1 VDD )
+  (    2 /Receptor_D )
+  (    3 GND )
+  (    4 /Emisor_D )
+ )
+ ( /4E29FBB9 $noname  U1 CNY70 {Lib=CNY70}
+  (    1 VDD )
+  (    2 /Emisor_I )
+  (    3 GND )
+  (    4 /Receptor_I )
+ )
+)
+*
+{ Pin List by Nets
+Net 1 "/Receptor_I" "Receptor_I"
+ U1 4
+ P1 3
+Net 2 "/Emisor_D" "Emisor_D"
+ U2 4
+ P1 2
+Net 3 "GND" "GND"
+ U1 3
+ U2 3
+ P1 5
+Net 4 "VDD" "VDD"
+ P1 6
+ U2 1
+ U1 1
+Net 5 "/Emisor_I" "Emisor_I"
+ U1 2
+ P1 1
+Net 6 "/Receptor_D" "Receptor_D"
+ U2 2
+ P1 4
+}
+#End

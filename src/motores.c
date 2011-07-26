@@ -83,7 +83,9 @@ void configurarMotores(void){
 
 	motoresApagar();
 	configurarTimer1();
-
+	
+	velocidadMD = PWM_VMEDIO;
+	velocidadMI = PWM_VMEDIO;
 
 	ICR1 = PWM_ICR1;  // Esto define al TOP
 

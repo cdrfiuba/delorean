@@ -23,26 +23,26 @@
 // Interrupciones en comparaciones
 #define TIMSK_VALUE  ( (1<<TOIE1) | (1<<OCIE1A) | (1<<OCIE1B) )
 
-#define PWM_FREC 5000 // Frecuencia PWM
+#define PWM_FREC 4000 // Frecuencia PWM
 #define PWM_ICR1  (F_CPU/PWM_FREC)// Calcula ICR1
-#if PWM_ICR1 != 1600
+#if PWM_ICR1 != 2000
 	#warning El fucking preprocesador hace cualquier cosa
 #endif
 
 #define PWM_VMEDIO (PWM_ICR1/2)
-#if PWM_VMEDIO != 800
+#if PWM_VMEDIO != 1000
 	#warning El fucking preprocesador hace cualquier cosa 2
 #endif
 
-#define PWM_MAXPC_VEL_IZQ   0.35
-#define PWM_MAXPC_VEL_DER   0.35
+#define PWM_MAXPC_VEL_IZQ   0.4
+#define PWM_MAXPC_VEL_DER   0.4
 
 #define PWM_MAX_VEL_IZQ   (uint16_t)(PWM_VMEDIO * (1 + PWM_MAXPC_VEL_IZQ))
 #define PWM_MAX_VEL_DER   (uint16_t)(PWM_VMEDIO * (1 + PWM_MAXPC_VEL_DER))
 
 // Macros para setear la vel de los motores: 0% - 100% (con signo)
-#define PwmMIvel(velocidad) (velocidadMI = (uint16_t)( (PWM_ICR1>>1) * ( 1 +  (velocidad/100.0) * PWM_MAXPC_VEL_IZQ ) ) )
-#define PwmMDvel(velocidad) (velocidadMD = (uint16_t)( (PWM_ICR1>>1) * ( 1 +  (velocidad/100.0) * PWM_MAXPC_VEL_DER ) ) )
+#define PwmMIvel(velocidad) (velocidadMI = (uint16_t)( PWM_VMEDIO * ( 1 + (velocidad/100.0) * PWM_MAXPC_VEL_IZQ ) ) )
+#define PwmMDvel(velocidad) (velocidadMD = (uint16_t)( PWM_VMEDIO * ( 1 + (velocidad/100.0) * PWM_MAXPC_VEL_DER ) ) )
 
 #define PwmMIvelRaw(velocidad) (velocidadMI = velocidad )
 #define PwmMDvelRaw(velocidad) (velocidadMD = velocidad )
