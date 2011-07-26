@@ -94,9 +94,9 @@ typedef enum{
 
 void configurarADCs(void);
 void capturarADc(void);
+void capturarADcPRO(void);
 uint8_t calibrarNiveles(void);
 void calcularNiveles(void);
-void capturarADcPRO(void);
 estado_sensor_t analizarSensores(void);
 
 volatile uint8_t sdNivelMedio, sdNivelUmbralP, sdNivelUmbralN;

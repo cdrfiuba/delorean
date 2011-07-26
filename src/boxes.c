@@ -1,5 +1,31 @@
 #include "boxes.h"
 
+
+
+void ERROR_MAC(uint8_t estadomaq, uint8_t estadosens) {
+	cli();
+	motoresApagar();
+	uint8_t i;
+	while (1) {
+		for(i=0;i<estadomaq;i++) {
+			Led3On();
+			_delay_ms(250);
+			Led3Off();
+			_delay_ms(250);
+		}
+		_delay_ms(1000);
+		for(i=0;i<estadosens;i++) {
+			Led2On();
+			_delay_ms(250);
+			Led2Off();
+			_delay_ms(250);
+		}
+		_delay_ms(1000);
+	}
+}
+		
+
+/*
 void TestLeds(void){
 	while(1){
 		Led1On();
@@ -57,4 +83,37 @@ void TestCerebroSimple(void) {
 			capturarADc();
 		}
 }
+
+
+void TestEEPROM() {
+
+	uint8_t i;
+
+	if ( IsJumper1Set() == false ) eeprom_write_byte((uint8_t*)MODO_EEPADDR,MODO_VALUE_START);
+	else {
+		if ( IsJumper2Set() == false) {
+			uint8_t tempo;
+			tempo = eeprom_read_byte((uint8_t *) MODO_EEPADDR);
+			Led1On();
+			for (i=0;i<tempo;i++) {
+				_delay_ms(200);
+				Led1Off();
+				_delay_ms(200);
+				Led1On();
+			}
+//			if ( tempo == MODO_VALUE_ERROR ) Led1On();
+//			else Led2On();
+		}
+		else {
+			eeprom_write_byte((uint8_t *) MODO_EEPADDR, MODO_VALUE_ERROR);
+			Led3On();
+		}
+	}
+	while (1);
+
+}
+
+
+*/
+
 

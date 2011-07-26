@@ -39,6 +39,7 @@ estado_sensor_t analizarSensores(void) {
 		else sd = 3;
 	}
 //	return ( (si<<2) | (sc<<0) );
+
 	if (sd > 1) Led1On();
 	if (sc > 1) Led2On();
 	if (si > 1) Led3On();
@@ -159,6 +160,9 @@ uint8_t calibrarNiveles(void) {
 	uint8_t modo = 0;
 //	uint16_t sd=0,si=0,sc=0;
 
+#ifndef _ADC_MODO_INT_
+	capturarADc();
+#endif
 	modo = eeprom_read_byte(MODO_EEPADDR);
 	if (modo == MODO_VALUE_START) {
 		Led3On();
@@ -258,23 +262,36 @@ void calcularNiveles(void) {
 	sdNivelUmbralP = sdNivelMedio + ((maxsd-minsd)>>2);
 	sdNivelUmbralN = sdNivelMedio - ((maxsd-minsd)>>2);
 
-//	eeprom_write_byte((uint8_t*)10,(uint8_t)sdNivelUmbralP);
-//	eeprom_write_byte((uint8_t*)11,(uint8_t)sdNivelMedio);
-//	eeprom_write_byte((uint8_t*)12,(uint8_t)sdNivelUmbralN);
-
 	scNivelMedio = minsc + ((maxsc-minsc)>>1);	
 	scNivelUmbralP = scNivelMedio + ((maxsc-minsc)>>2);
 	scNivelUmbralN = scNivelMedio - ((maxsc-minsc)>>2);
-
-//	eeprom_write_byte((uint8_t*)13,scNivelUmbralP);
-//	eeprom_write_byte((uint8_t*)14,scNivelMedio);
-//	eeprom_write_byte((uint8_t*)15,scNivelUmbralN);
 
 	siNivelMedio = minsi + ((maxsi-minsi)>>1);	
 	siNivelUmbralP = siNivelMedio + ((maxsi-minsi)>>2);
 	siNivelUmbralN = siNivelMedio - ((maxsi-minsi)>>2);
 
-//	eeprom_write_byte((uint8_t*)17,siNivelUmbralP);
-//	eeprom_write_byte((uint8_t*)18,siNivelMedio);
-//	eeprom_write_byte((uint8_t*)19,siNivelUmbralN);
 }
+
+
+void capturarADc(void){
+	//Esta funcion no utiliza interrupciones
+	//verificar que no este el define _ADC_MODO_INT_ en adc.h
+	ADSeleccionarCanal(ADC_NUM_SDRE);
+	IniciarConversion();
+	while (IsBitSet(ADCSRA,ADIF)==false);
+	SetBit(ADCSRA,ADIF);
+	analogSensorDer = ADCH;
+	
+	ADSeleccionarCanal(ADC_NUM_SCRE);
+	IniciarConversion();
+	while (IsBitSet(ADCSRA,ADIF)==false);
+	SetBit(ADCSRA,ADIF);
+	analogSensorCen = ADCH;
+	
+	ADSeleccionarCanal(ADC_NUM_SIRE);
+	IniciarConversion();
+	while (IsBitSet(ADCSRA,ADIF)==false);
+	SetBit(ADCSRA,ADIF);
+	analogSensorIzq = ADCH;
+} 
+

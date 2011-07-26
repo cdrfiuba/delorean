@@ -8,3 +8,5 @@ syntax: glob
 *.lst
 *~
 *.swp
+\$*.*
+*.000
