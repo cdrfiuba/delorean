@@ -1,0 +1,28 @@
+# EESchema Netlist Version 1.1 created  Sat 23 Oct 2010 17:44:24 ART
+(
+ ( /4CC2278C $noname  K1 CONN_3 {Lib=CONN_3}
+  (    1 /emisor )
+  (    2 /GND )
+  (    3 /sensor )
+ )
+ ( /4B6B6FA5 $noname  U1 CNY70 {Lib=CNY70}
+  (    1 /emisor )
+  (    2 /GND )
+  (    3 /GND )
+  (    4 /sensor )
+ )
+)
+*
+{ Pin List by Nets
+Net 1 "/emisor" "emisor"
+ U1 1
+ K1 1
+Net 2 "/GND" "GND"
+ K1 2
+ U1 2
+ U1 3
+Net 3 "/sensor" "sensor"
+ K1 3
+ U1 4
+}
+#End

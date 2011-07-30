@@ -1,0 +1,17 @@
+Cmp-Mod V01 Created by CvPCB (20100406 SVN-R2509)-final date = Sat 23 Oct 2010 00:58:55 ART
+
+BeginCmp
+TimeStamp = /4CC2278C;
+Reference = K1;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /4B6B6FA5;
+Reference = U1;
+ValeurCmp = CNY70;
+IdModule  = CNY70;
+EndCmp
+
+EndListe
