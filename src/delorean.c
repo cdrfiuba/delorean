@@ -35,7 +35,6 @@ int main (void) {
 }
 
 /* Funciones */
-
 void startup(void)
 {
 	estadoActual = APAGADO;
@@ -46,6 +45,7 @@ void startup(void)
 	
 	Jumper1Init();
 	Jumper2Init();
+	
 	configurarPulsadorArranque();
 	configurarMotores();
 	configurarTimer1();
@@ -98,10 +98,12 @@ ISR(INT0_vect) {
 
 // Recibe el estado actual de los sensores y devuelve el futuro 
 // estado de la maquina de estados
-estado_t evaluarEstado(estado_sensor_t es){
+estado_t evaluarEstado(estado_sensor_t es)
+{
 	estado_t vd = estadoActual;
 
-	switch (vd) {
+	switch (vd)
+	{
 		case APAGADO:
 			motorDerechoDetener();
 			motorIzquierdoDetener();
@@ -124,7 +126,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case IZ_BAJO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_030:
 					vd = ON_TRACK;
 					break;
@@ -142,7 +145,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case IZ_MEDIO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_031:
 				case ES_032:
 					vd = IZ_RET_MEDIO;
@@ -158,7 +162,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case IZ_ALTO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_023:
 					vd = IZ_RET_ALTO;
 					break;
@@ -168,7 +173,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case IZ_RET_ALTO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_031:
 				case ES_032:
 					vd = IZ_RET_MEDIO;
@@ -198,7 +204,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case DE_BAJO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_030:
 					vd = ON_TRACK;
 					break;
@@ -216,7 +223,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case DE_MEDIO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_130:
 				case ES_230:
 					vd = DE_RET_MEDIO;
@@ -232,7 +240,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case DE_ALTO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_320:
 					vd = DE_RET_ALTO;
 					break;
@@ -242,7 +251,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case DE_RET_ALTO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_130:
 				case ES_230:
 					vd = DE_RET_MEDIO;
@@ -258,7 +268,8 @@ estado_t evaluarEstado(estado_sensor_t es){
 			}
 			break;
 		case DE_RET_MEDIO:
-			switch (es) {
+			switch (es)
+			{
 				case ES_030:
 					vd = ON_TRACK;
 					break;
@@ -280,8 +291,10 @@ estado_t evaluarEstado(estado_sensor_t es){
 }
 
 
-void accionar(void) {
-	switch (estadoActual) {
+void accionar(void)
+{
+	switch (estadoActual)
+	{
 		case ON_TRACK:
 			PwmMDvel(100);
 			PwmMIvel(100);
