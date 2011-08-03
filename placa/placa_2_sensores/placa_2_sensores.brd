@@ -1,4 +1,4 @@
-PCBNEW-BOARD Version 1 date mié 03 ago 2011 01:20:36 ART
+PCBNEW-BOARD Version 1 date mié 03 ago 2011 01:35:13 ART
 
 # Created by Pcbnew(2011-07-08 BZR 3044)-stable
 
@@ -10,7 +10,7 @@ EnabledLayers 1FFF8001
 Links 8
 NoConn 0
 Di 53074 20024 76426 33376
-Ndraw 18
+Ndraw 19
 Ntrack 26
 Nzone 0
 BoardThickness 630
@@ -55,11 +55,11 @@ TextPcbSize 600 800
 EdgeModWidth 150
 TextModSize 600 600
 TextModWidth 120
-PadSize 1400 1400
-PadDrill 1400
+PadSize 600 600
+PadDrill 320
 Pad2MaskClearance 100
 AuxiliaryAxisOrg 0 0
-PcbPlotParams (pcbplotparams (layerselection 335380481) (usegerberextensions true) (excludeedgelayer false) (linewidth 60) (plotframeref false) (viasonmask false) (mode 1) (useauxorigin false) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 0) (pscolor true) (psnegative false) (psa4output false) (plotreference true) (plotvalue true) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk false) (outputformat 1) (mirror false) (drillshape 2) (scaleselection 1) (outputdirectory ""))
+PcbPlotParams (pcbplotparams (layerselection 276856832) (usegerberextensions true) (excludeedgelayer false) (linewidth 60) (plotframeref false) (viasonmask false) (mode 1) (useauxorigin false) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 0) (pscolor true) (psnegative false) (psa4output false) (plotreference true) (plotvalue true) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk false) (outputformat 1) (mirror false) (drillshape 2) (scaleselection 1) (outputdirectory ""))
 $EndSETUP
 
 $EQUIPOT
@@ -354,6 +354,11 @@ Ne 0 ""
 Po 0 0
 $EndPAD
 $EndMODULE  1pin
+$TEXTPCB
+Te "Delorean 2.0"
+Po 64150 23050 600 748 120 1800
+De 15 1 0 Normal C
+$EndTEXTPCB
 $DRAWSEGMENT
 Po 0 68950 32050 74550 26450 150
 De 28 0 900 0 0
@@ -1056,6 +1061,10 @@ $POLYSCORNERS
 54075 26315 0 0
 54075 23685 0 0
 55035 22725 0 0
+60926 22725 0 0
+60926 24003 0 0
+67373 24003 0 0
+67373 22725 0 0
 73265 22725 0 0
 74225 23685 0 0
 74225 26315 1 0
