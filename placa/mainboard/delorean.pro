@@ -1,4 +1,4 @@
-update=mar 26 jul 2011 15:16:47 ART
+update=lun 01 ago 2011 12:49:05 ART
 last_client=cvpcb
 [eeschema]
 version=1
