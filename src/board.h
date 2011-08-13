@@ -9,7 +9,8 @@
 /*MD_PWM = Motor Derecho Enable (Enable)*/
 #define PORT_MD_EN_NAME  B
 #define MD_EN_NUMBER     1
-/*MI_WPM = Motor Izquierdo PWM (Enable) */
+/*MI_WPM = Motor Izquierdo PWM (Enable) 
+*/
 #define PORT_MI_EN_NAME  B
 #define MI_EN_NUMBER     2
 
@@ -239,10 +240,10 @@
 // active el pull-up interno
 #define IntArranqueInit()  {ClearBit(DDR_INT_ARRANQUE, INT_ARRANQUE_NUMBER); SetBit(PORT_INT_ARRANQUE, INT_ARRANQUE_NUMBER);}
 
-//#define IntArranqueOn()    PIN_INT_ARRANQUE |= (1<<INT_ARRANQUE_NUMBER)
 
+// lee el pin del boton de arranque
 #define IsIntArranqueSet()      IsBitSet(PIN_INT_ARRANQUE, INT_ARRANQUE_NUMBER)
-//#define IsIntArranqueClear()    IsBitClear(PIN_INT_ARRANQUE,INT_ARRANQUE_NUMBER)
+
 
 /* ----------------------------------------------------- */
 

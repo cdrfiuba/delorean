@@ -16,12 +16,9 @@ volatile estado_t estadoActual;
 int main (void) {
 	//Inicializaciones
 	startup();
-
-	if ( IsJumper1Set() == false ) eeprom_write_byte((uint8_t*)MODO_EEPADDR,MODO_VALUE_START);
- 	if ( calibrarNiveles() != MODO_VALUE_COMPLETE ) while(1){}; 	
-	calcularNiveles();
-	
-	while(1)
+	if (IsJumper1Set() == false) calibrarNiveles();
+ 	
+ 	while(1)
 	{	
 	// Codigo Principal
 	//
@@ -69,7 +66,14 @@ void configurarPulsadorArranque(void){
 	SetBit(GICR, INT0); 
 }
 
-
+bool leerBoton1(void){
+    if((IsIntArranqueSet()){
+        _delay_ms(50);
+        if(IsIntArranqueSet())
+            return true;
+    }
+    return false;
+}
 
 ISR(INT0_vect) {
 	// Delay para debounce
@@ -78,12 +82,14 @@ ISR(INT0_vect) {
 	//  que
 	_delay_ms(50);
 	
-	if (IsIntArranqueSet()==true) { 
+	if (IsIntArranqueSet()==true)
+	{ 
 		// significa que esta en 1 y hubo flanco ascendente genuino
 		// se podria reemplazar la variable por poner apagar todo, poner 
 		// el micro a dormir esperando solo esta interrupcion y luego
 		// despertalo. Aca se lo despertaria
-			if (estadoActual==APAGADO) {
+			if (estadoActual==APAGADO)
+			{
 				estadoActual = ON_TRACK;
 				motoresEncender();
 			}

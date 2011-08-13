@@ -6,8 +6,7 @@ volatile bool medicionValida;
 
 estado_sensor_t analizarSensores(void)
 {
-	uint8_t si=0, sc=0;
-//	uint8_t  sd=0;
+	uint8_t si=0, sd=0;
 
 	if (colorLinea == LINEA_NEGRA)
 	{
@@ -15,41 +14,34 @@ estado_sensor_t analizarSensores(void)
 		else if (analogSensorIzq > siNivelMedio) si = 2;
 		else if (analogSensorIzq > siNivelUmbralN) si = 1;
 		else si = 0;
-		if (analogSensorCen > scNivelUmbralP) sc = 3;
-		else if (analogSensorCen > scNivelMedio) sc = 2;
-		else if (analogSensorCen > scNivelUmbralN) sc = 1;
-		else sc = 0;
-/*		if (analogSensorDer > sdNivelUmbralP) sd = 3;
+
+		if (analogSensorDer > sdNivelUmbralP) sd = 3;
 		else if (analogSensorDer > sdNivelMedio) sd = 2;
 		else if (analogSensorDer > sdNivelUmbralN) sd = 1;
 		else sd = 0;
-*/	}
+	}
 	else if (colorLinea == LINEA_BLANCA)
 	{
 		if (analogSensorIzq > siNivelUmbralP) si = 0;
 		else if (analogSensorIzq > siNivelMedio) si = 1;
 		else if (analogSensorIzq > siNivelUmbralN) si = 2;
 		else si = 3;
-		if (analogSensorCen > scNivelUmbralP) sc = 0;
-		else if (analogSensorCen > scNivelMedio) sc = 1;
-		else if (analogSensorCen > scNivelUmbralN) sc = 2;
-		else sc = 3;
-/*		if (analogSensorDer > sdNivelUmbralP) sd = 0;
+		
+		if (analogSensorDer > sdNivelUmbralP) sd = 0;
 		else if (analogSensorDer > sdNivelMedio) sd = 1;
 		else if (analogSensorDer > sdNivelUmbralN) sd = 2;
 		else sd = 3;
-*/	}
-	return ( (si<<2) | (sc<<0) );
+	}
+	return ( (si<<2) | (sd<<0) );
 //	return ( (si<<4) | (sc<<2) | (sd<<0) );
 }
 
 void configurarADCs(void)
 {
 	EmisorIzqInit();
-	EmisorCenInit();
 	EmisorDerInit();
-	analogSensorDer = 0;
-	analogSensorCen = 0;
+
+	analogSensorIzq = 0;
 	analogSensorDer	= 0;
 	
 	EncenderADC();
@@ -165,8 +157,8 @@ void calibrarNiveles(void)
 	_delay_ms(50);
 	Led3Off();
     
-    //agregar leer esperar pulsador
-
+    while(!leerBoton1());
+    
     // Guardar valores de nivel para NO_LINEA	
 	Led2On();
 	_delay_ms(50);
@@ -177,13 +169,12 @@ void calibrarNiveles(void)
 }
 
 /*
-	si = (si + sd) / 2;
-
+  calcularNiveles(void)
+  Calcula las estadísticas para cada sensor.
 */
-
 void calcularNiveles(void)
 {
-	uint16_t maxsi=0, maxsc=0, maxsd=0, minsi=0, minsc=0, minsd=0, linea=0, nlinea=0;
+	uint16_t maxsi=0, maxsd=0, minsi=0, minsd=0, linea=0, nlinea=0;
 	uint8_t temp;
 
 	temp = eeprom_read_byte((uint8_t*)SI_LINE_EEP_ADDR);
