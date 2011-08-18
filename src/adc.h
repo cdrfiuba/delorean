@@ -4,36 +4,31 @@
 #include "board.h"
 #include <avr/eeprom.h>
 
-/*
-  Si se quiere utilizar los conversores en el modo de Interrupcion
-  dejar el siguiente define. En caso de que se quiera trabajar con la
-  funcion capturarADc o capturarADcPRO comentar el siguiente define
-*/
+/**
+  Define para utilizar los conversores AD en el modo por interrupción.
+  Quitar para trabajar en modo polling mediante las funciones
+  @see capturarADc, capturarADcPRO
+**/
 #define _ADC_MODO_INT_
 
-/*
+/**
   Variables globales que almacenan el último valor de los sensores infrarrojos.
-  Declaradas como volátil porque pueden cambiar en cualquier momento.
-*/
+  Declaradas como volatil porque pueden cambiar en cualquier momento en una interrupcion.
+**/
 volatile uint8_t analogSensorIzq;
 volatile uint8_t analogSensorDer;
 
-/*
-  Variables del máximo que representa el blanco, el mínimo que representa el negro y cual de los dos es la linea.
-  colorLinea tiene 1 si la linea es blanca y 0 si la linea es negra
-*/
+/**
+  colorLinea tiene 1 si la linea es blanca y 0 si la linea es negra.
+**/
 volatile uint8_t colorLinea;
 
-/*
-  
-*/
+/**
+  Variables con los umbrales para la lectura de los sensores.
+  Media, UmbralP por arriba de la media y UmbralN por debajo de la media.
+**/
 volatile uint8_t sdNivelMedio, sdNivelUmbralP, sdNivelUmbralN;
-volatile uint8_t scNivelMedio, scNivelUmbralP, scNivelUmbralN;
 volatile uint8_t siNivelMedio, siNivelUmbralP, siNivelUmbralN;
-
-#define SI(num)	(num<<4)
-#define SC(num)	(num<<2)
-#define SD(num)	(num<<0)
 
 typedef enum{
 		ES_333 = SI(3) | SC(3) | SD(3),
