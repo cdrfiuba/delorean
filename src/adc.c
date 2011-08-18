@@ -3,7 +3,9 @@
 
 volatile bool medicionValida;
 
-
+/**
+  
+**/
 estado_sensor_t analizarSensores(void)
 {
 	uint8_t si=0, sd=0;
@@ -157,9 +159,9 @@ void calibrarNiveles(void)
 	_delay_ms(50);
 	Led3Off();
     
-    while(!leerBoton1());
+    while(!leerBoton1());  // esperar el que aprete el botón para pasar a la próxima fase
     
-    // Guardar valores de nivel para NO_LINEA	
+    // Guardar valores de nivel para NO_LINEA
 	Led2On();
 	_delay_ms(50);
 	eeprom_write_byte((uint8_t*)SI_NO_LINE_EEP_ADDR,(uint8_t)analogSensorIzq);
@@ -247,3 +249,4 @@ void calcularNiveles(void)
 	eeprom_write_byte((uint8_t*)18,(uint8_t)siNivelMedio);
 	eeprom_write_byte((uint8_t*)19,(uint8_t)siNivelUmbralN);
 }
+

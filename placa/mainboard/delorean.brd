@@ -1,6 +1,6 @@
-PCBNEW-BOARD Version 1 date mar 26 jul 2011 17:27:46 ART
+PCBNEW-BOARD Version 1 date mié 03 ago 2011 13:32:03 ART
 
-# Created by Pcbnew(2011-03-30 BZR 2932)-stable
+# Created by Pcbnew(2011-07-08 BZR 3044)-stable
 
 $GENERAL
 encoding utf-8
@@ -9,7 +9,7 @@ Ly 1FFF8001
 EnabledLayers 1FFF8001
 Links 102
 NoConn 2
-Di 15937 9053 65603 42973
+Di 16057 9053 65603 42973
 Ndraw 14
 Ntrack 422
 Nzone 0
@@ -21,7 +21,7 @@ $EndGENERAL
 $SHEETDESCR
 Sheet A4 11700 8267
 Title "Delorean"
-Date "26 jul 2011"
+Date "3 aug 2011"
 Rev "1.0"
 Comp "Club de Robótica - FIUBA"
 Comment1 ""
@@ -61,7 +61,7 @@ PadSize 800 800
 PadDrill 250
 Pad2MaskClearance 100
 AuxiliaryAxisOrg 0 0
-PcbPlotParams (pcbplotparams (layerselection 334725121) (usegerberextensions true) (excludeedgelayer false) (linewidth 60) (plotframeref false) (viasonmask false) (mode 1) (useauxorigin false) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 0) (pscolor true) (psnegative false) (psa4output false) (plotreference true) (plotvalue true) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk false) (outputformat 2) (mirror false) (drillshape 2) (scaleselection 1) (outputdirectory ""))
+PcbPlotParams (pcbplotparams (layerselection 32768) (usegerberextensions true) (excludeedgelayer false) (linewidth 60) (plotframeref false) (viasonmask false) (mode 1) (useauxorigin false) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 0) (pscolor true) (psnegative true) (psa4output false) (plotreference true) (plotvalue true) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk false) (outputformat 2) (mirror true) (drillshape 2) (scaleselection 1) (outputdirectory ""))
 $EndSETUP
 
 $EQUIPOT
@@ -2183,7 +2183,7 @@ $EndMODULE  PinVia
 $TEXTPCB
 Te "Delorean 2.0"
 Po 23750 15150 550 750 120 0
-De 15 1 0 Normal
+De 15 1 0 Normal C
 $EndTEXTPCB
 $DRAWSEGMENT
 Po 3 42300 19350 43000 20050 150
@@ -2196,7 +2196,7 @@ $EndDRAWSEGMENT
 $TEXTPCB
 Te "Delorean 2.0"
 Po 23800 15150 550 750 120 0
-De 0 0 0 Normal
+De 0 0 0 Normal C
 $EndTEXTPCB
 $DRAWSEGMENT
 Po 3 23600 28100 24300 28800 150
