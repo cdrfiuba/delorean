@@ -32,10 +32,10 @@
 
 /*MD_IN1 = Motor Right IN1*/
 #define PORT_MD_IN1_NAME  D
-#define MD_IN1_NUMBER     1
+#define MD_IN1_NUMBER     0
 /*MD_IN2 = Motor Right IN2*/
 #define PORT_MD_IN2_NAME  D
-#define MD_IN2_NUMBER     0
+#define MD_IN2_NUMBER     1
 
 #define PORT_MD_IN1     def_port_reg(PORT_MD_IN1_NAME)
 #define PIN_MD_IN1      def_pin_reg(PORT_MD_IN1_NAME)
