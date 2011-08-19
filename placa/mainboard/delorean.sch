@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date mar 26 jul 2011 16:06:07 ART
+EESchema Schematic File Version 2  date jue 18 ago 2011 23:03:40 ART
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -31,14 +31,13 @@ LIBS:contrib
 LIBS:valves
 LIBS:L298
 LIBS:ptn04050c
-LIBS:delorean-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 1
 Title "Delorean"
-Date "26 jul 2011"
+Date "19 aug 2011"
 Rev "1.0"
 Comp "Club de Robótica - FIUBA"
 Comment1 ""
@@ -874,9 +873,9 @@ $EndComp
 Text Notes 7150 2300 0    60   ~ 0
 Puente H L298
 Text Notes 10100 2250 0    60   ~ 0
-Motor 1
+Motor D\n
 Text Notes 10100 3200 0    60   ~ 0
-Motor 2
+Motor I
 Text Notes 2050 6350 0    60   ~ 0
 Conector para programación del micro
 Text Notes 7150 4600 0    60   ~ 0
