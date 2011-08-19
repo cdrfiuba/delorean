@@ -25,17 +25,17 @@
 
 /*MI_IN1 = Motor Left IN1*/
 #define PORT_MI_IN1_NAME  D
-#define MI_IN1_NUMBER     0
+#define MI_IN1_NUMBER     3
 /*MI_IN2 = Motor Left IN2*/
 #define PORT_MI_IN2_NAME	 D
-#define MI_IN2_NUMBER		 1
+#define MI_IN2_NUMBER		 4
 
 /*MD_IN1 = Motor Right IN1*/
 #define PORT_MD_IN1_NAME  D
-#define MD_IN1_NUMBER     3
+#define MD_IN1_NUMBER     1
 /*MD_IN2 = Motor Right IN2*/
 #define PORT_MD_IN2_NAME  D
-#define MD_IN2_NUMBER     4
+#define MD_IN2_NUMBER     0
 
 #define PORT_MD_IN1     def_port_reg(PORT_MD_IN1_NAME)
 #define PIN_MD_IN1      def_pin_reg(PORT_MD_IN1_NAME)
@@ -128,7 +128,6 @@
 
 
 #define EmisorDerInit()    SetBit(DDR_SDEM, SDEM_NUMBER)
-#define EmisorCenInit()    SetBit(DDR_SCEM, SCEM_NUMBER)
 #define EmisorIzqInit()    SetBit(DDR_SIEM, SIEM_NUMBER)
 
 /*Configuracion ADC*/
