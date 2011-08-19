@@ -98,9 +98,7 @@ void configurarMotores(void)
 	velocidadMI = PWM_VMEDIO;
 
 	ICR1 = PWM_ICR1;  // Esto define al TOP
-
 }
-
 
 void configurarTimer1(void)
 {
@@ -135,4 +133,5 @@ ISR(TIMER1_COMPB_vect, ISR_NAKED)
 {
 	motorIzquierdoRetroceder();
 	Reti();
-} 
+}
+

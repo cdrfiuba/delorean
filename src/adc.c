@@ -6,7 +6,7 @@ volatile bool medicionValida;
 /**
   
 **/
-estado_sensor_t analizarSensores(void)
+uint8_t analizarSensores(void)
 {
 	uint8_t si=0, sd=0;
 
@@ -59,8 +59,10 @@ void configurarADCs(void)
 	// Modo con interrupcion
 	// Seleccionamos la menor velocidad de muestreo. CK/128
 	ADCPrescalerSelec(7);
+	
 	// Habilitar o no  la interrupcion de finalizacion de conversion AD
 	SetBit(ADCSRA, ADIE);
+	
 	//ClearBit(ADCSRA, ADIE);
 	medicionValida=false;
 	IniciarConversion();
@@ -68,10 +70,10 @@ void configurarADCs(void)
 	// Modo sin interrupcion (utilizamos la funcion capturarADC();
 	// Seleccionamos la mayor velocidad de muestreo. CK/2
 	ADCPrescalerSelec(0);
+	
 	//Habilitar o no  la interrupcion de finalizacion de conversion AD
 	ClearBit(ADCSRA, ADIE);
 	EmisorIzqOn();
-	EmisorCenOn();
 	EmisorDerOn();	
 #endif
 }
@@ -111,7 +113,7 @@ ISR(ADC_vect)
 			if (medicionValida==true)
 			{
 				// AD1 es el sensor cental
-				analogSensorCen = temp2;
+				// analogSensorCen = temp2;  // ya no hay sensor central
 				// seleccionar siguiente canal
 				ADSeleccionarCanal(ADC_NUM_SIRE);
 				medicionValida = false;
@@ -209,20 +211,16 @@ void calcularNiveles(void)
 	{
 		colorLinea = LINEA_BLANCA;
 		maxsi = eeprom_read_byte((uint8_t*)SI_NO_LINE_EEP_ADDR);
-		maxsc = eeprom_read_byte((uint8_t*)SC_NO_LINE_EEP_ADDR);
 		maxsd = eeprom_read_byte((uint8_t*)SD_NO_LINE_EEP_ADDR);
 		minsi = eeprom_read_byte((uint8_t*)SI_LINE_EEP_ADDR);
-		minsc = eeprom_read_byte((uint8_t*)SC_LINE_EEP_ADDR);
 		minsd = eeprom_read_byte((uint8_t*)SD_LINE_EEP_ADDR);
 	}
 	else
 	{
 		colorLinea = LINEA_NEGRA;
 		minsi = eeprom_read_byte((uint8_t*)SI_NO_LINE_EEP_ADDR);
-		minsc = eeprom_read_byte((uint8_t*)SC_NO_LINE_EEP_ADDR);
 		minsd = eeprom_read_byte((uint8_t*)SD_NO_LINE_EEP_ADDR);
 		maxsi = eeprom_read_byte((uint8_t*)SI_LINE_EEP_ADDR);
-		maxsc = eeprom_read_byte((uint8_t*)SC_LINE_EEP_ADDR);
 		maxsd = eeprom_read_byte((uint8_t*)SD_LINE_EEP_ADDR);
 	}
 	sdNivelMedio = minsd + (maxsd-minsd)/2;	
@@ -232,14 +230,6 @@ void calcularNiveles(void)
 	eeprom_write_byte((uint8_t*)10,(uint8_t)sdNivelUmbralP);
 	eeprom_write_byte((uint8_t*)11,(uint8_t)sdNivelMedio);
 	eeprom_write_byte((uint8_t*)12,(uint8_t)sdNivelUmbralN);
-
-	scNivelMedio = minsc + (maxsc-minsc)/2;	
-	scNivelUmbralP = scNivelMedio + (maxsc-minsc)/S_UMBRAL_CTE;
-	scNivelUmbralN = scNivelMedio - (maxsc-minsc)/S_UMBRAL_CTE;
-
-	eeprom_write_byte((uint8_t*)13,(uint8_t)scNivelUmbralP);
-	eeprom_write_byte((uint8_t*)14,(uint8_t)scNivelMedio);
-	eeprom_write_byte((uint8_t*)15,(uint8_t)scNivelUmbralN);
 
 	siNivelMedio = minsi + (maxsi-minsi)/2;	
 	siNivelUmbralP = siNivelMedio + (maxsi-minsi)/S_UMBRAL_CTE;
