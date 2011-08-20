@@ -44,7 +44,7 @@ void configurarADCs(void)
 	EmisorDerInit();
 
 	analogSensorIzq = 0;
-	analogSensorDer	= 0;
+	analogSensorDer = 0;
 	
 	EncenderADC();
 
