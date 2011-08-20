@@ -70,10 +70,7 @@
 
 /*SIEM = Sensor Izquierdo Emisor*/
 #define PORT_SIEM_NAME C
-#define SIEM_NUMBER    5
-/*SCEM = Sensor Centro Emisor*/
-#define PORT_SCEM_NAME C
-#define SCEM_NUMBER    4
+#define SIEM_NUMBER    4
 /*SDEM = Sensor Derecho Emisor*/
 #define PORT_SDEM_NAME C
 #define SDEM_NUMBER    3
@@ -94,13 +91,12 @@
 #define PORT_SDRE_NAME C
 #define SDRE_NUMBER    0
 #define ADC_NUM_SDRE	 0
-/*SCRE= Sensor Central Receptor*/
-#define PORT_SCRE_NAME C
-#define SCRE_NUMBER    1
-#define ADC_NUM_SCRE	 1
+
+#define ADC_NUM_SCRE	 1 //No se usa porque ya no hay sensor central
+
 /*SIRE = Sensor Izquierdo Receptor*/
 #define PORT_SIRE_NAME C
-#define SIRE_NUMBER    2
+#define SIRE_NUMBER    1
 #define ADC_NUM_SIRE	 2
 
 #define PORT_SDRE     def_port_reg(PORT_SDRE_NAME)
@@ -117,15 +113,11 @@
 
 /* Macros */
 
-#define EmisorIzqOn()    SetBit(PORT_SIEM, SIEM_NUMBER)
-#define EmisorIzqOff()   ClearBit(PORT_SIEM, SIEM_NUMBER)
+#define EmisorIzqOn()    ClearBit(PORT_SIEM, SIEM_NUMBER)
+#define EmisorIzqOff()   SetBit(PORT_SIEM, SIEM_NUMBER)
 
-#define EmisorCenOn()    SetBit(PORT_SCEM, SCEM_NUMBER)
-#define EmisorCenOff()   ClearBit(PORT_SCEM, SCEM_NUMBER)
-
-#define EmisorDerOn()    SetBit(PORT_SDEM, SDEM_NUMBER)
-#define EmisorDerOff()   ClearBit(PORT_SDEM, SDEM_NUMBER)
-
+#define EmisorDerOn()    ClearBit(PORT_SDEM, SDEM_NUMBER)
+#define EmisorDerOff()   SetBit(PORT_SDEM, SDEM_NUMBER)
 
 #define EmisorDerInit()    SetBit(DDR_SDEM, SDEM_NUMBER)
 #define EmisorIzqInit()    SetBit(DDR_SIEM, SIEM_NUMBER)
@@ -202,7 +194,7 @@
 #define Led1Off()   ClearBit(PORT_LED1, LED1_NUMBER)
 
 #define IsLed1On()    IsBitSet(PORT_LED1, LED1_NUMBER)
-#define Led1Toggle()  {if ( IsLed1On() ) Led1Off(); else Led1On();}
+#define Led1Toggle()  {if ( IsLed1On() ) Led1O4ff(); else Led1On();}
 
 #define Led2On()    SetBit(PORT_LED2, LED2_NUMBER)
 #define Led2Off()   ClearBit(PORT_LED2, LED2_NUMBER)

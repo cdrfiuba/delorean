@@ -37,20 +37,27 @@ int main (void)
    	    //motorIzquierdoAvanzar();
    	    //motorDerechoAvanzar();
    	    
-		PwmMDvel(100);
-		PwmMIvel(100);
+		PwmMDvel(0);
+		PwmMIvel(0);
+      Led1Off(); 
+      Led2Off(); 
 
-/*		
-    	if (analogSensorIzq > 127)
+      EmisorIzqOn();
+      EmisorDerOn();
+
+
+    	if (analogSensorIzq < 100)
     	{
-    	    motorIzquierdoAvanzar();
-	    }
+    	    //PwmMIvel(100);
+          Led1On(); 
+      }
 	    
-    	if (analogSensorDer > 127)
+    	if (analogSensorDer < 100)
     	{
-    	    motorDerechoAvanzar();
-	    }
-*/
+         //PwmMDvel(100);
+         Led2On(); 
+      }
+
 	}
 }
 
