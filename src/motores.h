@@ -34,8 +34,8 @@
 	#warning El fucking preprocesador hace cualquier cosa 2
 #endif
 
-#define PWM_MAXPC_VEL_IZQ   0.4
-#define PWM_MAXPC_VEL_DER   0.4
+#define PWM_MAXPC_VEL_IZQ   0.5
+#define PWM_MAXPC_VEL_DER   0.5
 
 #define PWM_MAX_VEL_IZQ   (uint16_t)(PWM_VMEDIO * (1 + PWM_MAXPC_VEL_IZQ))
 #define PWM_MAX_VEL_DER   (uint16_t)(PWM_VMEDIO * (1 + PWM_MAXPC_VEL_DER))

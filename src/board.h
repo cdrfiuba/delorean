@@ -9,8 +9,7 @@
 /*MD_PWM = Motor Derecho Enable (Enable)*/
 #define PORT_MD_EN_NAME  B
 #define MD_EN_NUMBER     1
-/*MI_WPM = Motor Izquierdo PWM (Enable) 
-*/
+/*MI_WPM = Motor Izquierdo PWM (Enable)*/
 #define PORT_MI_EN_NAME  B
 #define MI_EN_NUMBER     2
 
@@ -28,7 +27,7 @@
 #define MI_IN1_NUMBER     3
 /*MI_IN2 = Motor Left IN2*/
 #define PORT_MI_IN2_NAME	 D
-#define MI_IN2_NUMBER		 4
+#define MI_IN2_NUMBER		   4
 
 /*MD_IN1 = Motor Right IN1*/
 #define PORT_MD_IN1_NAME  D
@@ -57,8 +56,6 @@
 
 //#define MAX_MOTOR_F	0x00FF  //revisar si estan bien los valores
 //#define	MAX_MOTOR_B	0x0000  //revisar si estan bien los valores
-
-
 //#define STOP_MOTOR 0x80  
 
 
@@ -77,11 +74,7 @@
 
 #define PORT_SIEM     def_port_reg(PORT_SIEM_NAME)
 #define PIN_SIEM      def_pin_reg(PORT_SIEM_NAME)
-#define DDR_SIEM     def_ddr_reg(PORT_SIEM_NAME)
-
-#define PORT_SCEM    def_port_reg(PORT_SCEM_NAME)
-#define PIN_SCEM      def_pin_reg(PORT_SCEM_NAME)
-#define DDR_SCEM      def_ddr_reg(PORT_SCEM_NAME)
+#define DDR_SIEM      def_ddr_reg(PORT_SIEM_NAME)
 
 #define PORT_SDEM     def_port_reg(PORT_SDEM_NAME)
 #define PIN_SDEM      def_pin_reg(PORT_SDEM_NAME)
@@ -92,8 +85,6 @@
 #define SDRE_NUMBER    0
 #define ADC_NUM_SDRE	 0
 
-#define ADC_NUM_SCRE	 1 //No se usa porque ya no hay sensor central
-
 /*SIRE = Sensor Izquierdo Receptor*/
 #define PORT_SIRE_NAME C
 #define SIRE_NUMBER    1
@@ -102,10 +93,6 @@
 #define PORT_SDRE     def_port_reg(PORT_SDRE_NAME)
 #define PIN_SDRE      def_pin_reg(PORT_SDRE_NAME)
 #define DDR_SDRE     def_ddr_reg(PORT_SDRE_NAME)
-
-#define PORT_SCRE    def_port_reg(PORT_SCRE_NAME)
-#define PIN_SCRE      def_pin_reg(PORT_SCRE_NAME)
-#define DDR_SCRE      def_ddr_reg(PORT_SCRE_NAME)
 
 #define PORT_SIRE     def_port_reg(PORT_SIRE_NAME)
 #define PIN_SIRE      def_pin_reg(PORT_SIRE_NAME)
@@ -124,9 +111,11 @@
 
 /*Configuracion ADC*/
 
-// Para elegir la referencia se usan los bits REFS1 y REFS0. Pero como 
-// por default vienen en cero y ese es el modo AREF (que vamos a usar),
-// no hacemos nada con ellos.
+/**
+	Para elegir la referencia se usan los bits REFS1 y REFS0. Pero como 
+	por default vienen en cero y ese es el modo AREF (que vamos a usar),
+	no hacemos nada con ellos.
+**/
 
 // Prende los conversores seteando bit en el ADCSRA
 #define EncenderADC() SetBit(ADCSRA, ADEN)
@@ -134,9 +123,7 @@
 // Clearemos el bit ADPS para NO tener el prescaler del clock activo (pag 198)
 #define ADCPrescalerSelec(PN) (ADCSRA = (ADCSRA & 0xF8) | PN)
 
-
 // Modo de funcionamiento (pag 198)
-
 // Modo Single Conversion: Para empezar la conversion se debe poner en alto 
 // el bit ADSC (ADC Start Conversion) en el Reg: ADCSRA
 // Modo Free Runing: En este modo el ADC toma datos todo el tiempo, 
@@ -154,7 +141,6 @@
 // ANALIZAR LA DIFERENCIA ENTRE MACRO y static inline function
 
 #define ADSeleccionarCanal(CN) 			(ADMUX = (ADMUX & 0xF0) | CN)
-
 #define ADDeterminarCanal()					(ADMUX & 0x07)
 /* ---------------------------------------------- */
 
@@ -194,7 +180,7 @@
 #define Led1Off()   ClearBit(PORT_LED1, LED1_NUMBER)
 
 #define IsLed1On()    IsBitSet(PORT_LED1, LED1_NUMBER)
-#define Led1Toggle()  {if ( IsLed1On() ) Led1O4ff(); else Led1On();}
+#define Led1Toggle()  {if ( IsLed1On() ) Led1Off(); else Led1On();}
 
 #define Led2On()    SetBit(PORT_LED2, LED2_NUMBER)
 #define Led2Off()   ClearBit(PORT_LED2, LED2_NUMBER)
@@ -231,7 +217,6 @@
 // active el pull-up interno
 #define IntArranqueInit()  {ClearBit(DDR_INT_ARRANQUE, INT_ARRANQUE_NUMBER); SetBit(PORT_INT_ARRANQUE, INT_ARRANQUE_NUMBER);}
 
-
 // lee el pin del boton de arranque
 #define IsIntArranqueSet()      IsBitSet(PIN_INT_ARRANQUE, INT_ARRANQUE_NUMBER)
 
@@ -267,6 +252,5 @@
 //#define IsJumper2Clear()   IsBitClear(PIN_JMP1,JMP1_NUMBER)
 
 /* ----------------------------------------------------- */
-
 
 #endif

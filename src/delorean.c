@@ -19,43 +19,50 @@ int main (void)
 	//Inicializaciones
 	startup();
 	
-	// Entra al modo calibración
-	//if (IsJumper1Set() == false) calibrarNiveles();
-
- 	motoresEncender();
- 	
  	while(1)
 	{	
 	// Codigo Principal
-#ifndef _ADC_MODO_INT_
-		capturarADc();
-#endif
-		//estadoSensores = analizarSensores();
-		//estadoActual = evaluarEstado(estadoSensores);
-		//accionar();
+//7#ifndef _ADC_MODO_INT_
+//		capturarADc();
+//#endif
+//	  estadoSensores = analizarSensores();
+//		estadoActual = evaluarEstado(estadoSensores);
+//		accionar();
 
    	    //motorIzquierdoAvanzar();
    	    //motorDerechoAvanzar();
    	    
-		PwmMDvel(0);
-		PwmMIvel(0);
-      Led1Off(); 
+//		PwmMDvel(0);
+//		PwmMIvel(0);
+	    Led1Off(); 
       Led2Off(); 
+      Led3Off(); 
 
       EmisorIzqOn();
       EmisorDerOn();
 
-
-    	if (analogSensorIzq < 100)
+      if ((analogSensorIzq < 100) && (analogSensorDer < 100)) {
+    	    PwmMIvel(100);
+					PwmMDvel(100);
+					Led3On();
+			}
+			else if (analogSensorIzq < 100)
     	{
-    	    //PwmMIvel(100);
+    	    PwmMIvel(100);
+					PwmMDvel(0);
           Led1On(); 
       }
-	    
-    	if (analogSensorDer < 100)
+			else if (analogSensorDer < 100)
     	{
-         //PwmMDvel(100);
-         Led2On(); 
+         PwmMDvel(100);
+				 PwmMIvel(0);
+				 Led2On(); 
+      }
+			else 
+    	{
+         PwmMDvel(100);
+				 PwmMIvel(100);
+				 Led3On(); 
       }
 
 	}
@@ -110,8 +117,7 @@ bool leerBoton1(void)
 ISR(INT0_vect) {
 	// Delay para debounce
 	// Dado que no tenemos necesidad de hacer nada mientras esperamos por el
-	// debounce lo dejamos asi. Sino, deberiamos utilizar algun timer y dejar
-	//  que
+	// debounce lo dejamos asi. Sino, deberiamos utilizar algun timer
 	_delay_ms(50);
 	
 	if (IsIntArranqueSet()==true)
@@ -123,18 +129,15 @@ ISR(INT0_vect) {
 			if (estadoActual==APAGADO)
 			{
 				estadoActual = ON_TRACK;
-				//motoresEncender();
+				motoresEncender();
 			}
 			else {
 				estadoActual = APAGADO;
-				//motoresApagar();
+				motoresApagar();
 		}
 	}
 	SetBit(GIFR, INTF0);
 }
-
-
-
 
 void accionar(void)
 {
