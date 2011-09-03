@@ -2,16 +2,16 @@
 #define _DEFINICIONES_
 /* Defines y Macros de proposito general */
 
-#define bool	_Bool
+#define bool	  _Bool
 #define true	  1
 #define false   0
-#define OK		true
-#define ERROR	false
-#define Nop()	asm volatile("nop")
+#define OK		  true
+#define ERROR	  false
+#define Nop()	  asm volatile("nop")
 #define Reti()	asm volatile("reti")
 
-#define LOW(a)		(char)(a & 0x00ff)
-#define	HIGH(a)		(char)(a >> 8)
+#define LOW(a)    (char)(a & 0x00ff)
+#define	HIGH(a)   (char)(a >> 8)
 
 #define SetBit(Byte,Bit)	 (Byte |= (1<<Bit))
 #define	ClearBit(Byte,Bit)	 (Byte &= (~(1<<Bit)))
