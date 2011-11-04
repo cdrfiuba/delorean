@@ -83,12 +83,12 @@
 /*SDRE = Sensor Derecho Receptor*/
 #define PORT_SDRE_NAME C
 #define SDRE_NUMBER    0
-#define ADC_NUM_SDRE	 0
+//#define ADC_NUM_SDRE	 0
 
 /*SIRE = Sensor Izquierdo Receptor*/
 #define PORT_SIRE_NAME C
 #define SIRE_NUMBER    1
-#define ADC_NUM_SIRE	 2
+//#define ADC_NUM_SIRE	 2
 
 #define PORT_SDRE     def_port_reg(PORT_SDRE_NAME)
 #define PIN_SDRE      def_pin_reg(PORT_SDRE_NAME)
@@ -115,7 +115,6 @@
 	Para elegir la referencia se usan los bits REFS1 y REFS0. Pero como 
 	por default vienen en cero y ese es el modo AREF (que vamos a usar),
 	no hacemos nada con ellos.
-**/
 
 // Prende los conversores seteando bit en el ADCSRA
 #define EncenderADC() SetBit(ADCSRA, ADEN)
@@ -142,6 +141,7 @@
 
 #define ADSeleccionarCanal(CN) 			(ADMUX = (ADMUX & 0xF0) | CN)
 #define ADDeterminarCanal()					(ADMUX & 0x07)
+**/
 /* ---------------------------------------------- */
 
 /* Definiciones correspondientes a los pines de los LEDs */

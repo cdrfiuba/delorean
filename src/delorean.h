@@ -7,20 +7,20 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
-#include <avr/sleep.h>
-#include <avr/eeprom.h>
+//#include <avr/sleep.h>
+//#include <avr/eeprom.h>
 
 #include "board.h"
 #include "motores.h"
-#include "adc.h"
-
-#include "boxes.h"
+#include "sensores.h"
 
 typedef enum
 {
     APAGADO, ON_TRACK,
-    IZ_BAJO, IZ_MEDIO, IZ_ALTO, IZ_RET_MEDIO, IZ_RET_ALTO,
-    DE_BAJO, DE_MEDIO, DE_ALTO, DE_RET_MEDIO, DE_RET_ALTO
+    IZ_BAJO,
+//    IZ_BAJO, IZ_MEDIO, IZ_ALTO, IZ_RET_MEDIO, IZ_RET_ALTO,
+    DE_BAJO
+//    DE_BAJO, DE_MEDIO, DE_ALTO, DE_RET_MEDIO, DE_RET_ALTO
 } estado_t;
 
 
