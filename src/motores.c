@@ -1,86 +1,32 @@
 #include "motores.h"
 
-void configurarTimer1(void);
+void configurarTimer2(void);
 
-inline void motoresEncender(void)
-{
+inline void motoresEncender(void) {
+  // En el primer ciclo, solo hace la comparación en el flanco descendente
+  // Con lo cual, si en la comparacion se usa toggle habrá que considerar este
+  // cambio de fase
+  // Si queremos que en la base de la rampa In1 este en cero, entonces aca
+  // debemos ponerlo en 1
+  // El TCNT2 Tuvimos que ponerlo en 255 porque sino en el primer ciclo (luego
+  // del reset) tenia una comparacion de menos.
+	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
+	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
+  TCNT2 = 255;
 	SetBit(PORT_MD_EN, MD_EN_NUMBER);
 	SetBit(PORT_MI_EN, MI_EN_NUMBER);
+  PwmStart();
 }
 
-inline void motoresApagar(void)
-{
+inline void motoresApagar(void) {
 	ClearBit(PORT_MD_EN, MD_EN_NUMBER);
 	ClearBit(PORT_MI_EN, MI_EN_NUMBER);
+  PwmStop();
 }
 
-
-inline void motorDerechoAvanzar(void)
-{
-#if defined _REDUCCION_A_
-	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
-#elif defined _REDUCCION_B_
-	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
-#else
-	DEFINIR_REDUCCION
-#endif
-}
-
-inline void motorDerechoRetroceder(void)
-{
-#if defined _REDUCCION_A_
-	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
-#elif defined _REDUCCION_B_
-	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
-#else
-	DEFINIR_REDUCCION
-#endif
-}
-
-inline void motorDerechoDetener(void)
-{
-	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
-}
-
-inline void motorIzquierdoDetener(void)
-{
-	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
-}
-
-inline void motorIzquierdoAvanzar(void)
-{
-#if defined _REDUCCION_A_
-	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
-#elif defined _REDUCCION_B_
-	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
-#else
-	DEFINIR_REDUCCION
-#endif
-}
-
-inline void motorIzquierdoRetroceder(void)
-{
-#if defined _REDUCCION_A_
-	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
-#elif defined _REDUCCION_B_
-	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
-#else
-	DEFINIR_REDUCCION
-#endif
-}
-
-void configurarMotores(void)
-{
+void configurarMotores(void) {
 	//Configuramos como salidas los pines de PWM
 	SetBit(DDR_MI_EN, MI_EN_NUMBER);
 	SetBit(DDR_MD_EN, MD_EN_NUMBER);
@@ -92,46 +38,38 @@ void configurarMotores(void)
 	SetBit(DDR_MD_IN2, MD_IN2_NUMBER);
 
 	motoresApagar();
-	configurarTimer1();
-	
+	configurarTimer2();
+  
 	velocidadMD = PWM_VMEDIO;
 	velocidadMI = PWM_VMEDIO;
-
-	ICR1 = PWM_ICR1;  // Esto define al TOP
 }
 
-void configurarTimer1(void)
-{
-	// Configuracion del timer 1 para el PWM
+void configurarTimer2(void) {
+	// Configuracion del timer 2 para el PWM
 	
-	TCCR1A = PWM_TCCR1A;  
-	TCCR1B = PWM_TCCR1B; 	
+	TCCR2A = PWM_TCCR2A;  
+	TCCR2B = PWM_TCCR2B; 	
 
-	ICR1 = PWM_ICR1; 
-	//Habilitamos la interrupcion del Timer1 del overflow
-	TIMSK = TIMSK_VALUE;
+	//Habilitamos la interrupcion del Timer2 del overflow
+	TIMSK2 = TIMSK_VALUE;
 }
 
-
-ISR(TIMER1_OVF_vect, ISR_NAKED)
-{
+ISR(TIMER2_OVF_vect) {
 	// Los valores de comparacion se actualizan automaticamente en BOTTOM
-	motorDerechoAvanzar();
-	motorIzquierdoAvanzar();
-	Reti();
-}
-
-//PWM A RUEDA IZQUIERDA
-ISR(TIMER1_COMPA_vect, ISR_NAKED)
-{
-	motorDerechoRetroceder();
-	Reti();
+//	motorDerechoAvanzar();
+//	motorIzquierdoAvanzar();
 }
 
 //PWM A RUEDA DERECHA
-ISR(TIMER1_COMPB_vect, ISR_NAKED)
-{
-	motorIzquierdoRetroceder();
-	Reti();
+ISR(TIMER2_COMPA_vect, ISR_NAKED) {
+  SetBit(PIN_MD_IN1,MD_IN1_NUMBER);
+  SetBit(PIN_MD_IN2,MD_IN2_NUMBER);
+  Reti();
 }
 
+//PWM A RUEDA IZQUIERDA
+ISR(TIMER2_COMPB_vect) {
+  SetBit(PIN_MI_IN1,MI_IN1_NUMBER);
+  SetBit(PIN_MI_IN2,MI_IN2_NUMBER);
+  Reti();
+}

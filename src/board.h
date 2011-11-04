@@ -92,7 +92,7 @@
 
 #define PORT_SDRE     def_port_reg(PORT_SDRE_NAME)
 #define PIN_SDRE      def_pin_reg(PORT_SDRE_NAME)
-#define DDR_SDRE     def_ddr_reg(PORT_SDRE_NAME)
+#define DDR_SDRE      def_ddr_reg(PORT_SDRE_NAME)
 
 #define PORT_SIRE     def_port_reg(PORT_SIRE_NAME)
 #define PIN_SIRE      def_pin_reg(PORT_SIRE_NAME)
