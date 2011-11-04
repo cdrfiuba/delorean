@@ -3,9 +3,6 @@
 /* Definicion de prototipos */
 void startup(void);
 void configurarPulsadorArranque(void);
-void configurarTimer1(void);
-estado_t evaluarEstado(estado_sensor_t );
-void accionar(void);
 /* ------------------------ */
 
 //si se usan 2 sensores, utilizar solo Izquierda y derecha
@@ -19,52 +16,11 @@ int main (void)
 	//Inicializaciones
 	startup();
 	
+  velocidadMD = 200;
+  velocidadMI = 20;
+  Led2On();
  	while(1)
 	{	
-	// Codigo Principal
-//7#ifndef _ADC_MODO_INT_
-//		capturarADc();
-//#endif
-//	  estadoSensores = analizarSensores();
-//		estadoActual = evaluarEstado(estadoSensores);
-//		accionar();
-
-   	    //motorIzquierdoAvanzar();
-   	    //motorDerechoAvanzar();
-   	    
-//		PwmMDvel(0);
-//		PwmMIvel(0);
-	    Led1Off(); 
-      Led2Off(); 
-      Led3Off(); 
-
-      EmisorIzqOn();
-      EmisorDerOn();
-
-      if ((analogSensorIzq < 100) && (analogSensorDer < 100)) {
-    	    PwmMIvel(100);
-					PwmMDvel(100);
-					Led3On();
-			}
-			else if (analogSensorIzq < 100)
-    	{
-    	    PwmMIvel(100);
-					PwmMDvel(0);
-          Led1On(); 
-      }
-			else if (analogSensorDer < 100)
-    	{
-         PwmMDvel(100);
-				 PwmMIvel(0);
-				 Led2On(); 
-      }
-			else 
-    	{
-         PwmMDvel(100);
-				 PwmMIvel(100);
-				 Led3On(); 
-      }
-
 	}
 }
 
@@ -80,11 +36,9 @@ void startup(void)
 	Jumper1Init();
 	Jumper2Init();
 	
-	//configurarPulsadorArranque();
+	configurarPulsadorArranque();
 	configurarMotores();
-	configurarTimer1();
-	configurarADCs();
-	PwmStart();
+	//configurarADCs();
 
 	sei();
 }
@@ -93,25 +47,11 @@ void startup(void)
 void configurarPulsadorArranque(void){
 	IntArranqueInit();
 	// Configuracion de modo de interrupcion (pagina 66)
-	// MCUCR |= ((0<<ISC01) | (0<<ISC00)); // Nivel bajo. 
-	// MCUCR |= ((0<<ISC01) | (1<<ISC00)); // Cualquier cambio de nivel
-	// MCUCR |= ((1<<ISC01) | (0<<ISC00)); // Flanco descendente 
-	MCUCR |= ((1<<ISC01) | (1<<ISC00)); // Flanco ascendente.
+	EICRA |= ((1<<ISC01) | (1<<ISC00)); // Flanco ascendente.
 
 	// Esto habilita la interrupción INT0 escribiendo un '1' en el bit INT0
-	// del registro global de interrupcions GICR
-	SetBit(GICR, INT0); 
-}
-
-bool leerBoton1(void)
-{
-    if (IsIntArranqueSet())
-    {
-        _delay_ms(50);
-        if (IsIntArranqueSet())
-            return true;
-    }
-    return false;
+	// del registro de control de interrupciones externas.
+	SetBit(EIMSK, INT0); 
 }
 
 ISR(INT0_vect) {
@@ -119,7 +59,6 @@ ISR(INT0_vect) {
 	// Dado que no tenemos necesidad de hacer nada mientras esperamos por el
 	// debounce lo dejamos asi. Sino, deberiamos utilizar algun timer
 	_delay_ms(50);
-	
 	if (IsIntArranqueSet()==true)
 	{ 
 		// significa que esta en 1 y hubo flanco ascendente genuino
@@ -130,64 +69,14 @@ ISR(INT0_vect) {
 			{
 				estadoActual = ON_TRACK;
 				motoresEncender();
+      	Led1On();
 			}
 			else {
 				estadoActual = APAGADO;
 				motoresApagar();
+        Led1Off();
 		}
 	}
-	SetBit(GIFR, INTF0);
+	SetBit(EIFR, INTF0);
 }
 
-void accionar(void)
-{
-	switch (estadoActual)
-	{
-		case ON_TRACK:
-			PwmMDvel(100);
-			PwmMIvel(100);
-			break;
-		case IZ_BAJO:
-			PwmMDvel(80);
-			PwmMIvel(100);
-			break;
-		case IZ_MEDIO:
-			PwmMDvel(0);
-			PwmMIvel(100);
-			break;
-    case IZ_ALTO:
-			PwmMDvel(-100);
-			PwmMIvel(100);
-			break;
-		case IZ_RET_MEDIO:
-			PwmMDvel(90);
-			PwmMIvel(100);
-			break;
-    case IZ_RET_ALTO:
-			PwmMDvel(50);
-			PwmMIvel(100);
-			break;
-		case DE_BAJO:
-			PwmMDvel(100);
-			PwmMIvel(80);
-			break;
-		case DE_MEDIO:
-			PwmMDvel(100);
-			PwmMIvel(0);
-			break;
-		case DE_ALTO:
-			PwmMDvel(-100);
-			PwmMIvel(100);
-			break;
-		case DE_RET_MEDIO:
-			PwmMDvel(100);
-			PwmMIvel(90);
-			break;
-		case DE_RET_ALTO:
-			PwmMDvel(100);
-			PwmMIvel(50);
-			break;
-		case APAGADO:
-			break;
-	}
-}
