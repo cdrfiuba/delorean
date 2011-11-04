@@ -2,11 +2,6 @@
 #define _DEFINICIONES_
 /* Defines y Macros de proposito general */
 
-#define bool	  _Bool
-#define true	  1
-#define false   0
-#define OK		  true
-#define ERROR	  false
 #define Nop()	  asm volatile("nop")
 #define Reti()	asm volatile("reti")
 

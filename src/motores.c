@@ -73,3 +73,20 @@ ISR(TIMER2_COMPB_vect) {
   SetBit(PIN_MI_IN2,MI_IN2_NUMBER);
   Reti();
 }
+
+
+void Avanzar(){
+  velocidadMD = 200;
+  velocidadMI = 200;
+}
+
+void GirarIzquierda(){
+  velocidadMD = 200;
+  velocidadMI = 50;
+}
+
+void GirarDerecha(){
+  velocidadMD = 50;
+  velocidadMI = 200;
+}
+

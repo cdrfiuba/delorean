@@ -29,10 +29,10 @@ HFUSE = 0xDF
 LFUSE = 0xE2
 
 # SRC contiene el nombre de todos los .c existentes en el directorio actual
-SRC = delorean.c motores.c
+SRC = delorean.c motores.c sensores.c
 
 # INC contiene el nombre de todos los .h existentes en el directorio actual
-INC = delorean.h motores.h board.h
+INC = delorean.h motores.h board.h sensores.h definiciones.h
 
 # Flags de optimizacion '-Os' tamaño '-O3' velocidad
 # Si se deja -O vacio el compilador elige '-01'

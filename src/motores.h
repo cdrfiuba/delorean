@@ -34,12 +34,9 @@
 void motoresApagar(void);
 void motoresEncender(void);
 void configurarMotores(void);
-void motorDerechoDetener(void);
-void motorDerechoAvanzar(void);
-void motorDerechoRetroceder(void);
-void motorIzquierdoDetener(void);
-void motorIzquierdoAvanzar(void);
-void motorIzquierdoRetroceder(void);
 
+void Avanzar();
+void GirarIzquierda();
+void GirarDerecha();
 
 #endif

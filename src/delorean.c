@@ -3,24 +3,24 @@
 /* Definicion de prototipos */
 void startup(void);
 void configurarPulsadorArranque(void);
+estado_t analizarEstado(void);
+void accion(void);
+void MuerteSubita();
 /* ------------------------ */
 
-//si se usan 2 sensores, utilizar solo Izquierda y derecha
-volatile uint8_t estadoSensores;
 volatile estado_t estadoActual;
-
-uint8_t si, sd;
 
 int main (void)
 {
 	//Inicializaciones
 	startup();
-	
-  velocidadMD = 200;
-  velocidadMI = 20;
-  Led2On();
+	estadoActual = ON_TRACK;
  	while(1)
-	{	
+	{
+    sensor_est_nuevo = true;
+    estadoActual = analizarEstado();
+    accion();
+    while (sensor_est_nuevo == false);
 	}
 }
 
@@ -38,7 +38,7 @@ void startup(void)
 	
 	configurarPulsadorArranque();
 	configurarMotores();
-	//configurarADCs();
+  configurarSensores();
 
 	sei();
 }
@@ -80,3 +80,93 @@ ISR(INT0_vect) {
 	SetBit(EIFR, INTF0);
 }
 
+
+estado_t analizarEstado(void){
+  switch(estadoActual){
+    case APAGADO:
+      return APAGADO;
+      break;
+    case ON_TRACK:
+      switch(sensores){
+        case DESVIO_IZQ:
+          return IZ_BAJO;
+          break;
+        case DESVIO_DER:
+          return DE_BAJO;
+          break;
+        case LINEA:
+          return ON_TRACK;
+          break;
+        default:
+          MuerteSubita();
+      }
+      break;
+    case IZ_BAJO:
+      switch(sensores){
+        case DESVIO_IZQ:
+          return IZ_BAJO;
+          break;
+        case DESVIO_DER:
+          return DE_BAJO;
+          break;
+        case LINEA:
+          return ON_TRACK;
+          break;
+        default:
+          MuerteSubita();
+      }
+      break;
+    case DE_BAJO:
+      switch(sensores){
+        case DESVIO_IZQ:
+          return IZ_BAJO;
+          break;
+        case DESVIO_DER:
+          return DE_BAJO;
+          break;
+        case LINEA:
+          return ON_TRACK;
+          break;
+        default:
+          MuerteSubita();
+      }
+      break;
+  }
+}
+
+
+void accion(void){
+  switch(estadoActual){
+    case APAGADO:
+      break;
+    case ON_TRACK:
+      Avanzar();
+      break;
+    case IZ_BAJO:
+      GirarDerecha();
+      break;
+    case DE_BAJO:
+      GirarIzquierda();
+      break;
+    default:
+      MuerteSubita();
+  }
+}
+
+void MuerteSubita(){
+  Led1Off();
+  Led2Off();
+  Led3Off();
+
+  while(1){
+    Led1On();
+    _delay_ms(100);
+    Led1Off();
+    Led2On();
+    _delay_ms(100);
+    Led2Off();
+    Led3On();
+    _delay_ms(100);
+    Led3Off();
+  }
+}
