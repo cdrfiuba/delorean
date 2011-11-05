@@ -17,7 +17,7 @@ int main (void)
 	estadoActual = ON_TRACK;
  	while(1)
 	{
-    sensor_est_nuevo = true;
+    sensor_est_nuevo = false;
     estadoActual = analizarEstado();
     accion();
     while (sensor_est_nuevo == false);
@@ -38,7 +38,7 @@ void startup(void)
 	
 	configurarPulsadorArranque();
 	configurarMotores();
-  configurarSensores();
+   configurarSensores();
 
 	sei();
 }
@@ -69,15 +69,15 @@ ISR(INT0_vect) {
 			{
 				estadoActual = ON_TRACK;
 				motoresEncender();
-      	Led1On();
+      	   Led1On();
 			}
 			else {
 				estadoActual = APAGADO;
 				motoresApagar();
-        Led1Off();
-		}
+            Led1Off();
+		   }
 	}
-	SetBit(EIFR, INTF0);
+   SetBit(EIFR, INTF0);
 }
 
 
@@ -89,67 +89,68 @@ estado_t analizarEstado(void){
     case ON_TRACK:
       switch(sensores){
         case DESVIO_IZQ:
-          return IZ_BAJO;
+          return CORREGIR_IZ;
           break;
         case DESVIO_DER:
-          return DE_BAJO;
+          return CORREGIR_DE;
           break;
         case LINEA:
           return ON_TRACK;
           break;
-        default:
-          MuerteSubita();
+//        default:
+//          MuerteSubita();
       }
       break;
-    case IZ_BAJO:
+    case CORREGIR_DE:
       switch(sensores){
         case DESVIO_IZQ:
-          return IZ_BAJO;
+          return CORREGIR_IZ;
           break;
         case DESVIO_DER:
-          return DE_BAJO;
+          return CORREGIR_DE;
           break;
         case LINEA:
           return ON_TRACK;
           break;
-        default:
-          MuerteSubita();
+//        default:
+//          MuerteSubita();
       }
       break;
-    case DE_BAJO:
+    case CORREGIR_IZ:
       switch(sensores){
         case DESVIO_IZQ:
-          return IZ_BAJO;
+          return CORREGIR_IZ;
           break;
         case DESVIO_DER:
-          return DE_BAJO;
+          return CORREGIR_DE;
           break;
         case LINEA:
           return ON_TRACK;
           break;
-        default:
-          MuerteSubita();
+ //         default:
+//          MuerteSubita();
       }
       break;
   }
 }
 
 
-void accion(void){
+void accion(void){   
+   
   switch(estadoActual){
     case APAGADO:
       break;
     case ON_TRACK:
       Avanzar();
       break;
-    case IZ_BAJO:
+    case CORREGIR_IZ:
       GirarDerecha();
       break;
-    case DE_BAJO:
+    case CORREGIR_DE:
       GirarIzquierda();
       break;
-    default:
-      MuerteSubita();
+//    default:
+//      MuerteSubita();
   }
 }
 
