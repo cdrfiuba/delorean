@@ -82,12 +82,12 @@
 
 /*SDRE = Sensor Derecho Receptor*/
 #define PORT_SDRE_NAME C
-#define SDRE_NUMBER    0
+#define SDRE_NUMBER    1
 //#define ADC_NUM_SDRE	 0
 
 /*SIRE = Sensor Izquierdo Receptor*/
 #define PORT_SIRE_NAME C
-#define SIRE_NUMBER    1
+#define SIRE_NUMBER    0
 //#define ADC_NUM_SIRE	 2
 
 #define PORT_SDRE     def_port_reg(PORT_SDRE_NAME)
