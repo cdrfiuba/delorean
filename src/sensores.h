@@ -5,10 +5,10 @@
 #include "board.h"
 
 typedef enum {
-  LINEA = 3,
-  DESVIO_IZQ = 1,
-  DESVIO_DER = 2,
-  AFUERA = 0
+  AFUERA = 0x00,
+  DESVIO_IZQ = 0x01,
+  DESVIO_DER = 0x02,
+  LINEA = 0x03
 } sensor_t;
 
 extern volatile bool sensor_est_nuevo;

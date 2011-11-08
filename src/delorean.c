@@ -10,17 +10,31 @@ void MuerteSubita();
 
 volatile estado_t estadoActual;
 
+
+void testeoDinamica(){
+//  Avanzar();
+//  _delay_ms(2000);
+  GirarDerecha();
+  _delay_ms(5000);
+  GirarIzquierda();
+  _delay_ms(5000);
+
+}
+
+
 int main (void)
 {
 	//Inicializaciones
 	startup();
-	estadoActual = ON_TRACK;
- 	while(1)
-	{
-    sensor_est_nuevo = false;
-    estadoActual = analizarEstado();
+	while(estadoActual == APAGADO);
+
+ 	while(1) {
+    testeoDinamica();
+/*    estadoActual = analizarEstado();
     accion();
+    sensor_est_nuevo = false;
     while (sensor_est_nuevo == false);
+*/
 	}
 }
 
@@ -38,7 +52,7 @@ void startup(void)
 	
 	configurarPulsadorArranque();
 	configurarMotores();
-   configurarSensores();
+  configurarSensores();
 
 	sei();
 }
@@ -59,34 +73,34 @@ ISR(INT0_vect) {
 	// Dado que no tenemos necesidad de hacer nada mientras esperamos por el
 	// debounce lo dejamos asi. Sino, deberiamos utilizar algun timer
 	_delay_ms(50);
-	if (IsIntArranqueSet()==true)
-	{ 
-		// significa que esta en 1 y hubo flanco ascendente genuino
-		// se podria reemplazar la variable por poner apagar todo, poner 
-		// el micro a dormir esperando solo esta interrupcion y luego
-		// despertalo. Aca se lo despertaria
-			if (estadoActual==APAGADO)
-			{
-				estadoActual = ON_TRACK;
-				motoresEncender();
-      	   Led1On();
-			}
-			else {
-				estadoActual = APAGADO;
-				motoresApagar();
-            Led1Off();
-		   }
+	if (IsIntArranqueSet()==true)	{ 
+    // significa que esta en 1 y hubo flanco ascendente genuino
+    // se podria reemplazar la variable por poner apagar todo, poner 
+    // el micro a dormir esperando solo esta interrupcion y luego
+    // despertalo. Aca se lo despertaria
+    if (estadoActual==APAGADO) {
+      estadoActual = ON_TRACK;
+      motoresEncender();
+      Led1On();
+    }
+    else {
+      estadoActual = APAGADO;
+      motoresApagar();
+      Led1Off();
+    }
 	}
-   SetBit(EIFR, INTF0);
+
+//  Esto borra el flag por el tema del debounce
+  SetBit(EIFR, INTF0);
 }
 
 
 estado_t analizarEstado(void){
-  switch(estadoActual){
+/*  switch(estadoActual){
     case APAGADO:
       return APAGADO;
       break;
-    case ON_TRACK:
+    case ON_TRACK:*/
       switch(sensores){
         case DESVIO_IZQ:
           return CORREGIR_IZ;
@@ -97,9 +111,14 @@ estado_t analizarEstado(void){
         case LINEA:
           return ON_TRACK;
           break;
-//        default:
-//          MuerteSubita();
-      }
+        case AFUERA:
+          Led2On();
+          return AFUERA;
+          break;
+        default:
+          MuerteSubita();
+          return ON_TRACK;
+      }/*
       break;
     case CORREGIR_DE:
       switch(sensores){
@@ -112,8 +131,13 @@ estado_t analizarEstado(void){
         case LINEA:
           return ON_TRACK;
           break;
-//        default:
+        case AFUERA:
+          return AFUERA;
+          break;
+        default:
 //          MuerteSubita();
+          return ON_TRACK;
+          break;
       }
       break;
     case CORREGIR_IZ:
@@ -127,16 +151,19 @@ estado_t analizarEstado(void){
         case LINEA:
           return ON_TRACK;
           break;
- //         default:
+        default:
 //          MuerteSubita();
+          return ON_TRACK;
+          break;
       }
       break;
-  }
+    default:
+      return ON_TRACK;
+  }*/
 }
 
 
 void accion(void){   
-   
   switch(estadoActual){
     case APAGADO:
       break;
@@ -149,16 +176,17 @@ void accion(void){
     case CORREGIR_DE:
       GirarIzquierda();
       break;
-//    default:
-//      MuerteSubita();
+    default:
+      MuerteSubita();
+      break;
   }
 }
 
 void MuerteSubita(){
+  cli();
   Led1Off();
   Led2Off();
   Led3Off();
-
   while(1){
     Led1On();
     _delay_ms(100);
