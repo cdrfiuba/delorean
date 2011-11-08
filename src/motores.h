@@ -36,6 +36,7 @@ void motoresEncender(void);
 void configurarMotores(void);
 
 void Avanzar();
+void Detenido();
 void GirarIzquierda();
 void GirarDerecha();
 

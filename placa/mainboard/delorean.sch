@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date jue 18 ago 2011 23:03:40 ART
+EESchema Schematic File Version 2  date Tue 08 Nov 2011 19:28:09 ART
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -31,13 +31,14 @@ LIBS:contrib
 LIBS:valves
 LIBS:L298
 LIBS:ptn04050c
+LIBS:delorean-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 1
 Title "Delorean"
-Date "19 aug 2011"
+Date "8 nov 2011"
 Rev "1.0"
 Comp "Club de Robótica - FIUBA"
 Comment1 ""
@@ -45,6 +46,14 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Text Notes 4450 3550 0    60   ~ 0
+sensor izquierdo
+Text Notes 4450 3650 0    60   ~ 0
+sensor derecho
+Text Notes 8550 5550 0    60   ~ 0
+sensor derecho
+Text Notes 5900 5550 0    60   ~ 0
+sensor izquierdo
 Connection ~ 5750 7100
 Wire Wire Line
 	5850 7100 5250 7100
