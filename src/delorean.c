@@ -29,11 +29,23 @@ int main (void)
 	while(estadoActual == APAGADO);
 
  	while(1) {
-//    testeoDinamica();
-    estadoActual = analizarEstado();
-    accion();
-    sensor_est_nuevo = false;
-    while (sensor_est_nuevo == false);
+    sensores = (PIN_SDRE & PIN_SENSORES_MASK);
+    switch(sensores){
+      case DESVIO_IZQ:
+        GirarDerecha();
+        break;
+      case DESVIO_DER:
+        GirarIzquierda();
+        break;
+      case LINEA:
+        Avanzar();
+        break;
+      case AMBOSBLANCO:
+        Led2On();
+        break;
+        default:
+          MuerteSubita(); //No deberia llegar nunca
+      }
 	}
 }
 
@@ -93,13 +105,13 @@ ISR(INT0_vect) {
   SetBit(EIFR, INTF0);
 }
 
-
+/*
 estado_t analizarEstado(void){
-/*  switch(estadoActual){
+  switch(estadoActual){
     case APAGADO:
       return APAGADO;
-      break;
-    case ON_TRACK:*/
+//      break;
+    case ON_TRACK:
       switch(sensores){
         case DESVIO_IZQ:
           return CORREGIR_IZ;
@@ -110,14 +122,14 @@ estado_t analizarEstado(void){
         case LINEA:
           return ON_TRACK;
           break;
-        case AFUERA:
+        case AMBOSBLANCO:
           Led2On();
-          return AFUERA;
+          return APAGADO;
           break;
         default:
-          MuerteSubita();
+          MuerteSubita(); //No deberia llegar nunca
           return ON_TRACK;
-      }/*
+      }
       break;
     case CORREGIR_DE:
       switch(sensores){
@@ -130,13 +142,13 @@ estado_t analizarEstado(void){
         case LINEA:
           return ON_TRACK;
           break;
-        case AFUERA:
-          return AFUERA;
+        case AMBOSBLANCO:
+          Led2On();
+          return APAGADO;
           break;
         default:
-//          MuerteSubita();
+          MuerteSubita(); //No deberia llegar nunca
           return ON_TRACK;
-          break;
       }
       break;
     case CORREGIR_IZ:
@@ -150,21 +162,26 @@ estado_t analizarEstado(void){
         case LINEA:
           return ON_TRACK;
           break;
-        default:
-//          MuerteSubita();
-          return ON_TRACK;
+        case AMBOSBLANCO:
+          Led2On();
+          return APAGADO;
           break;
+        default:
+          MuerteSubita(); //No deberia llegar nunca
+          return ON_TRACK;
       }
       break;
     default:
+      MuerteSubita(); //No deberia llegar nunca
       return ON_TRACK;
-  }*/
+  }
 }
 
 
 void accion(void){   
   switch(estadoActual){
     case APAGADO:
+      Detenido();  
       break;
     case ON_TRACK:
       Avanzar();
@@ -175,12 +192,18 @@ void accion(void){
     case CORREGIR_DE:
       GirarIzquierda();
       break;
+    case AFUERA_IZ:
+      GirarDerecha();
+      break;
+    case AFUERA_DE:
+      GirarIzquierda();
+      break;
     default:
-      MuerteSubita();
+      MuerteSubita(); //no debería llegar nunca
       break;
   }
 }
-
+*/
 void MuerteSubita(){
   cli();
   Led1Off();
