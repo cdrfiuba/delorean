@@ -75,17 +75,17 @@ ISR(TIMER2_COMPB_vect,ISR_NAKED) {
 
 
 void Avanzar(){
-  velocidadMD = 235;
-  velocidadMI = 245;
+  velocidadMD = 200;
+  velocidadMI = 200;
 }
 
 void GirarIzquierda(){
-  velocidadMD = 245;
-  velocidadMI = 127;
+  velocidadMD = 180;
+  velocidadMI = 140;
 }
 
 void GirarDerecha(){
-  velocidadMD = 127;
-  velocidadMI = 245;
+  velocidadMD = 140;
+  velocidadMI = 180;
 }
 

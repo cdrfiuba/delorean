@@ -29,12 +29,11 @@ int main (void)
 	while(estadoActual == APAGADO);
 
  	while(1) {
-    testeoDinamica();
-/*    estadoActual = analizarEstado();
+//    testeoDinamica();
+    estadoActual = analizarEstado();
     accion();
     sensor_est_nuevo = false;
     while (sensor_est_nuevo == false);
-*/
 	}
 }
 
