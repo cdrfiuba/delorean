@@ -15,7 +15,7 @@
 
 #define PRESCALER_PWM_OFF	(0<<CS22)|(0<<CS21)|(0<<CS20)
 // y el "prescaler" en 1 (CS12 = 0 , CS11 =0 , CS10 = 1)
-#define PRESCALER_PWM_ON	(0<<CS22)|(0<<CS21)|(1<<CS20)
+#define PRESCALER_PWM_ON	(0<<CS22)|(1<<CS21)|(0<<CS20)
 
 // TCCR1A -->  COM1A = 00 , COM1B = 00 y WGM = 14 (para usar un TOP fijo)
 #define PWM_TCCR2A ( (0<<COM2A1) | (0<<COM2A0) | (0<<COM2B1) | (0<<COM2B0) | (0<<WGM21) | (1<<WGM20) )
