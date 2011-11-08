@@ -10,10 +10,10 @@ inline void motoresEncender(void) {
   // debemos ponerlo en 1
   // El TCNT2 Tuvimos que ponerlo en 255 porque sino en el primer ciclo (luego
   // del reset) tenia una comparacion de menos.
-	ClearBit(PORT_MI_IN1, MI_IN1_NUMBER);
-	SetBit(PORT_MI_IN2, MI_IN2_NUMBER);
-	ClearBit(PORT_MD_IN1, MD_IN1_NUMBER);
-	SetBit(PORT_MD_IN2, MD_IN2_NUMBER);
+	SetBit(PORT_MI_IN1, MI_IN1_NUMBER);
+	ClearBit(PORT_MI_IN2, MI_IN2_NUMBER);
+	SetBit(PORT_MD_IN1, MD_IN1_NUMBER);
+	ClearBit(PORT_MD_IN2, MD_IN2_NUMBER);
   TCNT2 = 255;
 	SetBit(PORT_MD_EN, MD_EN_NUMBER);
 	SetBit(PORT_MI_EN, MI_EN_NUMBER);
@@ -46,7 +46,6 @@ void configurarMotores(void) {
 
 void configurarTimer2(void) {
 	// Configuracion del timer 2 para el PWM
-	
 	TCCR2A = PWM_TCCR2A;  
 	TCCR2B = PWM_TCCR2B; 	
 
@@ -68,7 +67,7 @@ ISR(TIMER2_COMPA_vect, ISR_NAKED) {
 }
 
 //PWM A RUEDA IZQUIERDA
-ISR(TIMER2_COMPB_vect) {
+ISR(TIMER2_COMPB_vect,ISR_NAKED) {
   SetBit(PIN_MI_IN1,MI_IN1_NUMBER);
   SetBit(PIN_MI_IN2,MI_IN2_NUMBER);
   Reti();
@@ -76,17 +75,17 @@ ISR(TIMER2_COMPB_vect) {
 
 
 void Avanzar(){
-  velocidadMD = 200;
-  velocidadMI = 200;
+  velocidadMD = 235;
+  velocidadMI = 245;
 }
 
 void GirarIzquierda(){
-  velocidadMD = 200;
-  velocidadMI = 50;
+  velocidadMD = 245;
+  velocidadMI = 127;
 }
 
 void GirarDerecha(){
-  velocidadMD = 50;
-  velocidadMI = 200;
+  velocidadMD = 127;
+  velocidadMI = 245;
 }
 

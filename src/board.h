@@ -98,6 +98,10 @@
 #define PIN_SIRE      def_pin_reg(PORT_SIRE_NAME)
 #define DDR_SIRE      def_ddr_reg(PORT_SIRE_NAME)
 
+
+#define PIN_SRECEP    PINSDRE
+#define PIN_SENSORES_MASK   0x03
+
 /* Macros */
 
 #define EmisorIzqOn()    ClearBit(PORT_SIEM, SIEM_NUMBER)
