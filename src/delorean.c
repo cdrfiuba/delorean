@@ -9,16 +9,16 @@ void MuerteSubita();
 /* ------------------------ */
 
 volatile estado_t estadoActual;
-
+uint8_t aux = 0;
 
 void testeoDinamica(){
-//  Avanzar();
-//  _delay_ms(5000);
-//  GirarDerecha();
-//  _delay_ms(5000);
-//  GirarIzquierda();
-//  _delay_ms(5000);
-  CorreccionIzquierda();
+  Avanzar();
+  _delay_ms(2000);
+  GirarDerecha();
+  _delay_ms(2000);
+  GirarIzquierda();
+  _delay_ms(2000);
+
 }
 
 
@@ -27,32 +27,45 @@ int main (void)
 	//Inicializaciones
 	startup();
 	while(estadoActual == APAGADO);
-//  while(1) testeoDinamica();
 
  	while(1) {
-    sensores = (PIN_SDRE & PIN_SENSORES_MASK);
+    
+    while(sensor_est_nuevo == false);
+    sensor_est_nuevo = false;
+
     switch(sensores){
-      case DESVIO_IZQ:
-        GirarDerecha();
-        break;
-      case DESVIO_DER:
-        GirarIzquierda();
-        break;
-      case LINEA:
+      case AMBOS_BLANCO:
         Avanzar();
+        estadoActual = ENLINEA;
         break;
-      case AMBOSBLANCO:
-        Led2On();
+      case IZQ_BLANCO:
+        CorreccionIzquierda();
+        estadoActual = DESVIO_DER;
+        break;    
+      case DER_BLANCO:
+        CorreccionDerecha();
+        estadoActual = DESVIO_IZQ;
         break;
-        default:
-          MuerteSubita(); //No deberia llegar nunca
+      case AMBOS_NEGRO:
+        if ((estadoActual==DESVIO_IZQ) || (estadoActual==AFUERA_IZQ)) {
+          GirarDerecha();
+          estadoActual = AFUERA_IZQ;
+        }
+        if ((estadoActual==DESVIO_DER) || (estadoActual==AFUERA_DER)) {
+          GirarIzquierda();
+          estadoActual = AFUERA_DER;
+        }
+        else Led2On();
+        break;
+      default:
+        Led3On();
       }
+       
 	}
 }
 
 /* Funciones */
-void startup(void)
-{
+void startup(void){
 	estadoActual = APAGADO;
 
 	Led1Init();
@@ -85,13 +98,14 @@ ISR(INT0_vect) {
 	// Dado que no tenemos necesidad de hacer nada mientras esperamos por el
 	// debounce lo dejamos asi. Sino, deberiamos utilizar algun timer
 	_delay_ms(50);
+
 	if (IsIntArranqueSet()==true)	{ 
     // significa que esta en 1 y hubo flanco ascendente genuino
     // se podria reemplazar la variable por poner apagar todo, poner 
     // el micro a dormir esperando solo esta interrupcion y luego
     // despertalo. Aca se lo despertaria
     if (estadoActual==APAGADO) {
-      estadoActual = ON_TRACK;
+      estadoActual = ENLINEA;
       motoresEncender();
       Led1On();
     }
