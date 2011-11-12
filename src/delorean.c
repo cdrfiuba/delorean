@@ -13,12 +13,12 @@ volatile estado_t estadoActual;
 
 void testeoDinamica(){
 //  Avanzar();
-//  _delay_ms(2000);
-  GirarDerecha();
-  _delay_ms(5000);
-  GirarIzquierda();
-  _delay_ms(5000);
-
+//  _delay_ms(5000);
+//  GirarDerecha();
+//  _delay_ms(5000);
+//  GirarIzquierda();
+//  _delay_ms(5000);
+  CorreccionIzquierda();
 }
 
 
@@ -27,6 +27,7 @@ int main (void)
 	//Inicializaciones
 	startup();
 	while(estadoActual == APAGADO);
+//  while(1) testeoDinamica();
 
  	while(1) {
     sensores = (PIN_SDRE & PIN_SENSORES_MASK);

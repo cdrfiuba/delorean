@@ -39,5 +39,7 @@ void Avanzar();
 void Detenido();
 void GirarIzquierda();
 void GirarDerecha();
+void CorreccionIzquierda();
+void CorreccionDerecha();
 
 #endif

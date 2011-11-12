@@ -76,7 +76,7 @@ ISR(TIMER2_COMPB_vect,ISR_NAKED) {
 
 void Avanzar(){
   velocidadMD = 128 + 90;
-  velocidadMI = 128 - 90;
+  velocidadMI = 128 + 90;
 }
 
 void GirarIzquierda(){
@@ -94,3 +94,12 @@ void Detenido(){
   velocidadMI = 128;
 }
 
+void CorreccionIzquierda(){
+  velocidadMD = 128 + 95;
+  velocidadMI = 128 + 70;
+}
+
+void CorreccionDerecha(){
+  velocidadMD = 128 + 70;
+  velocidadMI = 128 + 95;
+}
