@@ -16,11 +16,11 @@
 
 typedef enum
 {
-    APAGADO, ON_TRACK,
+    APAGADO, ENLINEA,
     // Esto indica un estado en donde hay un desvio hacia la izquierda y hay que corregirlo, girando hacia la derecha
-    CORREGIR_IZ, AFUERA_IZ, 
+    DESVIO_IZQ, AFUERA_IZQ, 
 //    IZ_BAJO, IZ_MEDIO, IZ_ALTO, IZ_RET_MEDIO, IZ_RET_ALTO,
-    CORREGIR_DE, AFUERA_DE
+    DESVIO_DER, AFUERA_DER
 //    DE_BAJO, DE_MEDIO, DE_ALTO, DE_RET_MEDIO, DE_RET_ALTO
 } estado_t;
 
