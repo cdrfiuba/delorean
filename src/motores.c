@@ -81,11 +81,11 @@ void Avanzar(){
 
 void GirarIzquierda(){
   velocidadMD = 128 + 60;
-  velocidadMI = 128 - 20;
+  velocidadMI = 128 - 60;
 }
 
 void GirarDerecha(){
-  velocidadMD = 128 - 20;
+  velocidadMD = 128 - 60;
   velocidadMI = 128 + 60;
 }
 
@@ -95,11 +95,11 @@ void Detenido(){
 }
 
 void CorreccionIzquierda(){
-  velocidadMD = 128 + 95;
-  velocidadMI = 128 + 70;
+  velocidadMD = 128 + 90;
+  velocidadMI = 128 + 60;
 }
 
 void CorreccionDerecha(){
-  velocidadMD = 128 + 70;
-  velocidadMI = 128 + 95;
+  velocidadMD = 128 + 60;
+  velocidadMI = 128 + 90;
 }
