@@ -25,33 +25,49 @@ void testeoDinamica(){
 int main (void)
 {
 	//Inicializaciones
+  unsigned int estadoAnterior;
 	startup();
-	while(estadoActual == APAGADO);
+
+	while(estadoActual == APAGADO){
+    Led1Toggle();
+    _delay_ms(5);
+  }
 
  	while(1) {
     
     while(sensor_est_nuevo == false);
     sensor_est_nuevo = false;
 
+    estadoAnterior = estadoActual;
     switch(sensores){
       case AMBOS_BLANCO:
         Avanzar();
         estadoActual = ENLINEA;
         break;
       case IZQ_BLANCO:
-        CorreccionIzquierda();
-        estadoActual = DESVIO_DER;
+        if (estadoAnterior==AFUERA_DER) {
+          CorreccionDerecha();
+        }
+        else{
+          CorreccionIzquierda();
+          estadoActual = DESVIO_DER;
+        }
         break;    
       case DER_BLANCO:
-        CorreccionDerecha();
-        estadoActual = DESVIO_IZQ;
+        if (estadoAnterior==AFUERA_IZQ) {
+          CorreccionIzquierda();
+        }
+        else{
+          CorreccionDerecha();
+          estadoActual = DESVIO_IZQ;
+        }
         break;
       case AMBOS_NEGRO:
-        if ((estadoActual==DESVIO_IZQ) || (estadoActual==AFUERA_IZQ)) {
+        if ((estadoAnterior==DESVIO_IZQ) || (estadoAnterior==AFUERA_IZQ)) {
           GirarDerecha();
           estadoActual = AFUERA_IZQ;
         }
-        if ((estadoActual==DESVIO_DER) || (estadoActual==AFUERA_DER)) {
+        else if ((estadoAnterior==DESVIO_DER) || (estadoAnterior==AFUERA_DER)) {
           GirarIzquierda();
           estadoActual = AFUERA_DER;
         }
@@ -59,6 +75,7 @@ int main (void)
         break;
       default:
         Led3On();
+        break;
       }
        
 	}
@@ -66,7 +83,6 @@ int main (void)
 
 /* Funciones */
 void startup(void){
-	estadoActual = APAGADO;
 
 	Led1Init();
 	Led2Init();
@@ -79,6 +95,7 @@ void startup(void){
 	configurarMotores();
   configurarSensores();
 
+	estadoActual = APAGADO;
 	sei();
 }
 
@@ -108,11 +125,6 @@ ISR(INT0_vect) {
       estadoActual = ENLINEA;
       motoresEncender();
       Led1On();
-    }
-    else {
-      estadoActual = APAGADO;
-      motoresApagar();
-      Led1Off();
     }
 	}
 
