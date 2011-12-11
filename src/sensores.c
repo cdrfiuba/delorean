@@ -20,9 +20,9 @@ void configurarSensores(){
 }
 
 
-ISR(PCINT1_vect,ISR_NAKED){ //,ISR_NAKED
+ISR(PCINT1_vect){ //,ISR_NAKED
   sensores = (PIN_SDRE & PIN_SENSORES_MASK);
   sensor_est_nuevo = true;
-  Reti();
+//  Reti();
 }
 
