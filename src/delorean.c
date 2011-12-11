@@ -25,11 +25,11 @@ int main (void) {
 
     estadoAnterior = estadoActual;
     switch(sensores){
-      case AMBOS_BLANCO:
+      case AMBOS_LINEA:
         Avanzar();
         estadoActual = ENLINEA;
         break;
-      case IZQ_BLANCO:
+      case IZQ_LINEA:
         if (estadoAnterior==AFUERA_DER) {
           CorreccionDerecha();
         }
@@ -38,7 +38,7 @@ int main (void) {
           estadoActual = DESVIO_DER;
         }
         break;    
-      case DER_BLANCO:
+      case DER_LINEA:
         if (estadoAnterior==AFUERA_IZQ) {
           CorreccionIzquierda();
         }
@@ -47,7 +47,7 @@ int main (void) {
           estadoActual = DESVIO_IZQ;
         }
         break;
-      case AMBOS_NEGRO:
+      case AMBOS_OUT:
         if ((estadoAnterior==DESVIO_IZQ) || (estadoAnterior==AFUERA_IZQ)) {
           GirarDerecha();
           estadoActual = AFUERA_IZQ;
