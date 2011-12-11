@@ -49,14 +49,8 @@ void configurarTimer2(void) {
 	TCCR2A = PWM_TCCR2A;  
 	TCCR2B = PWM_TCCR2B; 	
 
-	//Habilitamos la interrupcion del Timer2 del overflow
+	//Habilitamos la interrupcion del Timer2 de comparacion
 	TIMSK2 = TIMSK_VALUE;
-}
-
-ISR(TIMER2_OVF_vect) {
-	// Los valores de comparacion se actualizan automaticamente en BOTTOM
-//	motorDerechoAvanzar();
-//	motorIzquierdoAvanzar();
 }
 
 //PWM A RUEDA DERECHA

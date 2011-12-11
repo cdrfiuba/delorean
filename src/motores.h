@@ -22,7 +22,7 @@
 #define PWM_TCCR2B ( (0<<WGM22) | PRESCALER_PWM_OFF )
 
 // Interrupciones en comparaciones
-#define TIMSK_VALUE  ( (1<<TOIE2) | (1<<OCIE2A) | (1<<OCIE2B) )
+#define TIMSK_VALUE  ( (0<<TOIE2) | (1<<OCIE2A) | (1<<OCIE2B) )
 
 // Metodo para prender y apagar los PWM. Pone o saca el prescaler. (OJO ESTAMOS
 // PISANDO EL WMGM22. Si este no es cero hay que arreglar estas dos lineas
