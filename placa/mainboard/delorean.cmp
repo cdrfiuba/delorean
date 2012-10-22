@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-03-30 BZR 2932)-stable date = mar 26 jul 2011 16:06:32 ART
+Cmp-Mod V01 Created by CvPcb (2012-oct-18)-testing date = Mon 22 Oct 2012 16:19:32 ART
 
 BeginCmp
 TimeStamp = /4CC22213;
@@ -17,6 +17,13 @@ EndCmp
 BeginCmp
 TimeStamp = /4CC22564;
 Reference = C3;
+ValeurCmp = 100n;
+IdModule  = C1;
+EndCmp
+
+BeginCmp
+TimeStamp = /5085698C;
+Reference = C4;
 ValeurCmp = 100n;
 IdModule  = C1;
 EndCmp
@@ -60,7 +67,7 @@ BeginCmp
 TimeStamp = /4CB8F3E9;
 Reference = D4;
 ValeurCmp = DIODE;
-IdModule  = R1;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
@@ -88,7 +95,7 @@ BeginCmp
 TimeStamp = /4CB8F3EB;
 Reference = D8;
 ValeurCmp = DIODE;
-IdModule  = R1;
+IdModule  = D3;
 EndCmp
 
 BeginCmp
@@ -183,34 +190,6 @@ IdModule  = PinVia;
 EndCmp
 
 BeginCmp
-TimeStamp = /4E2EE904;
-Reference = PVG3;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE91D;
-Reference = PVG4;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE91F;
-Reference = PVG5;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE920;
-Reference = PVG6;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
 TimeStamp = /4E2EE9BD;
 Reference = PVV1;
 ValeurCmp = CONN_1;
@@ -220,41 +199,6 @@ EndCmp
 BeginCmp
 TimeStamp = /4E2EE9BE;
 Reference = PVV2;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE9BF;
-Reference = PVV3;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE9C0;
-Reference = PVV4;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE9BC;
-Reference = PVV5;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2EE9BB;
-Reference = PVV6;
-ValeurCmp = CONN_1;
-IdModule  = PinVia;
-EndCmp
-
-BeginCmp
-TimeStamp = /4E2F1009;
-Reference = PVV7;
 ValeurCmp = CONN_1;
 IdModule  = PinVia;
 EndCmp
