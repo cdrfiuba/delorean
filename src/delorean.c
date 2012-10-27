@@ -14,14 +14,25 @@ int main (void) {
 	startup();
 
 	while(estadoActual == APAGADO){
-    Led1Toggle();
+    Led1Off();
+    Led2Off();
+    Led3Off();
+    sensores = (PIN_SDRE & PIN_SENSORES_MASK);
+    if (sensores == AMBOS_LINEA) Led1On();
+    else if (sensores == DER_LINEA) Led2On();
+    else if (sensores == IZQ_LINEA) Led3On();
+    //Led1Toggle();
     _delay_ms(5);
   }
+  Led1Off();
+  Led2Off();
+  Led3Off();
 
  	while(1) {
     
-    while(sensor_est_nuevo == false);
-    sensor_est_nuevo = false;
+//    while(sensor_est_nuevo == false);
+//    sensor_est_nuevo = false;
+    sensores = (PIN_SDRE & PIN_SENSORES_MASK);
 
     estadoAnterior = estadoActual;
     switch(sensores){

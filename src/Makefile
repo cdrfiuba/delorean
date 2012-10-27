@@ -44,7 +44,7 @@ all: hex
 
 hex: $(SRC) $(INC)
 	avr-gcc $(CFLAGS) $(CDEFINES) -mmcu=$(MMCU) -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
-	avr-objcopy -j .text -O ihex  $(TARGET).bin $(TARGET).hex
+	avr-objcopy -j .text -j .data -O ihex  $(TARGET).bin $(TARGET).hex
 	avr-objdump -h -S $(TARGET).bin > "$(TARGET).lst"
 	avr-size $(TARGET).bin
 
