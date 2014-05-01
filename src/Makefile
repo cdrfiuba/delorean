@@ -29,10 +29,10 @@ HFUSE = 0xDF
 LFUSE = 0xE2
 
 # SRC contiene el nombre de todos los .c existentes en el directorio actual
-SRC = delorean.c motores.c sensores.c
+SRC = delorean.c motores.c
 
 # INC contiene el nombre de todos los .h existentes en el directorio actual
-INC = delorean.h motores.h board.h sensores.h definiciones.h
+INC = delorean.h motores.h board.h definiciones.h
 
 # Flags de optimizacion '-Os' tamaño '-O3' velocidad
 # Si se deja -O vacio el compilador elige '-01'
@@ -46,7 +46,7 @@ hex: $(SRC) $(INC)
 	avr-gcc $(CFLAGS) $(CDEFINES) -mmcu=$(MMCU) -o $(TARGET).bin -I/usr/avr/include/ $(SRC)
 	avr-objcopy -j .text -j .data -O ihex  $(TARGET).bin $(TARGET).hex
 	avr-objdump -h -S $(TARGET).bin > "$(TARGET).lst"
-	av-size -d --format=avr --mcu=$(MMCU) $(TARGET).bin
+	avr-size -d --format=avr --mcu=$(MMCU) $(TARGET).bin
 	avr-size $(TARGET).bin
 
 program: hex
