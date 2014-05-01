@@ -6,92 +6,72 @@ void configurarPulsadorArranque(void);
 void accion(void);
 /* ------------------------ */
 
-volatile estado_t estadoActual;
-volatile estado_t estadoAnterior;
+
+#define DELAY 20
 
 int main (void) {
 	//Inicializaciones
 	startup();
 
-	while(estadoActual == APAGADO){
-    Led1Off();
-    Led2Off();
-    Led3Off();
-    sensores = (PIN_SDRE & PIN_SENSORES_MASK);
-    if (sensores == AMBOS_LINEA) Led1On();
-    else if (sensores == DER_LINEA) Led2On();
-    else if (sensores == IZQ_LINEA) Led3On();
-    //Led1Toggle();
-    _delay_ms(5);
-  }
-  Led1Off();
-  Led2Off();
-  Led3Off();
+  LedAOff();
+  LedBOff();
+  LedCOff();
 
- 	while(1) {
+  while(1) {
+    ClearBit(PIN_MD_IN1,MD_IN1_NUMBER);
+    ClearBit(PIN_MD_IN2,MD_IN2_NUMBER);
     
-//    while(sensor_est_nuevo == false);
-//    sensor_est_nuevo = false;
-    sensores = (PIN_SDRE & PIN_SENSORES_MASK);
+    _delay_ms(DELAY);
 
-    estadoAnterior = estadoActual;
-    switch(sensores){
-      case AMBOS_LINEA:
-        Avanzar();
-        estadoActual = ENLINEA;
-        break;
-      case IZQ_LINEA:
-        if (estadoAnterior==AFUERA_DER) {
-          CorreccionDerecha();
-        }
-        else{
-          CorreccionIzquierda();
-          estadoActual = DESVIO_DER;
-        }
-        break;    
-      case DER_LINEA:
-        if (estadoAnterior==AFUERA_IZQ) {
-          CorreccionIzquierda();
-        }
-        else{
-          CorreccionDerecha();
-          estadoActual = DESVIO_IZQ;
-        }
-        break;
-      case AMBOS_OUT:
-        if ((estadoAnterior==DESVIO_IZQ) || (estadoAnterior==AFUERA_IZQ)) {
-          GirarDerecha();
-          estadoActual = AFUERA_IZQ;
-        }
-        else if ((estadoAnterior==DESVIO_DER) || (estadoAnterior==AFUERA_DER)) {
-          GirarIzquierda();
-          estadoActual = AFUERA_DER;
-        }
-        else Led2On();
-        break;
-      default:
-        Led3On();
-        break;
-    }   
-	}
+    SetBit(PIN_MD_IN1,MD_IN1_NUMBER);
+    ClearBit(PIN_MD_IN2,MD_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+    ClearBit(PIN_MI_IN1,MI_IN1_NUMBER);
+    ClearBit(PIN_MI_IN2,MI_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+    SetBit(PIN_MI_IN1,MI_IN1_NUMBER);
+    ClearBit(PIN_MI_IN2,MI_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+    ClearBit(PIN_MD_IN1,MD_IN1_NUMBER);
+    ClearBit(PIN_MD_IN2,MD_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+    ClearBit(PIN_MD_IN1,MD_IN1_NUMBER);
+    SetBit(PIN_MD_IN2,MD_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+    ClearBit(PIN_MI_IN1,MI_IN1_NUMBER);
+    ClearBit(PIN_MI_IN2,MI_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+    ClearBit(PIN_MI_IN1,MI_IN1_NUMBER);
+    SetBit(PIN_MI_IN2,MI_IN2_NUMBER);
+
+    _delay_ms(DELAY);
+
+  }
 }
 
 /* Funciones */
 void startup(void){
 
-	Led1Init();
-	Led2Init();
-	Led3Init();
-	
-	Jumper1Init();
-	Jumper2Init();
+	LedAInit();
+	LedBInit();
+	LedCInit();
 	
 	configurarPulsadorArranque();
 	configurarMotores();
-  configurarSensores();
+  motoresEncender();
 
-	estadoActual = APAGADO;
-	sei();
 }
 
 
@@ -116,11 +96,7 @@ ISR(INT0_vect) {
     // se podria reemplazar la variable por poner apagar todo, poner 
     // el micro a dormir esperando solo esta interrupcion y luego
     // despertalo. Aca se lo despertaria
-    if (estadoActual==APAGADO) {
-      estadoActual = ENLINEA;
-      motoresEncender();
-      Led1On();
-    }
+      LedAToggle();
 	}
 
 //  Esto borra el flag por el tema del debounce
