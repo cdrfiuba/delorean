@@ -1,0 +1,24 @@
+Cmp-Mod V01 Created by CvPCB (2011-03-30 BZR 2932)-stable date = vie 22 jul 2011 20:16:15 ART
+
+BeginCmp
+TimeStamp = /4E29FCF0;
+Reference = P1;
+ValeurCmp = CONN_3X2;
+IdModule  = pin_array_3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /4E29FBB9;
+Reference = U1;
+ValeurCmp = CNY70;
+IdModule  = CNY70;
+EndCmp
+
+BeginCmp
+TimeStamp = /4E29FBBE;
+Reference = U2;
+ValeurCmp = CNY70;
+IdModule  = CNY70;
+EndCmp
+
+EndListe

@@ -1,0 +1,12 @@
+syntax: glob
+
+*.bin
+*.bak
+*-cache.*
+*.hex
+*.gbl
+*.lst
+*~
+*.swp
+\$*.*
+*.000
